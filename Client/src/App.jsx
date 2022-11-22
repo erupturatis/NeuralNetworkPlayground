@@ -1,10 +1,16 @@
-function App() {
-  const [count, setCount] = useState(0);
+import Navbar from './Components/Navbar/Navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+function App() {
   return (
-    <div>
-      <div>aaa</div>
-    </div>
+    <Router>
+      <div className="">
+        <Navbar />
+        <Routes>
+          <Route path="/about" element={<>merge about</>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

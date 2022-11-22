@@ -1,0 +1,24 @@
+.transitionsSmooth {
+  transition: color 0.2s;
+  border: solid 2px rgba(0, 125, 216, 0);
+}
+
+.spawnBorder {
+  border: 2px solid rgba(0, 149, 255, 1);
+  margin: 30px;
+  animation: example;
+  animation-duration: 0.3s;
+}
+
+.newMargin {
+  margin: 10px;
+}
+
+@keyframes example {
+  from {
+    border: solid 2px rgba(0, 125, 216, 0);
+  }
+  to {
+    border: solid 2px rgba(0, 125, 216, 1);
+  }
+}
