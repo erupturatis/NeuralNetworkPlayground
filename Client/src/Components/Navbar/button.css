@@ -5,8 +5,9 @@
 
 .spawnBorder {
   border: 2px solid rgba(0, 149, 255, 1);
+  background-color: rgba(0, 149, 255, 1);
   margin: 30px;
-  animation: example;
+  animation: borderTransition;
   animation-duration: 0.3s;
 }
 
@@ -14,11 +15,13 @@
   margin: 10px;
 }
 
-@keyframes example {
+@keyframes borderTransition {
   from {
     border: solid 2px rgba(0, 125, 216, 0);
+    background-color: rgba(0, 149, 255, 0);
   }
   to {
     border: solid 2px rgba(0, 125, 216, 1);
+    background-color: rgba(0, 149, 255, 1);
   }
 }

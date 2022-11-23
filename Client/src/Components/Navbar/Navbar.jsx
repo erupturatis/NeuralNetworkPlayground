@@ -10,12 +10,19 @@ const Navbar = () => {
 
   let location = useLocation();
   return (
-    <div className="flex justify-between ">
+    <div className="flex justify-between m-4 ">
       <div className="p-4 flex">
-        <img src={githubImageLink} className="w-12 absolute top-2 " />
-        <a href={githubLink} target="_blank" rel="noreferrer">
-          Contribute
-        </a>
+        <img src={githubImageLink} className="w-10 absolute top-4 " />
+        <div className="ml-12">
+          <a
+            href={githubLink}
+            target="_blank"
+            rel="noreferrer"
+            className=" text-navtextFaded"
+          >
+            Contribute
+          </a>
+        </div>
       </div>
       <div className="flex items-center">
         <Button name="Home" pageLink="/Home" location={location.pathname} />
