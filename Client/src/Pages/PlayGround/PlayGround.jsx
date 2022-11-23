@@ -3,7 +3,7 @@ import LayerGenerator from './LayerGenerator';
 
 const PlayGround = () => {
   let layers = [1];
-  const [data, setdata] = useState([1, 2, 3, 4]);
+  const [data, setdata] = useState([1]);
 
   return (
     <div id="graph-container" className="w-screen h-screen p-40">
