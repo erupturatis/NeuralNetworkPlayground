@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import LayerGenerator from './LayerGenerator';
+import NetworkGenerator from './NetworkGenerator';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNeuron } from '../../redux/network';
 
 const PlayGround = () => {
-  let layers = [1];
-  const [data, setdata] = useState([1]);
-
+  const { network } = useSelector((state) => state.network);
+  const dispatch = useDispatch();
   return (
     <div id="graph-container" className="w-screen h-screen p-40">
       <button
@@ -16,15 +17,21 @@ const PlayGround = () => {
           });
         }}
       ></button>
+      <button
+        className=" bg-white"
+        onClick={() => {
+          dispatch(addNeuron(0));
+        }}
+      >
+        Add neuron
+      </button>
       <svg
         id="root-svg"
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
         height="100%"
       >
-        {layers.map((element) => (
-          <LayerGenerator key={element} layerNum={element} data={data} />
-        ))}
+        <NetworkGenerator />
       </svg>
     </div>
   );

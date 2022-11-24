@@ -5,11 +5,12 @@ import { select, easeLinear } from 'd3';
 let radius = 30;
 let maxHeight = 1000;
 
-const LayerGenerator = ({ data, layerNum }) => {
+const NetworkGenerator = () => {
+  let data = [1, 2, 3, 4];
+  let layerNum = 0;
   let originGroup = useRef();
 
-  useEffect(() => {
-    console.log('ran', layerNum);
+  let manageLayer = () => {
     let svg = select('#root-svg');
 
     let g = select(originGroup.current);
@@ -39,9 +40,10 @@ const LayerGenerator = ({ data, layerNum }) => {
       .attr('stroke', 'white')
       .attr('className', 'new')
       .attr('stroke-width', 2);
-  }, [data]);
+  };
+  useEffect(() => {}, [data]);
 
   return <g ref={originGroup}></g>;
 };
 
-export default LayerGenerator;
+export default NetworkGenerator;
