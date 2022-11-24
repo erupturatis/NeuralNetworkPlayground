@@ -19,6 +19,7 @@ export const generateNeurons = (layerNum, numNeurons) => {
 export const generateLayer = (layerNum, numNeurons, activation) => {
   let layer = {
     // maybe add individual custom neurons
+    layerNum,
     numNeurons,
     defaultActivation: activation,
     neurons: generateNeurons(layerNum, numNeurons),
