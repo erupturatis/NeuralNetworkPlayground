@@ -40,10 +40,25 @@ export const generateBiasesWeights = (numNeurons) => {
   return generateRandomWeights(numNeurons);
 };
 
-export const generateNeuronWeights = (numNeuronsLayer1, numNeuronsLayer2) => {
+export const generateNeuronWeights = (
+  layer1,
+  layer2,
+  numNeuronsLayer1,
+  numNeuronsLayer2
+) => {
   let neuronWeights = [];
   for (let i = 0; i < numNeuronsLayer1; i++) {
-    neuronWeights.push(generateRandomWeights(numNeuronsLayer2));
+    let neuronWeightsLocal = [];
+    for (let j = 0; j < numNeuronsLayer2; j++) {
+      neuronWeightsLocal.push({
+        value: Math.random(),
+        layer1,
+        layer2,
+        neuron1: i,
+        neuron2: j,
+      });
+    }
+    neuronWeights.push(neuronWeightsLocal);
   }
   return neuronWeights;
 };

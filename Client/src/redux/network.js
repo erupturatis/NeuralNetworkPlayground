@@ -9,6 +9,7 @@ import {
 
 let generateNetwork = (...layers) => {
   let initState = {
+    length: layers.length,
     layers: [],
     biases: [],
     biasesWeights: [],
@@ -23,8 +24,15 @@ let generateNetwork = (...layers) => {
     );
     initState.biases.push(Math.random());
     initState.biasesWeights.push(generateBiasesWeights(nrNeurons));
+
     initState.connections.push(
-      generateNeuronWeights(prevmumNeurons, nrNeurons)
+      // we start generating connection from layer 1 when prev !=0
+      generateNeuronWeights(
+        layerIndex - 1,
+        layerIndex,
+        prevmumNeurons,
+        nrNeurons
+      )
     );
     layerIndex += 1;
     prevmumNeurons = nrNeurons;
