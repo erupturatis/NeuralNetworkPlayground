@@ -2,7 +2,7 @@ import React from 'react';
 import { useRef, useEffect } from 'react';
 import { select, easeLinear } from 'd3';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNeuron } from '../../redux/network';
+import { addNeuron } from '../../store/network';
 
 let radius = 10;
 let strokeW = 1;
@@ -23,6 +23,7 @@ const NetworkGenerator = () => {
       .enter()
       .append('circle')
       .attr('opacity', 0)
+      .attr('fill', 'black')
       .attr('cx', 60 + layer.layerNum * 100)
       .attr('cy', (value, index) => originPointNeurons + step * index);
 
@@ -33,7 +34,7 @@ const NetworkGenerator = () => {
       .join('circle')
       .attr('r', radius)
       .transition()
-      .duration(200)
+      .duration(150)
       .ease(easeLinear)
       .attr('cx', 60 + layer.layerNum * 100)
       .attr('opacity', 1)
@@ -83,7 +84,7 @@ const NetworkGenerator = () => {
       .data(newConn)
       .join('line')
       .transition()
-      .duration(200)
+      .duration(150)
       .ease(easeLinear)
       .attr('x1', (value) => getCoordNeuron(value.layer1, value.neuron1).x)
       .attr('y1', (value) => getCoordNeuron(value.layer1, value.neuron1).y)
@@ -101,8 +102,8 @@ const NetworkGenerator = () => {
       let originPointNeurons = layer.numNeurons;
       let step = radius * 3;
       originPointNeurons = maxHeight / 2 - (step * originPointNeurons) / 2;
-      generateLayer(layer, step, originPointNeurons);
       if (layerIdx != network.length - 1) generateConnections(layerIdx);
+      generateLayer(layer, step, originPointNeurons);
       layerIdx += 1;
     }
   };

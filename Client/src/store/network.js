@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   generateLayer,
   generateBiasesWeights,
-  generateNeuronWeights,
+  generateNeuronsWeights,
   generateNeuron,
   generateRandomWeights,
+  generateNeuronWeights,
 } from './networkGenerator';
 
 let generateNetwork = (...layers) => {
@@ -27,7 +28,7 @@ let generateNetwork = (...layers) => {
 
     initState.connections.push(
       // we start generating connection from layer 1 when prev !=0
-      generateNeuronWeights(
+      generateNeuronsWeights(
         layerIndex - 1,
         layerIndex,
         prevmumNeurons,
@@ -77,7 +78,10 @@ export const networkSlice = createSlice({
       // adding corresponding connections
 
       // getting weights according to the next layer of numNeurons
-      let newConnections = generateRandomWeights(
+      let newConnections = generateNeuronWeights(
+        layerNum,
+        layerNum + 1,
+        state.layers[layerNum].numNeurons - 1,
         state.layers[layerNum + 1].numNeurons
       );
       state.connections[layerNum].push(newConnections);

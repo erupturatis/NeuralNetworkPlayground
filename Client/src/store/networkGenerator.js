@@ -36,11 +36,19 @@ export const generateRandomWeights = (numNeurons) => {
   return Weights;
 };
 
+export const generateRandomConnections = (numNeurons) => {
+  let Weights = [];
+  for (let i = 0; i < numNeurons; i++) {
+    Weights.push(Math.random());
+  }
+  return Weights;
+};
+
 export const generateBiasesWeights = (numNeurons) => {
   return generateRandomWeights(numNeurons);
 };
 
-export const generateNeuronWeights = (
+export const generateNeuronsWeights = (
   layer1,
   layer2,
   numNeuronsLayer1,
@@ -61,4 +69,22 @@ export const generateNeuronWeights = (
     neuronWeights.push(neuronWeightsLocal);
   }
   return neuronWeights;
+};
+export const generateNeuronWeights = (
+  layer1,
+  layer2,
+  neuron1Index,
+  numNeuronsLayer2
+) => {
+  let neuronWeightsLocal = [];
+  for (let j = 0; j < numNeuronsLayer2; j++) {
+    neuronWeightsLocal.push({
+      value: Math.random(),
+      layer1,
+      layer2,
+      neuron1: neuron1Index,
+      neuron2: j,
+    });
+  }
+  return neuronWeightsLocal;
 };
