@@ -7,12 +7,51 @@ import {
   generateRandomWeights,
 } from './networkGenerator';
 
-const initialState = {
-  layers: [generateLayer(0, 3, 'relu'), generateLayer(1, 2, 'sigmoid')],
-  biases: [1, 2],
-  biasesWeights: [generateBiasesWeights(3), generateBiasesWeights(2)],
-  connections: [generateNeuronWeights(3, 2)],
+let generateNetwork = (...layers) => {
+  let initState = {
+    layers: [],
+    biases: [],
+    biasesWeights: [],
+    connections: [],
+  };
+  let layerIndex = 0;
+  let prevmumNeurons = 0;
+  for (let layer of layers) {
+    let nrNeurons = layer.numNeurons;
+    initState.layers.push(
+      generateLayer(layerIndex, nrNeurons, layer.activation)
+    );
+    initState.biases.push(Math.random());
+    initState.biasesWeights.push(generateBiasesWeights(nrNeurons));
+    initState.connections.push(
+      generateNeuronWeights(prevmumNeurons, nrNeurons)
+    );
+    layerIndex += 1;
+    prevmumNeurons = nrNeurons;
+  }
+  initState.connections = initState.connections.slice(1);
+  return initState;
 };
+
+const initialState = generateNetwork(
+  {
+    numNeurons: 3,
+    activation: 'relu',
+  },
+  {
+    numNeurons: 2,
+    activation: 'relu',
+  },
+  {
+    numNeurons: 6,
+    activation: 'relu',
+  },
+  {
+    numNeurons: 3,
+    activation: 'relu',
+  }
+);
+
 // first index is layer, second is neuron position
 export const networkSlice = createSlice({
   name: 'network',
