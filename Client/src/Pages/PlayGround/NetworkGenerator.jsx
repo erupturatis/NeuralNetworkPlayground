@@ -4,92 +4,29 @@ import { select, easeLinear } from 'd3';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNeuron } from '../../store/network';
 
-let radius = 10;
-let strokeW = 1;
-let maxHeightY = 500;
-let maxHeightX = 500;
-let offsetX = 0;
-let offsetY = 0;
-let layerDistance = 100;
-let neuronDistance = radius * 4;
+import {
+  radius,
+  strokeW,
+  maxHeightY,
+  maxHeightX,
+  offsetX,
+  offsetY,
+  layerDistance,
+  neuronDistance,
+} from './networkParams';
+
+import {
+  getLayerCoordX,
+  getCoordNeuron,
+  getOriginCoordLayer,
+  getCoordYNeuronIdx,
+  setNetworkState,
+} from './positionUtils';
 
 const NetworkGenerator = () => {
   const { network } = useSelector((state) => state);
   const dispatch = useDispatch();
   const originGroup = useRef();
-
-  let generateLayer = (layer, step, originPointNeurons) => {
-    let neurons = layer.neurons;
-    let layerNum = layer.layerNum;
-    let rootElement = select(`#group${layerNum}`);
-    rootElement
-      .selectAll('circle')
-      .data(neurons)
-      .enter()
-      .append('circle')
-      .attr('opacity', 0)
-      .attr('fill', 'black')
-      .attr('cx', getLayerCoordX(layerNum))
-      .attr('cy', (value, index) => originPointNeurons + step * index);
-
-    rootElement
-      .selectAll('circle')
-
-      .data(neurons)
-      .join('circle')
-      .attr('r', radius)
-      .transition()
-      .duration(150)
-      .ease(easeLinear)
-      .attr('cx', getLayerCoordX(layerNum))
-      .attr('opacity', 1)
-      .attr('cy', (value, index) => originPointNeurons + step * index)
-      .attr('stroke', 'white')
-      .attr('className', (value, index) => `neuron${index}`)
-      .attr('stroke-width', strokeW);
-  };
-
-  let getLayerCoordX = (layerIdx) => {
-    let totalLayersNum = network.length;
-    let originPointX = 0;
-    let aroundCenter = 0;
-    if (totalLayersNum % 2 == 0) {
-      aroundCenter = -(
-        layerDistance * (totalLayersNum / 2 - 1) +
-        layerDistance / 2
-      );
-    }
-    originPointX = aroundCenter + maxHeightX / 2;
-    return originPointX + layerIdx * layerDistance;
-  };
-
-  let getCoordNeuron = (layer, index) => {
-    let step = neuronDistance;
-    let numNeurons = network.layers[layer].numNeurons;
-
-    let originPointNeurons = maxHeightY / 2 - (step * numNeurons) / 2;
-    let currentPosX = getLayerCoordX(layer);
-    let currentPosY = originPointNeurons + step * index;
-    return {
-      x: currentPosX,
-      y: currentPosY,
-    };
-  };
-
-  let getOriginCoordLayer = (layer, index) => {
-    let step = neuronDistance;
-    let numNeurons = network.layers[layer].numNeurons;
-
-    let originPointNeurons = maxHeightY / 2 - (step * numNeurons) / 2;
-    return originPointNeurons;
-  };
-
-  let getCoordYNeuronIdx = (originPointNeurons, index) => {
-    let step = neuronDistance;
-    let numNeurons = network.layers[layer].numNeurons;
-    let currentPosY = originPointNeurons + step * index;
-    return currentPosY;
-  };
 
   let generateConnections = (layer) => {
     let layerConn = network.connections[layer];
@@ -126,6 +63,36 @@ const NetworkGenerator = () => {
       .attr('stroke', 'white')
       .attr('opacity', 1);
   };
+  let generateLayer = (layer, step, originPointNeurons) => {
+    let neurons = layer.neurons;
+    let layerNum = layer.layerNum;
+    let rootElement = select(`#group${layerNum}`);
+    rootElement
+      .selectAll('circle')
+      .data(neurons)
+      .enter()
+      .append('circle')
+      .attr('opacity', 0)
+      .attr('fill', 'black')
+      .attr('cx', getLayerCoordX(layerNum))
+      .attr('cy', (value, index) => originPointNeurons + step * index);
+
+    rootElement
+      .selectAll('circle')
+
+      .data(neurons)
+      .join('circle')
+      .attr('r', radius)
+      .transition()
+      .duration(150)
+      .ease(easeLinear)
+      .attr('cx', getLayerCoordX(layerNum))
+      .attr('opacity', 1)
+      .attr('cy', (value, index) => originPointNeurons + step * index)
+      .attr('stroke', 'white')
+      .attr('className', (value, index) => `neuron${index}`)
+      .attr('stroke-width', strokeW);
+  };
 
   let generateNetwork = () => {
     let layers = network.layers;
@@ -151,6 +118,7 @@ const NetworkGenerator = () => {
   };
 
   useEffect(() => {
+    setNetworkState(network);
     generateStructure();
     generateNetwork();
   }, [network]);
