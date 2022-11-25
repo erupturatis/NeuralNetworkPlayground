@@ -6,7 +6,12 @@ import { addNeuron } from '../../store/network';
 
 let radius = 10;
 let strokeW = 1;
-let maxHeight = 500;
+let maxHeightY = 500;
+let maxHeightX = 500;
+let offsetX = 0;
+let offsetY = 0;
+let layerDistance = 100;
+let neuronDistance = radius * 4;
 
 const NetworkGenerator = () => {
   const { network } = useSelector((state) => state);
@@ -24,7 +29,7 @@ const NetworkGenerator = () => {
       .append('circle')
       .attr('opacity', 0)
       .attr('fill', 'black')
-      .attr('cx', 60 + layer.layerNum * 100)
+      .attr('cx', getLayerCoordX(layerNum))
       .attr('cy', (value, index) => originPointNeurons + step * index);
 
     rootElement
@@ -36,7 +41,7 @@ const NetworkGenerator = () => {
       .transition()
       .duration(150)
       .ease(easeLinear)
-      .attr('cx', 60 + layer.layerNum * 100)
+      .attr('cx', getLayerCoordX(layerNum))
       .attr('opacity', 1)
       .attr('cy', (value, index) => originPointNeurons + step * index)
       .attr('stroke', 'white')
@@ -44,12 +49,26 @@ const NetworkGenerator = () => {
       .attr('stroke-width', strokeW);
   };
 
+  let getLayerCoordX = (layerIdx) => {
+    let totalLayersNum = network.length;
+    let originPointX = 0;
+    let aroundCenter = 0;
+    if (totalLayersNum % 2 == 0) {
+      aroundCenter = -(
+        layerDistance * (totalLayersNum / 2 - 1) +
+        layerDistance / 2
+      );
+    }
+    originPointX = aroundCenter + maxHeightX / 2;
+    return originPointX + layerIdx * layerDistance;
+  };
+
   let getCoordNeuron = (layer, index) => {
-    let step = radius * 3;
+    let step = neuronDistance;
     let numNeurons = network.layers[layer].numNeurons;
 
-    let originPointNeurons = maxHeight / 2 - (step * numNeurons) / 2;
-    let currentPosX = 60 + layer * 100;
+    let originPointNeurons = maxHeightY / 2 - (step * numNeurons) / 2;
+    let currentPosX = getLayerCoordX(layer);
     let currentPosY = originPointNeurons + step * index;
     return {
       x: currentPosX,
@@ -57,15 +76,29 @@ const NetworkGenerator = () => {
     };
   };
 
+  let getOriginCoordLayer = (layer, index) => {
+    let step = neuronDistance;
+    let numNeurons = network.layers[layer].numNeurons;
+
+    let originPointNeurons = maxHeightY / 2 - (step * numNeurons) / 2;
+    return originPointNeurons;
+  };
+
+  let getCoordYNeuronIdx = (originPointNeurons, index) => {
+    let step = neuronDistance;
+    let numNeurons = network.layers[layer].numNeurons;
+    let currentPosY = originPointNeurons + step * index;
+    return currentPosY;
+  };
+
   let generateConnections = (layer) => {
-    console.log(layer);
     let layerConn = network.connections[layer];
     // linearizing connection data for use in d3
     let newConn = [];
     for (let conn of layerConn) {
       newConn.push(...conn);
     }
-    console.log(newConn);
+
     let rootElement = select(`#group${layer}`);
     //selecting entering lines for animation purposes
     rootElement
@@ -100,8 +133,8 @@ const NetworkGenerator = () => {
     for (let layer of layers) {
       // calculating position for each neuron on the layer
       let originPointNeurons = layer.numNeurons;
-      let step = radius * 3;
-      originPointNeurons = maxHeight / 2 - (step * originPointNeurons) / 2;
+      let step = neuronDistance;
+      originPointNeurons = maxHeightY / 2 - (step * originPointNeurons) / 2;
       if (layerIdx != network.length - 1) generateConnections(layerIdx);
       generateLayer(layer, step, originPointNeurons);
       layerIdx += 1;
@@ -115,12 +148,6 @@ const NetworkGenerator = () => {
       .data(layers)
       .join('g')
       .attr('id', (value, index) => `group${index}`);
-  };
-
-  let getPosition = (layerNum, position) => {
-    let rootElement = select(`#group${layerNum}`);
-    let coord = getCoordNeuron(layerNum, position);
-    console.log(coord);
   };
 
   useEffect(() => {
