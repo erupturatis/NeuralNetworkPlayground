@@ -7,13 +7,9 @@ import {
   offsetY,
   layerDistance,
   neuronDistance,
-} from './networkParams';
+} from '../networkParams';
 
-let networkState;
-
-let setNetworkState = (state) => {
-  networkState = state;
-};
+import { networkState } from './getNetworkState';
 
 let getLayerCoordX;
 let getCoordNeuron;
@@ -71,5 +67,4 @@ export {
   getCoordNeuron,
   getOriginCoordLayer,
   getCoordYNeuronIdx,
-  setNetworkState,
 };
