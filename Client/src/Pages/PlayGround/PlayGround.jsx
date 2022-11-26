@@ -7,7 +7,7 @@ const PlayGround = () => {
   return (
     <div id="graph-container" className="w-screen h-screen pr-56 pt-40">
       <button
-        onClick={() => dispatchAddNeuron(1)}
+        onClick={() => dispatchAddNeuron(2)}
         className="text-white bg-black"
       >
         Add neuron

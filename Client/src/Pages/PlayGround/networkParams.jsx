@@ -10,7 +10,7 @@ let AddLayerButtonOffsetY = -50;
 let NeuronButtonsOffsetY = 25;
 let NeuronButtonsOffsetX = -25;
 
-let animationsSpeed = 750;
+let animationsSpeed = 150;
 // here I should make a redux store
 
 export {
