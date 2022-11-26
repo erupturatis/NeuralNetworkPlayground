@@ -7,6 +7,7 @@ import {
   offsetY,
   layerDistance,
   neuronDistance,
+  animationsSpeed,
 } from '../networkParams';
 
 import {
@@ -14,17 +15,20 @@ import {
   getCoordNeuron,
   getOriginCoordLayer,
   getCoordYNeuronIdx,
+  getCoordNeuronButtons,
 } from './positionUtils';
 
 import { select, easeLinear } from 'd3';
 
-import { networkState as network } from './getNetworkState';
+import { networkState as network } from './getState';
 
 let generateConnections = (layer) => {
   let layerConn = network.connections[layer];
   // linearizing connection data for use in d3
   let newConn = [];
+  console.log('connections');
   for (let conn of layerConn) {
+    console.log(conn);
     newConn.push(...conn);
   }
 
@@ -32,7 +36,10 @@ let generateConnections = (layer) => {
   //selecting entering lines for animation purposes
   rootElement
     .selectAll('line')
-    .data(newConn)
+    .data(
+      newConn,
+      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
+    )
     .enter()
     .append('line')
     .attr('x1', (value) => getCoordNeuron(value.layer1, value.neuron1).x)
@@ -46,7 +53,7 @@ let generateConnections = (layer) => {
     .data(newConn)
     .join('line')
     .transition()
-    .duration(150)
+    .duration(animationsSpeed)
     .ease(easeLinear)
     .attr('x1', (value) => getCoordNeuron(value.layer1, value.neuron1).x)
     .attr('y1', (value) => getCoordNeuron(value.layer1, value.neuron1).y)
@@ -76,7 +83,7 @@ let generateLayer = (layer, step, originPointNeurons) => {
     .join('circle')
     .attr('r', radius)
     .transition()
-    .duration(150)
+    .duration(animationsSpeed)
     .ease(easeLinear)
     .attr('cx', getLayerCoordX(layerNum))
     .attr('opacity', 1)
@@ -102,6 +109,7 @@ let generateNetwork = () => {
 
 let generateStructure = () => {
   let layers = network.layers;
+  let unpLayers = [...layers];
   let g = select('#originGroup');
   g.selectAll('g')
     .data(layers)
@@ -109,4 +117,36 @@ let generateStructure = () => {
     .attr('id', (value, index) => `group${index}`);
 };
 
-export { generateStructure, generateNetwork };
+let generateUI = () => {
+  let length = network.length;
+  let arr = [];
+  // generating neuron buttons
+  for (let layer = 0; layer < length; layer++) {
+    arr.push(layer);
+  }
+  // let { x, y } = getCoordNeuronButtons(layer);
+  // console.log(x, y);
+  let rootElement = select('#originGroup');
+  rootElement
+    .selectAll('foreignObject')
+    .data(arr)
+    .join('foreignObject')
+    .attr('class', 'node')
+    .attr('width', 100)
+    .attr('height', 100)
+    .attr('x', (value) => getCoordNeuronButtons(value).x)
+    .attr('y', (value) => getCoordNeuronButtons(value).y)
+
+    .html('<button class="networkButton">Click me</button>');
+};
+
+const generatorUtils = () => {
+  return (
+    <div className="text-white">
+      <></>
+      <div>generator utils</div>
+    </div>
+  );
+};
+
+export { generateStructure, generateNetwork, generateUI };

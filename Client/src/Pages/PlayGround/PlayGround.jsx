@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import NetworkGenerator from './NetworkGenerator';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNeuron } from '../../store/network';
+
+import { dispatchAddNeuron } from './utils/dispatchers';
 
 const PlayGround = () => {
-  const dispatch = useDispatch();
   return (
     <div id="graph-container" className="w-screen h-screen pr-56 pt-40">
       <button
-        onClick={() => {
-          dispatch(addNeuron(0));
-        }}
+        onClick={() => dispatchAddNeuron(1)}
         className="text-white bg-black"
       >
         Add neuron
       </button>
+
       <div className="w-full h-full border-2">
         <svg
           id="root-svg"

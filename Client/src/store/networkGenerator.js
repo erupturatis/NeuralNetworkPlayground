@@ -88,3 +88,22 @@ export const generateNeuronWeights = (
   }
   return neuronWeightsLocal;
 };
+
+export const generateNeuronWeightsBack = (
+  layer1,
+  layer2,
+  numNeuronsLayer1,
+  neuron2Index
+) => {
+  let neuronWeightsLocal = [];
+  for (let j = 0; j < numNeuronsLayer1; j++) {
+    neuronWeightsLocal.push({
+      value: Math.random(),
+      layer1,
+      layer2,
+      neuron1: j,
+      neuron2: neuron2Index,
+    });
+  }
+  return neuronWeightsLocal;
+};

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import {
   generateLayer,
   generateBiasesWeights,
@@ -6,6 +6,7 @@ import {
   generateNeuron,
   generateRandomWeights,
   generateNeuronWeights,
+  generateNeuronWeightsBack,
 } from './networkGenerator';
 
 let generateNetwork = (...layers) => {
@@ -44,19 +45,16 @@ let generateNetwork = (...layers) => {
 
 const initialState = generateNetwork(
   {
-    numNeurons: 3,
+    numNeurons: 4,
     activation: 'relu',
   },
-  {
-    numNeurons: 2,
-    activation: 'relu',
-  },
+
   {
     numNeurons: 6,
     activation: 'relu',
   },
   {
-    numNeurons: 3,
+    numNeurons: 4,
     activation: 'relu',
   }
 );
@@ -78,13 +76,36 @@ export const networkSlice = createSlice({
       // adding corresponding connections
 
       // getting weights according to the next layer of numNeurons
+
+      //front connections for the new neuron
       let newConnections = generateNeuronWeights(
         layerNum,
         layerNum + 1,
         state.layers[layerNum].numNeurons - 1,
         state.layers[layerNum + 1].numNeurons
       );
+
       state.connections[layerNum].push(newConnections);
+
+      //back connections for the new neuron
+      let newConnectionsBack = generateNeuronWeightsBack(
+        layerNum - 1,
+        layerNum,
+
+        state.layers[layerNum - 1].numNeurons,
+        state.layers[layerNum].numNeurons - 1
+      );
+      let newConnBack = [...current(state.connections[layerNum - 1])];
+      console.log(newConnBack);
+
+      for (let i = 0; i < newConnBack.length; i++) {
+        let conn = newConnectionsBack[i];
+        console.log(newConnBack[i], conn);
+        newConnBack[i] = [...newConnBack[i], conn];
+        console.log(newConnBack[i], conn);
+      }
+
+      state.connections[layerNum - 1] = newConnBack;
     },
   },
 });
