@@ -22,11 +22,24 @@ const NetworkGenerator = () => {
     setNetworkState(network);
     setDispatch(dispatch);
     generateStructure();
+  }, []);
+
+  useEffect(() => {
+    setNetworkState(network);
+    setDispatch(dispatch);
+
     generateNetwork();
     generateUI();
   }, [network]);
 
-  return <g id="originGroup"></g>;
+  return (
+    <>
+      <g id="originGroup"></g>
+      <g id="AddGroup"></g>
+      <g id="RemoveGroup"></g>
+      <g id="AddLayerGroup"></g>
+    </>
+  );
 };
 
 export default NetworkGenerator;

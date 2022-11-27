@@ -1,6 +1,6 @@
 import {
   radius,
-  strokeW,
+  strokeWNeurons,
   maxHeightY,
   maxHeightX,
   offsetX,
@@ -21,18 +21,18 @@ import {
 import { select, easeLinear } from 'd3';
 
 import { networkState as network } from './getState';
+import { dispatchAddNeuron } from './dispatchers';
 
 let generateConnections = (layer) => {
   let layerConn = network.connections[layer];
   // linearizing connection data for use in d3
   let newConn = [];
-  console.log('connections');
   for (let conn of layerConn) {
-    console.log(conn);
     newConn.push(...conn);
   }
 
-  let rootElement = select(`#group${layer}`);
+  let rootElement = select(`#connections${layer}`);
+
   //selecting entering lines for animation purposes
   rootElement
     .selectAll('line')
@@ -62,10 +62,21 @@ let generateConnections = (layer) => {
     .attr('stroke', 'white')
     .attr('opacity', 1);
 };
+
 let generateLayer = (layer, step, originPointNeurons) => {
   let neurons = layer.neurons;
   let layerNum = layer.layerNum;
-  let rootElement = select(`#group${layerNum}`);
+  let rootElementGroup = select(`#neurons${layerNum}`);
+  let aux = [0];
+
+  rootElementGroup
+    .selectAll('g')
+    .data(aux)
+    .join('g')
+    .attr('id', (value, index) => `neurons${layerNum}`);
+
+  let rootElement = select(`#neurons${layerNum}`);
+
   rootElement
     .selectAll('circle')
     .data(neurons)
@@ -90,7 +101,7 @@ let generateLayer = (layer, step, originPointNeurons) => {
     .attr('cy', (value, index) => originPointNeurons + step * index)
     .attr('stroke', 'white')
     .attr('className', (value, index) => `neuron${index}`)
-    .attr('stroke-width', strokeW);
+    .attr('stroke-width', strokeWNeurons);
 };
 
 let generateNetwork = () => {
@@ -111,33 +122,101 @@ let generateStructure = () => {
   let layers = network.layers;
   let unpLayers = [...layers];
   let g = select('#originGroup');
-  g.selectAll('g')
+
+  g.selectChildren('g')
     .data(layers)
     .join('g')
     .attr('id', (value, index) => `group${index}`);
+  for (let index = 0; index < network.length; index++) {
+    g.select(`#group${index}`)
+      .selectChildren('g')
+      .data(['connections', 'neurons'])
+      .enter()
+      .append('g')
+      .attr('id', (value) => `${value}${index}`);
+  }
 };
 
 let generateUI = () => {
   let length = network.length;
   let arr = [];
+  let arrRemove = [];
   // generating neuron buttons
   for (let layer = 0; layer < length; layer++) {
     arr.push(layer);
+    arrRemove.push(layer);
   }
   // let { x, y } = getCoordNeuronButtons(layer);
   // console.log(x, y);
-  let rootElement = select('#originGroup');
-  rootElement
-    .selectAll('foreignObject')
-    .data(arr)
-    .join('foreignObject')
-    .attr('class', 'node')
-    .attr('width', 100)
-    .attr('height', 100)
-    .attr('x', (value) => getCoordNeuronButtons(value).x)
-    .attr('y', (value) => getCoordNeuronButtons(value).y)
+  let rootElementAdd = select('#AddGroup');
 
-    .html('<button class="networkButton">Click me</button>');
+  rootElementAdd
+    .selectAll('circle')
+    .data(arr)
+    .enter()
+    .append('circle')
+    .attr('r', (radius * 2) / 3)
+    .attr('stroke', '#FFFFFF')
+    .attr('opacity', '0')
+    .attr(
+      'cx',
+      (value) => getCoordNeuronButtons(value).x - ((radius * 2) / 3) * 1.5
+    )
+    .attr('cy', (value) => getCoordNeuronButtons(value).y);
+
+  rootElementAdd
+    .selectAll('circle')
+    .data(arr)
+    .join('circle')
+    .attr('r', (radius * 2) / 3)
+    .transition()
+    .duration(animationsSpeed)
+    .ease(easeLinear)
+    .attr('stroke', '#FFFFFF')
+    .attr('opacity', '1')
+    .attr(
+      'cx',
+      (value) => getCoordNeuronButtons(value).x - ((radius * 2) / 3) * 1.5
+    )
+    .attr('cy', (value) => getCoordNeuronButtons(value).y);
+
+  rootElementAdd
+    .selectAll('circle')
+    .data(arr)
+    .join('circle')
+    .on('click', (value, index) => dispatchAddNeuron(index));
+
+  let rootElementRemove = select('#RemoveGroup');
+
+  rootElementRemove
+    .selectAll('circle')
+    .data(arr)
+    .enter()
+    .append('circle')
+    .attr('r', (radius * 2) / 3)
+    .attr('stroke', '#FFFFFF')
+    .attr('opacity', '0')
+    .attr(
+      'cx',
+      (value) => getCoordNeuronButtons(value).x + ((radius * 2) / 3) * 1.5
+    )
+    .attr('cy', (value) => getCoordNeuronButtons(value).y);
+
+  rootElementRemove
+    .selectAll('circle')
+    .data(arr)
+    .join('circle')
+    .attr('r', (radius * 2) / 3)
+    .transition()
+    .duration(animationsSpeed)
+    .ease(easeLinear)
+    .attr('stroke', '#FFFFFF')
+    .attr('opacity', '1')
+    .attr(
+      'cx',
+      (value) => getCoordNeuronButtons(value).x + ((radius * 2) / 3) * 1.5
+    )
+    .attr('cy', (value) => getCoordNeuronButtons(value).y);
 };
 
 const generatorUtils = () => {

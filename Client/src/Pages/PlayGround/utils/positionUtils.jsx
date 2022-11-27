@@ -1,6 +1,6 @@
 import {
   radius,
-  strokeW,
+  strokeWNeurons,
   maxHeightY,
   maxHeightX,
   offsetX,
@@ -72,7 +72,7 @@ getCoordNeuronButtons = (layer) => {
   let numNeurons = network.layers[layer].numNeurons;
 
   let originPointNeurons = maxHeightY / 2 + (step * (numNeurons - 1)) / 2;
-  let currentPosX = getLayerCoordX(layer) + NeuronButtonsOffsetX;
+  let currentPosX = getLayerCoordX(layer);
   let currentPosY = originPointNeurons + NeuronButtonsOffsetY;
   return {
     x: currentPosX,
