@@ -21,7 +21,7 @@ import {
 import { select, easeLinear } from 'd3';
 
 import { networkState as network } from './getState';
-import { dispatchAddNeuron } from './dispatchers';
+import { dispatchAddNeuron, dispatchRemoveNeuron } from './dispatchers';
 
 let generateConnections = (layer) => {
   let layerConn = network.connections[layer];
@@ -48,10 +48,14 @@ let generateConnections = (layer) => {
     .attr('y2', (value) => getCoordNeuron(value.layer2, value.neuron2).y)
 
     .attr('opacity', 0);
+
   rootElement
     .selectAll('line')
-    .data(newConn)
-    .join('line')
+    .data(
+      newConn,
+      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
+    )
+    // .join('line')
     .transition()
     .duration(animationsSpeed)
     .ease(easeLinear)
@@ -61,6 +65,19 @@ let generateConnections = (layer) => {
     .attr('y2', (value) => getCoordNeuron(value.layer2, value.neuron2).y)
     .attr('stroke', 'white')
     .attr('opacity', 1);
+
+  rootElement
+    .selectAll('line')
+    .data(
+      newConn,
+      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
+    )
+    .exit()
+    .transition()
+    .duration(animationsSpeed)
+    .ease(easeLinear)
+    .style('opacity', 1e-6)
+    .remove();
 };
 
 let generateLayer = (layer, step, originPointNeurons) => {
@@ -217,6 +234,12 @@ let generateUI = () => {
       (value) => getCoordNeuronButtons(value).x + ((radius * 2) / 3) * 1.5
     )
     .attr('cy', (value) => getCoordNeuronButtons(value).y);
+
+  rootElementRemove
+    .selectAll('circle')
+    .data(arr)
+    .join('circle')
+    .on('click', (value, index) => dispatchRemoveNeuron(index));
 };
 
 const generatorUtils = () => {

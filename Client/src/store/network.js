@@ -98,19 +98,35 @@ export const networkSlice = createSlice({
       );
 
       let newConnBack = [...current(state.connections[layerNum - 1])];
-
       for (let i = 0; i < newConnBack.length; i++) {
         let conn = newConnectionsBack[i];
-
         newConnBack[i] = [...newConnBack[i], conn];
       }
 
       state.connections[layerNum - 1] = newConnBack;
     },
+
+    removeNeuron: (state, action) => {
+      // modifying neuron number and adding a new neuron
+      let layerNum = action.payload;
+      //removing bias weight
+      state.biasesWeights[layerNum].pop();
+      //removing connections from back to front
+      if (layerNum > 0) {
+        state.connections[layerNum - 1] = state.connections[
+          layerNum - 1
+        ].filter((arr) => arr.pop());
+      }
+      //removing conntions current to front
+      if (layerNum != state.length - 1) state.connections[layerNum].pop();
+      //removing the neuron itself
+      state.layers[layerNum].numNeurons -= 1;
+      state.layers[layerNum].neurons.pop();
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNeuron } = networkSlice.actions;
+export const { addNeuron, removeNeuron } = networkSlice.actions;
 
 export default networkSlice.reducer;
