@@ -19,6 +19,7 @@ let generateNetwork = (...layers) => {
   };
   let layerIndex = 0;
   let prevmumNeurons = 0;
+
   for (let layer of layers) {
     let nrNeurons = layer.numNeurons;
     initState.layers.push(
@@ -45,12 +46,20 @@ let generateNetwork = (...layers) => {
 
 const initialState = generateNetwork(
   {
-    numNeurons: 4,
+    numNeurons: 2,
     activation: 'relu',
   },
 
   {
     numNeurons: 6,
+    activation: 'relu',
+  },
+  {
+    numNeurons: 2,
+    activation: 'relu',
+  },
+  {
+    numNeurons: 7,
     activation: 'relu',
   },
   {
@@ -123,10 +132,61 @@ export const networkSlice = createSlice({
       state.layers[layerNum].numNeurons -= 1;
       state.layers[layerNum].neurons.pop();
     },
+
+    removeLayer: (state, actions) => {
+      let layerNum = actions.payload;
+
+      // prep
+
+      //state.connections.splice(layerNum, 0);
+      //console.log(current(state.connections));
+
+      //state.biasesWeights.splice(layerNum, 1);
+      // state.biases.splice(layerNum,1)
+      // state.layers.splice(layerNum,1);
+
+      // shifting connections layers
+      for (let idx = layerNum + 1; idx < state.length - 1; idx++) {
+        state.connections[idx] = state.connections[idx].map((connArr) => {
+          return connArr.map((el) => {
+            el.layer1 -= 1;
+            el.layer2 -= 1;
+            return el;
+          });
+        });
+      }
+      //shifting layers neurons indexes
+      for (let idx = layerNum + 1; idx < state.length; idx++) {
+        state.layers[idx].layerNum -= 1;
+        state.layers[idx].neurons = state.layers[idx].neurons.map((neuron) => {
+          neuron.layerNum -= 1;
+          return neuron;
+        });
+      }
+      //removing front connections
+      state.connections.splice(layerNum, 1);
+      //removing front layer
+      state.layers.splice(layerNum, 1);
+
+      // removing connections from the back
+      state.connections[layerNum - 1] = [];
+      // generating new connections between layer-1 and layer
+      let newConn = generateNeuronsWeights(
+        layerNum - 1,
+        layerNum,
+
+        state.layers[layerNum - 1].numNeurons,
+        state.layers[layerNum].numNeurons
+      );
+      console.log(newConn);
+      state.connections[layerNum - 1] = newConn;
+
+      state.length -= 1;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNeuron, removeNeuron } = networkSlice.actions;
+export const { addNeuron, removeNeuron, removeLayer } = networkSlice.actions;
 
 export default networkSlice.reducer;

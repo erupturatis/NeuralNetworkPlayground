@@ -32,8 +32,9 @@ getLayerCoordX = (layerIdx) => {
       layerDistance / 2
     );
   } else {
-    aroundCenter = -(layerDistance * (totalLayersNum / 2));
+    aroundCenter = -(layerDistance * parseInt(totalLayersNum / 2));
   }
+  //console.log(aroundCenter, totalLayersNum % 2);
   originPointX = aroundCenter + maxHeightX / 2;
   return originPointX + layerIdx * layerDistance;
 };

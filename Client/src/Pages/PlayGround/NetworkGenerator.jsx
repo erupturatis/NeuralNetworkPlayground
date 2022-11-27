@@ -27,6 +27,7 @@ const NetworkGenerator = () => {
   useEffect(() => {
     setNetworkState(network);
     setDispatch(dispatch);
+    generateStructure();
     generateNetwork();
     generateUI();
   }, [network]);

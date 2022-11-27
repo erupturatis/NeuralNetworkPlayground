@@ -1,10 +1,13 @@
 // utils for generating neural network initial data
-
+let neuronId = 0;
+let connectionId = 0;
 export const generateNeuron = (layerNum, index) => {
+  neuronId += 1;
   return {
     overRideAct: 'relu',
     layerNum,
     index,
+    neuronId: assignNeuronId(),
   };
 };
 
@@ -14,6 +17,16 @@ export const generateNeurons = (layerNum, numNeurons) => {
     neurons.push(generateNeuron(layerNum, i));
   }
   return neurons;
+};
+
+let assignConnId = () => {
+  connectionId += 1;
+  return connectionId;
+};
+
+let assignNeuronId = () => {
+  neuronId += 1;
+  return neuronId;
 };
 
 export const generateLayer = (layerNum, numNeurons, activation) => {
@@ -64,6 +77,7 @@ export const generateNeuronsWeights = (
         layer2,
         neuron1: i,
         neuron2: j,
+        id: assignConnId(),
       });
     }
     neuronWeights.push(neuronWeightsLocal);
@@ -84,6 +98,7 @@ export const generateNeuronWeights = (
       layer2,
       neuron1: neuron1Index,
       neuron2: j,
+      id: assignConnId(),
     });
   }
   return neuronWeightsLocal;

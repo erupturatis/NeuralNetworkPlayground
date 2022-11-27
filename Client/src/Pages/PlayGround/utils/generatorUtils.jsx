@@ -23,23 +23,23 @@ import { select, easeLinear } from 'd3';
 import { networkState as network } from './getState';
 import { dispatchAddNeuron, dispatchRemoveNeuron } from './dispatchers';
 
-let generateConnections = (layer) => {
-  let layerConn = network.connections[layer];
-  // linearizing connection data for use in d3
+let generateConnections = () => {
   let newConn = [];
-  for (let conn of layerConn) {
-    newConn.push(...conn);
+
+  // linearizing connection data
+  for (let layer = 0; layer < network.length - 1; layer++) {
+    let layerConn = network.connections[layer];
+    for (let conn of layerConn) {
+      newConn.push(...conn);
+    }
   }
 
-  let rootElement = select(`#connections${layer}`);
-
+  let rootElement = select(`#connections`);
+  console.log(newConn);
   //selecting entering lines for animation purposes
   rootElement
     .selectAll('line')
-    .data(
-      newConn,
-      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
-    )
+    .data(newConn, (data) => data.id)
     .enter()
     .append('line')
     .attr('x1', (value) => getCoordNeuron(value.layer1, value.neuron1).x)
@@ -51,10 +51,7 @@ let generateConnections = (layer) => {
 
   rootElement
     .selectAll('line')
-    .data(
-      newConn,
-      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
-    )
+    .data(newConn, (data) => data.id)
     // .join('line')
     .transition()
     .duration(animationsSpeed)
@@ -68,10 +65,7 @@ let generateConnections = (layer) => {
 
   rootElement
     .selectAll('line')
-    .data(
-      newConn,
-      (data) => `${data.layer1} ${data.layer2} ${data.neuron1} ${data.neuron2}`
-    )
+    .data(newConn, (data) => data.id)
     .exit()
     .transition()
     .duration(animationsSpeed)
@@ -80,58 +74,82 @@ let generateConnections = (layer) => {
     .remove();
 };
 
-let generateLayer = (layer, step, originPointNeurons) => {
-  let neurons = layer.neurons;
-  let layerNum = layer.layerNum;
-  let rootElementGroup = select(`#neurons${layerNum}`);
-  let aux = [0];
+let generateNeurons = () => {
+  let layers = network.layers;
+  let neuronsData = [];
+  for (let layer of layers) {
+    neuronsData = [...neuronsData, ...layer.neurons];
+  }
 
-  rootElementGroup
-    .selectAll('g')
-    .data(aux)
-    .join('g')
-    .attr('id', (value, index) => `neurons${layerNum}`);
-
-  let rootElement = select(`#neurons${layerNum}`);
+  let rootElement = select(`#neurons`);
+  //liniarizing data
 
   rootElement
     .selectAll('circle')
-    .data(neurons)
+    .data(neuronsData, (data) => {
+      return data.neuronId;
+    })
     .enter()
     .append('circle')
     .attr('opacity', 0)
     .attr('fill', 'black')
-    .attr('cx', getLayerCoordX(layerNum))
-    .attr('cy', (value, index) => originPointNeurons + step * index);
+    .attr('cx', (value, index) => getCoordNeuron(value.layerNum, value.index).x)
+    .attr(
+      'cy',
+      (value, index) => getCoordNeuron(value.layerNum, value.index).y
+    );
 
   rootElement
     .selectAll('circle')
 
-    .data(neurons)
-    .join('circle')
+    .data(neuronsData, (data) => {
+      return data.neuronId;
+    })
+    //.join('circle')
     .attr('r', radius)
     .transition()
     .duration(animationsSpeed)
     .ease(easeLinear)
-    .attr('cx', getLayerCoordX(layerNum))
     .attr('opacity', 1)
-    .attr('cy', (value, index) => originPointNeurons + step * index)
+    .attr('cx', (value, index) => getCoordNeuron(value.layerNum, value.index).x)
+    .attr('cy', (value, index) => getCoordNeuron(value.layerNum, value.index).y)
     .attr('stroke', 'white')
     .attr('className', (value, index) => `neuron${index}`)
     .attr('stroke-width', strokeWNeurons);
+
+  rootElement
+    .selectAll('circle')
+
+    .data(neuronsData, (data) => {
+      return data.neuronId;
+    })
+    .exit()
+    .transition()
+    .duration(animationsSpeed)
+    .ease(easeLinear)
+    .style('opacity', 1e-6)
+    .remove();
 };
 
-let generateNetwork = () => {
+let initialStructure = () => {
   let layers = network.layers;
-  let layerIdx = 0;
-  for (let layer of layers) {
-    // calculating position for each neuron on the layer
-    let originPointNeurons = layer.numNeurons;
-    let step = neuronDistance;
-    originPointNeurons = maxHeightY / 2 - (step * originPointNeurons) / 2;
-    if (layerIdx != network.length - 1) generateConnections(layerIdx);
-    generateLayer(layer, step, originPointNeurons);
-    layerIdx += 1;
+  let unpLayers = [...layers];
+  let g = select('#originGroup');
+
+  g.selectChildren('g')
+    .data(layers)
+    .join('g')
+    .attr('id', (value, index) => `group${index}`);
+
+  g.append('g').attr('id', 'neurons');
+
+  for (let index = 0; index < network.length; index++) {
+    g.select(`#group${index}`)
+      .selectChildren('g')
+      .data(['connections', 'neurons'])
+      .enter()
+      .append('g')
+      .attr('id', (value) => `${value}${index}`);
   }
 };
 
@@ -141,9 +159,12 @@ let generateStructure = () => {
   let g = select('#originGroup');
 
   g.selectChildren('g')
-    .data(layers)
+    .data(['connections', 'neurons'], (data) => data)
     .join('g')
-    .attr('id', (value, index) => `group${index}`);
+    .attr('id', (value, index) => {
+      return value;
+    });
+
   for (let index = 0; index < network.length; index++) {
     g.select(`#group${index}`)
       .selectChildren('g')
@@ -251,4 +272,9 @@ const generatorUtils = () => {
   );
 };
 
-export { generateStructure, generateNetwork, generateUI };
+let generateNetwork = () => {
+  generateConnections();
+  generateNeurons();
+};
+
+export { generateStructure, generateNetwork, generateUI, initialStructure };

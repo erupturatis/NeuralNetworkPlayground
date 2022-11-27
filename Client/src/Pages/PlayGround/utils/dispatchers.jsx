@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addNeuron, removeNeuron } from '../../../store/network';
+import { addNeuron, removeNeuron, removeLayer } from '../../../store/network';
 let dispatch;
 
 let setDispatch = (obj) => {
@@ -13,4 +13,13 @@ let dispatchRemoveNeuron = (layer) => {
   dispatch(removeNeuron(layer));
 };
 
-export { setDispatch, dispatchAddNeuron, dispatchRemoveNeuron };
+let dispatchRemoveLayer = (layer) => {
+  dispatch(removeLayer(layer));
+};
+
+export {
+  setDispatch,
+  dispatchAddNeuron,
+  dispatchRemoveNeuron,
+  dispatchRemoveLayer,
+};
