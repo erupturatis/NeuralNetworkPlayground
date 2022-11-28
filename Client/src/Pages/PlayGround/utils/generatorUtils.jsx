@@ -11,11 +11,10 @@ import {
 } from '../networkParams';
 
 import {
-  getLayerCoordX,
   getCoordNeuron,
-  getOriginCoordLayer,
-  getCoordYNeuronIdx,
   getCoordNeuronButtons,
+  getCoordRemoveLayerButton,
+  getCoordAddLayerButton,
 } from './positionUtils';
 
 import { select, easeLinear, zoom, zoomTransform } from 'd3';
@@ -23,7 +22,12 @@ import { select, easeLinear, zoom, zoomTransform } from 'd3';
 import * as d3 from 'd3';
 
 import { networkState as network } from './getState';
-import { dispatchAddNeuron, dispatchRemoveNeuron } from './dispatchers';
+import {
+  dispatchAddNeuron,
+  dispatchRemoveLayer,
+  dispatchRemoveNeuron,
+  dispatchAddLayer,
+} from './dispatchers';
 
 let generateConnections = () => {
   let newConn = [];
@@ -78,40 +82,17 @@ let generateConnections = () => {
 let addZoom = () => {
   var svg = d3.select('#root-svg');
 
-  // var zoom =
-  // svg.call(
-  //   d3
-  //     .zoom()
-  //     // .extent([
-  //     //   [0, 0],
-  //     //   [1200, 660],
-  //     // ])
-  //     .scaleExtent([0.2, 2])
-  //     .on('zoom', () => {
-  //       console.log('zoomed');
-  //       const zoomState = zoomTransform(svg.node());
-  //       svg.attr('transform', zoomState);
-  //     })
-  // );
-
-  // function zoomed(cords) {
-  //   console.log(svg);
-  //   svg.attr('transform', d3.event.transform);
-  // }
-
   svg.call(
     d3
       .zoom()
-      .scaleExtent([1 / 2, 8])
+      .scaleExtent([1 / 2, 3])
       .on('zoom', zoomed)
   );
-
+  svg.on('dblclick.zoom', null);
   function zoomed() {
     console.log('zoomed');
     d3.select('#root-group').attr('transform', d3.zoomTransform(this));
   }
-
-  //resize();
 };
 
 let generateNeurons = () => {
@@ -215,92 +196,136 @@ let generateStructure = () => {
   }
 };
 
+let validateOptions = (value) => {
+  value = value === NaN ? 0 : value;
+  value = value === undefined ? 0 : value;
+  return value;
+};
+
+let generateUIElements = (
+  originElement,
+  coordFunction,
+  data,
+  options,
+  ...args
+) => {
+  // making sure arguments are valid
+  options.offsetX = validateOptions(options.offsetX);
+  options.offsetY = validateOptions(options.offsetY);
+
+  // args are attributes
+  originElement
+    .selectAll('circle')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('r', options.radius)
+    .attr('stroke', '#FFFFFF')
+    .attr('opacity', '0')
+    .attr('cx', (value) => coordFunction(value).x + options.offsetX)
+    .attr('cy', (value) => coordFunction(value).y + options.offsetY);
+
+  let elements = originElement
+    .selectAll('circle')
+    .data(data)
+    .join('circle')
+    .attr('r', options.radius)
+    .transition()
+    .duration(animationsSpeed)
+    .ease(easeLinear)
+    .attr('cx', (value) => coordFunction(value).x + options.offsetX)
+    .attr('cy', (value) => coordFunction(value).y + options.offsetY);
+
+  for (let arg of args) {
+    //adding all properties passed in args
+    elements = elements.attr(arg.p1, arg.p2);
+  }
+
+  originElement
+    .selectAll('circle')
+    .data(data)
+    .join('circle')
+    .on('click', (value, index) => options.dispatch(index));
+};
+
 let generateUI = () => {
   let length = network.length;
   let arr = [];
-  let arrRemove = [];
   // generating neuron buttons
   for (let layer = 0; layer < length; layer++) {
     arr.push(layer);
-    arrRemove.push(layer);
   }
-  // let { x, y } = getCoordNeuronButtons(layer);
-  // console.log(x, y);
+
   let rootElementAdd = select('#AddGroup');
+  generateUIElements(
+    rootElementAdd,
+    getCoordNeuronButtons,
+    arr,
+    {
+      radius: (radius * 2) / 3,
+      offsetX: -10,
+      dispatch: dispatchAddNeuron,
+    },
 
-  rootElementAdd
-    .selectAll('circle')
-    .data(arr)
-    .enter()
-    .append('circle')
-    .attr('r', (radius * 2) / 3)
-    .attr('stroke', '#FFFFFF')
-    .attr('opacity', '0')
-    .attr(
-      'cx',
-      (value) => getCoordNeuronButtons(value).x - ((radius * 2) / 3) * 1.5
-    )
-    .attr('cy', (value) => getCoordNeuronButtons(value).y);
-
-  rootElementAdd
-    .selectAll('circle')
-    .data(arr)
-    .join('circle')
-    .attr('r', (radius * 2) / 3)
-    .transition()
-    .duration(animationsSpeed)
-    .ease(easeLinear)
-    .attr('stroke', '#FFFFFF')
-    .attr('opacity', '1')
-    .attr(
-      'cx',
-      (value) => getCoordNeuronButtons(value).x - ((radius * 2) / 3) * 1.5
-    )
-    .attr('cy', (value) => getCoordNeuronButtons(value).y);
-
-  rootElementAdd
-    .selectAll('circle')
-    .data(arr)
-    .join('circle')
-    .on('click', (value, index) => dispatchAddNeuron(index));
+    {
+      p1: 'opacity',
+      p2: '1',
+    }
+  );
 
   let rootElementRemove = select('#RemoveGroup');
+  generateUIElements(
+    rootElementRemove,
+    getCoordNeuronButtons,
+    arr,
+    {
+      radius: (radius * 2) / 3,
+      offsetX: 10,
+      dispatch: dispatchRemoveNeuron,
+    },
 
-  rootElementRemove
-    .selectAll('circle')
-    .data(arr)
-    .enter()
-    .append('circle')
-    .attr('r', (radius * 2) / 3)
-    .attr('stroke', '#FFFFFF')
-    .attr('opacity', '0')
-    .attr(
-      'cx',
-      (value) => getCoordNeuronButtons(value).x + ((radius * 2) / 3) * 1.5
-    )
-    .attr('cy', (value) => getCoordNeuronButtons(value).y);
+    {
+      p1: 'opacity',
+      p2: '1',
+    }
+  );
+  arr.pop();
+  let rootElementAddLayer = select('#AddLayerGroup');
+  generateUIElements(
+    rootElementAddLayer,
+    getCoordAddLayerButton,
+    arr,
+    {
+      radius: radius,
+      offsetX: layerDistance / 2,
+      offsetY: 0,
+      dispatch: dispatchAddLayer,
+    },
 
-  rootElementRemove
-    .selectAll('circle')
-    .data(arr)
-    .join('circle')
-    .attr('r', (radius * 2) / 3)
-    .transition()
-    .duration(animationsSpeed)
-    .ease(easeLinear)
-    .attr('stroke', '#FFFFFF')
-    .attr('opacity', '1')
-    .attr(
-      'cx',
-      (value) => getCoordNeuronButtons(value).x + ((radius * 2) / 3) * 1.5
-    )
-    .attr('cy', (value) => getCoordNeuronButtons(value).y);
+    {
+      p1: 'opacity',
+      p2: '1',
+    }
+  );
+  arr.splice(0, 1);
 
-  rootElementRemove
-    .selectAll('circle')
-    .data(arr)
-    .join('circle')
-    .on('click', (value, index) => dispatchRemoveNeuron(index));
+  let rootElementRemoveLayer = select('#RemoveLayerGroup');
+  generateUIElements(
+    rootElementRemoveLayer,
+    getCoordRemoveLayerButton,
+    arr,
+    {
+      radius: radius,
+      offsetX: 0,
+      offsetY: 0,
+      dispatch: dispatchRemoveLayer,
+    },
+
+    {
+      p1: 'opacity',
+      p2: '1',
+    }
+  );
 };
 
 const generatorUtils = () => {

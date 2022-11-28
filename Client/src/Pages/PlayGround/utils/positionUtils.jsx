@@ -27,7 +27,7 @@ let getLayerCoordX = (layerIdx) => {
   } else {
     aroundCenter = -(layerDistance * parseInt(totalLayersNum / 2));
   }
-  //console.log(aroundCenter, totalLayersNum % 2);
+
   originPointX = aroundCenter + maxHeightX / 2;
   return originPointX + layerIdx * layerDistance;
 };
@@ -46,14 +46,17 @@ let getCoordNeuron = (layer, index) => {
   };
 };
 
-let getCoordAddLayer = (layer) => {
+let getCoordAddLayerButton = (layer) => {
   let network = networkState;
   let step = neuronDistance;
-  let numNeurons = network.layers[layer].numNeurons;
-
-  let originPointNeurons = maxHeightY / 2 - (step * numNeurons) / 2;
+  let minPoint = 100000;
+  for (let layer = 0; layer < network.length; layer++) {
+    let numNeurons = network.layers[layer].numNeurons;
+    let finishPointNeurons = maxHeightY / 2 - (step * (numNeurons - 1)) / 2;
+    minPoint = Math.min(minPoint, finishPointNeurons);
+  }
   let currentPosX = getLayerCoordX(layer);
-  let currentPosY = originPointNeurons + AddLayerButtonOffsetY;
+  let currentPosY = minPoint + AddLayerButtonOffsetY;
   return {
     x: currentPosX,
     y: currentPosY,
@@ -72,6 +75,24 @@ let getCoordNeuronButtons = (layer) => {
   }
   let currentPosX = getLayerCoordX(layer);
   let currentPosY = maxPoint + NeuronButtonsOffsetY;
+  return {
+    x: currentPosX,
+    y: currentPosY,
+  };
+};
+
+let getCoordRemoveLayerButton = (layer) => {
+  // calculating the global pos based on the longest layer
+  let network = networkState;
+  let step = neuronDistance;
+  let minPoint = 0;
+  for (let layer = 0; layer < network.length; layer++) {
+    let numNeurons = network.layers[layer].numNeurons;
+    let finishPointNeurons = maxHeightY / 2 + (step * numNeurons) / 2;
+    minPoint = Math.max(minPoint, finishPointNeurons);
+  }
+  let currentPosX = getLayerCoordX(layer);
+  let currentPosY = minPoint + NeuronButtonsOffsetY + radius * 4;
   return {
     x: currentPosX,
     y: currentPosY,
@@ -100,6 +121,7 @@ export {
   getCoordNeuron,
   getOriginCoordLayer,
   getCoordYNeuronIdx,
-  getCoordAddLayer,
+  getCoordAddLayerButton,
   getCoordNeuronButtons,
+  getCoordRemoveLayerButton,
 };

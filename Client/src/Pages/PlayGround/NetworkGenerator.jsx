@@ -40,6 +40,7 @@ const NetworkGenerator = () => {
       <g id="AddGroup"></g>
       <g id="RemoveGroup"></g>
       <g id="AddLayerGroup"></g>
+      <g id="RemoveLayerGroup"></g>
     </>
   );
 };
