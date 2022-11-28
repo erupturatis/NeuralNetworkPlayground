@@ -118,6 +118,7 @@ export const generateNeuronWeightsBack = (
       layer2,
       neuron1: j,
       neuron2: neuron2Index,
+      id: assignConnId(),
     });
   }
   return neuronWeightsLocal;

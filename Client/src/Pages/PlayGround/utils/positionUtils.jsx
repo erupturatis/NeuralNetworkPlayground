@@ -14,14 +14,7 @@ import {
 
 import { networkState } from './getState';
 
-let getLayerCoordX = (layerIdx) => {};
-let getCoordNeuron = (layer, index) => {};
-let getOriginCoordLayer = (layer, index) => {};
-let getCoordYNeuronIdx = (originPointNeurons, index) => {};
-let getCoordAddLayer = (layer) => {};
-let getCoordNeuronButtons = (layer) => {};
-
-getLayerCoordX = (layerIdx) => {
+let getLayerCoordX = (layerIdx) => {
   let network = networkState;
   let totalLayersNum = network.length;
   let originPointX = 0;
@@ -39,7 +32,7 @@ getLayerCoordX = (layerIdx) => {
   return originPointX + layerIdx * layerDistance;
 };
 
-getCoordNeuron = (layer, index) => {
+let getCoordNeuron = (layer, index) => {
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;
@@ -53,7 +46,7 @@ getCoordNeuron = (layer, index) => {
   };
 };
 
-getCoordAddLayer = (layer) => {
+let getCoordAddLayer = (layer) => {
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;
@@ -67,21 +60,25 @@ getCoordAddLayer = (layer) => {
   };
 };
 
-getCoordNeuronButtons = (layer) => {
+let getCoordNeuronButtons = (layer) => {
+  // calculating the global pos based on the longest layer
   let network = networkState;
   let step = neuronDistance;
-  let numNeurons = network.layers[layer].numNeurons;
-
-  let originPointNeurons = maxHeightY / 2 + (step * (numNeurons - 1)) / 2;
+  let maxPoint = 0;
+  for (let layer = 0; layer < network.length; layer++) {
+    let numNeurons = network.layers[layer].numNeurons;
+    let finishPointNeurons = maxHeightY / 2 + (step * (numNeurons - 1)) / 2;
+    maxPoint = Math.max(maxPoint, finishPointNeurons);
+  }
   let currentPosX = getLayerCoordX(layer);
-  let currentPosY = originPointNeurons + NeuronButtonsOffsetY;
+  let currentPosY = maxPoint + NeuronButtonsOffsetY;
   return {
     x: currentPosX,
     y: currentPosY,
   };
 };
 
-getOriginCoordLayer = (layer, index) => {
+let getOriginCoordLayer = (layer, index) => {
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;
@@ -90,7 +87,7 @@ getOriginCoordLayer = (layer, index) => {
   return originPointNeurons;
 };
 
-getCoordYNeuronIdx = (originPointNeurons, index) => {
+let getCoordYNeuronIdx = (originPointNeurons, index) => {
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;

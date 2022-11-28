@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import NetworkGenerator from './NetworkGenerator';
 
-import { dispatchRemoveLayer } from './utils/dispatchers';
+import { dispatchRemoveLayer, dispatchAddLayer } from './utils/dispatchers';
 
 const PlayGround = () => {
   return (
     <div id="graph-container" className="w-screen h-screen pr-56 pt-40">
       <button
-        onClick={() => dispatchRemoveLayer(1)}
+        onClick={() => dispatchAddLayer(1)}
         className="text-white bg-black"
       >
         Add neuron

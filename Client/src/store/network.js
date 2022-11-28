@@ -135,16 +135,6 @@ export const networkSlice = createSlice({
 
     removeLayer: (state, actions) => {
       let layerNum = actions.payload;
-
-      // prep
-
-      //state.connections.splice(layerNum, 0);
-      //console.log(current(state.connections));
-
-      //state.biasesWeights.splice(layerNum, 1);
-      // state.biases.splice(layerNum,1)
-      // state.layers.splice(layerNum,1);
-
       // shifting connections layers
       for (let idx = layerNum + 1; idx < state.length - 1; idx++) {
         state.connections[idx] = state.connections[idx].map((connArr) => {
@@ -178,15 +168,70 @@ export const networkSlice = createSlice({
         state.layers[layerNum - 1].numNeurons,
         state.layers[layerNum].numNeurons
       );
-      console.log(newConn);
       state.connections[layerNum - 1] = newConn;
 
       state.length -= 1;
+    },
+
+    addLayer: (state, actions) => {
+      let layerNum = actions.payload;
+      // shifting connections layers
+      for (let idx = layerNum + 1; idx < state.length - 1; idx++) {
+        state.connections[idx] = state.connections[idx].map((connArr) => {
+          return connArr.map((el) => {
+            el.layer1 += 1;
+            el.layer2 += 1;
+            return el;
+          });
+        });
+      }
+      //shifting layers neurons indexes
+      for (let idx = layerNum + 1; idx < state.length; idx++) {
+        state.layers[idx].layerNum += 1;
+        state.layers[idx].neurons = state.layers[idx].neurons.map((neuron) => {
+          neuron.layerNum += 1;
+          return neuron;
+        });
+      }
+      //removing connections between layerNum-1 and layerNum
+      state.connections[layerNum] = [];
+      //adding a new layer after LayerNum position with 1 neuron
+      let newLayer = generateLayer(layerNum + 1, 1, 'relu');
+      state.layers.splice(layerNum + 1, 0, newLayer);
+      state.biases.splice(layerNum + 1, 0, Math.random());
+
+      //creating connections from layerNum-1 to newly added layerNum
+      let newConn = generateNeuronsWeights(
+        layerNum,
+        layerNum + 1,
+
+        state.layers[layerNum].numNeurons,
+        state.layers[layerNum + 1].numNeurons
+      );
+      state.connections[layerNum] = newConn;
+      //creating connections from layerNum to layerNum+1
+      state.connections.splice(layerNum + 1, 0, []);
+      newConn = generateNeuronsWeights(
+        layerNum + 1,
+        layerNum + 2,
+
+        state.layers[layerNum + 1].numNeurons,
+        state.layers[layerNum + 2].numNeurons
+      );
+      state.biasesWeights.splice(
+        layerNum + 1,
+        0,
+        generateBiasesWeights(state.layers[layerNum + 1].numNeurons)
+      );
+      state.connections[layerNum + 1] = newConn;
+
+      state.length += 1;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNeuron, removeNeuron, removeLayer } = networkSlice.actions;
+export const { addNeuron, removeNeuron, removeLayer, addLayer } =
+  networkSlice.actions;
 
 export default networkSlice.reducer;

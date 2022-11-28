@@ -1,10 +1,10 @@
-let radius = 15;
+let radius = 10;
 let strokeWNeurons = 1;
 let maxHeightY = 750;
-let maxHeightX = 750;
+let maxHeightX = 500;
 let offsetX = 0;
 let offsetY = 0;
-let layerDistance = 100;
+let layerDistance = 50;
 let neuronDistance = radius * 4;
 let AddLayerButtonOffsetY = -50;
 let NeuronButtonsOffsetY = 40;

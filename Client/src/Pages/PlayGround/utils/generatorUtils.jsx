@@ -35,7 +35,6 @@ let generateConnections = () => {
   }
 
   let rootElement = select(`#connections`);
-  console.log(newConn);
   //selecting entering lines for animation purposes
   rootElement
     .selectAll('line')
