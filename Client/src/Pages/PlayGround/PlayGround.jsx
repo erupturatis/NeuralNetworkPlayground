@@ -20,7 +20,9 @@ const PlayGround = () => {
           width="100%"
           height="100%"
         >
-          <NetworkGenerator />
+          <g id="root-group">
+            <NetworkGenerator />
+          </g>
         </svg>
       </div>
     </div>

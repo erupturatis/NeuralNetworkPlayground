@@ -18,7 +18,9 @@ import {
   getCoordNeuronButtons,
 } from './positionUtils';
 
-import { select, easeLinear } from 'd3';
+import { select, easeLinear, zoom, zoomTransform } from 'd3';
+
+import * as d3 from 'd3';
 
 import { networkState as network } from './getState';
 import { dispatchAddNeuron, dispatchRemoveNeuron } from './dispatchers';
@@ -71,6 +73,45 @@ let generateConnections = () => {
     .ease(easeLinear)
     .style('opacity', 1e-6)
     .remove();
+};
+
+let addZoom = () => {
+  var svg = d3.select('#root-svg');
+
+  // var zoom =
+  // svg.call(
+  //   d3
+  //     .zoom()
+  //     // .extent([
+  //     //   [0, 0],
+  //     //   [1200, 660],
+  //     // ])
+  //     .scaleExtent([0.2, 2])
+  //     .on('zoom', () => {
+  //       console.log('zoomed');
+  //       const zoomState = zoomTransform(svg.node());
+  //       svg.attr('transform', zoomState);
+  //     })
+  // );
+
+  // function zoomed(cords) {
+  //   console.log(svg);
+  //   svg.attr('transform', d3.event.transform);
+  // }
+
+  svg.call(
+    d3
+      .zoom()
+      .scaleExtent([1 / 2, 8])
+      .on('zoom', zoomed)
+  );
+
+  function zoomed() {
+    console.log('zoomed');
+    d3.select('#root-group').attr('transform', d3.zoomTransform(this));
+  }
+
+  //resize();
 };
 
 let generateNeurons = () => {
@@ -276,4 +317,10 @@ let generateNetwork = () => {
   generateNeurons();
 };
 
-export { generateStructure, generateNetwork, generateUI, initialStructure };
+export {
+  generateStructure,
+  generateNetwork,
+  generateUI,
+  initialStructure,
+  addZoom,
+};

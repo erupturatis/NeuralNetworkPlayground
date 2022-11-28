@@ -8,6 +8,7 @@ import {
   generateStructure,
   generateNetwork,
   generateUI,
+  addZoom,
 } from './utils/generatorUtils';
 
 import { setDispatch } from './utils/dispatchers';
@@ -22,6 +23,7 @@ const NetworkGenerator = () => {
     setNetworkState(network);
     setDispatch(dispatch);
     generateStructure();
+    addZoom();
   }, []);
 
   useEffect(() => {
