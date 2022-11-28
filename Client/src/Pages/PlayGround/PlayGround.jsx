@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
 import NetworkGenerator from './NetworkGenerator';
-
-import { dispatchRemoveLayer, dispatchAddLayer } from './utils/dispatchers';
+import OptionsLeft from './OptionsLeft';
 
 const PlayGround = () => {
   return (
-    <div id="graph-container" className="w-screen h-screen pr-56 pt-40">
-      <button
-        onClick={() => dispatchAddLayer(1)}
-        className="text-white bg-black"
-      >
-        Add neuron
-      </button>
-
-      <div className="w-full h-full border-2">
+    <div id="graph-container" className="w-full h-full ">
+      <div className=" text-white left-0 absolute h-100% w-96 border-2">
+        <OptionsLeft />
+      </div>
+      <div className="w-full h-full ">
         <svg
           id="root-svg"
           xmlns="http://www.w3.org/2000/svg"

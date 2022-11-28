@@ -8,7 +8,7 @@ import PlayGround from './Pages/PlayGround/PlayGround';
 function App() {
   return (
     <Router>
-      <div>
+      <div className="w-screen h-screen overflow-hidden">
         <Navbar />
         <Routes>
           <Route path="/Home" element={<Home />} />

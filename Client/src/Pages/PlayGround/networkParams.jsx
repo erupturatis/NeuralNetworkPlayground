@@ -1,7 +1,7 @@
 let radius = 10;
 let strokeWNeurons = 1;
-let maxHeightY = 750;
-let maxHeightX = 500;
+let maxHeightY = window.innerHeight; //document.getElementById('').offsetWidth;
+let maxHeightX = window.innerWidth;
 let offsetX = 0;
 let offsetY = 0;
 let layerDistance = 50;

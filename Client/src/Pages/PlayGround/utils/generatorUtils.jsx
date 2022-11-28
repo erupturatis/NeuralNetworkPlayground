@@ -90,7 +90,6 @@ let addZoom = () => {
   );
   svg.on('dblclick.zoom', null);
   function zoomed() {
-    console.log('zoomed');
     d3.select('#root-group').attr('transform', d3.zoomTransform(this));
   }
 };
