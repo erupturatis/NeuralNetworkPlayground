@@ -196,7 +196,7 @@ let generateStructure = () => {
 };
 
 let validateOptions = (value) => {
-  value = value === NaN ? 0 : value;
+  value = isNaN(value) ? 0 : value;
   value = value === undefined ? 0 : value;
   return value;
 };

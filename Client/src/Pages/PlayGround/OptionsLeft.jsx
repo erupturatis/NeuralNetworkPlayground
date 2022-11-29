@@ -74,7 +74,7 @@ const OptionsLeft = () => {
     }
   };
   return (
-    <div className="h-  ">
+    <div>
       <div>Layers {layers}</div>
       <div className="h-72 overflow-auto">
         <input
@@ -90,12 +90,11 @@ const OptionsLeft = () => {
         />
         {network.layers.map((element) => {
           return (
-            <>
+            <div key={`${element.layerNum}`}>
               <div>
                 Layer {element.layerNum} with {element.numNeurons} neurons
               </div>
               <input
-                key={element.layerNum}
                 id="range"
                 type="range"
                 min="1"
@@ -106,7 +105,7 @@ const OptionsLeft = () => {
                   setlayerSizesIdx(element.layerNum, e.target.value);
                 }}
               />
-            </>
+            </div>
           );
         })}
       </div>
