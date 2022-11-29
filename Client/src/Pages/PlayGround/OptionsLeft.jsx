@@ -19,14 +19,16 @@ const OptionsLeft = () => {
     // layers sync
     if (layers > network.length) {
       // need to add layers
-      console.log('here first', layers - network.length);
+      //console.log('here first', layers - network.length);
       for (let iter = layers - network.length; iter > 0; iter--) {
         dispatchAddLayer(network.length - 2);
       }
     } else if (layers < network.length) {
-      console.log('here', layers, network.length);
       for (let iter = network.length - layers; iter > 0; iter--) {
-        dispatchRemoveLayer(network.length - 2);
+        console.log(network.length);
+        dispatchRemoveLayer(layers - 1);
+        console.log(network.length);
+        //console.log('removed', layers - 2);
       }
     }
   };
@@ -44,6 +46,7 @@ const OptionsLeft = () => {
           setLayers(e.target.value);
         }}
       />
+      {network.layers.map((element) => {})}
     </div>
   );
 };

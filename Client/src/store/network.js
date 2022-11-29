@@ -196,7 +196,11 @@ export const networkSlice = createSlice({
       //removing connections between layerNum-1 and layerNum
       state.connections[layerNum] = [];
       //adding a new layer after LayerNum position with 1 neuron
-      let newLayer = generateLayer(layerNum + 1, 1, 'relu');
+      let newLayer = generateLayer(
+        layerNum + 1,
+        state.layers[layerNum].numNeurons,
+        'relu'
+      );
       state.layers.splice(layerNum + 1, 0, newLayer);
       state.biases.splice(layerNum + 1, 0, Math.random());
 
