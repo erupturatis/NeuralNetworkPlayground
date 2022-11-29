@@ -21,14 +21,12 @@ const NetworkGenerator = () => {
 
   useEffect(() => {
     setNetworkState(network);
-    setDispatch(dispatch);
     generateStructure();
     addZoom();
   }, []);
 
   useEffect(() => {
     setNetworkState(network);
-    setDispatch(dispatch);
     generateStructure();
     generateNetwork();
     generateUI();
