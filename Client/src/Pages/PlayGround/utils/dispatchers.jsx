@@ -5,31 +5,36 @@ import {
   removeLayer,
   addLayer,
 } from '../../../store/network';
-let dispatch;
 
-let setDispatch = (obj) => {
+import { setInputs, setOutputs, clearState } from '../../../store/data';
+
+let dispatch;
+// import { setInputs } from '../../../store/data';
+export const setDispatch = (obj) => {
   dispatch = obj;
 };
 
-let dispatchAddNeuron = (layer) => {
+export const dispatchSetInputs = (inputs) => {
+  dispatch(setInputs(inputs));
+};
+export const dispatchSetOutputs = (outputs) => {
+  dispatch(setOutputs(outputs));
+};
+export const dispatchclearDataState = () => {
+  dispatch(clearState());
+};
+
+export const dispatchAddNeuron = (layer) => {
   dispatch(addNeuron(layer));
 };
-let dispatchRemoveNeuron = (layer) => {
+export const dispatchRemoveNeuron = (layer) => {
   dispatch(removeNeuron(layer));
 };
 
-let dispatchRemoveLayer = (layer) => {
+export const dispatchRemoveLayer = (layer) => {
   dispatch(removeLayer(layer));
 };
 
-let dispatchAddLayer = (layer) => {
+export const dispatchAddLayer = (layer) => {
   dispatch(addLayer(layer));
-};
-
-export {
-  setDispatch,
-  dispatchAddNeuron,
-  dispatchRemoveNeuron,
-  dispatchRemoveLayer,
-  dispatchAddLayer,
 };

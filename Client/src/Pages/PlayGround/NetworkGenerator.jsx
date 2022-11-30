@@ -12,9 +12,8 @@ import {
 } from './utils/generatorUtils';
 
 import { setDispatch } from './utils/dispatchers';
-
-import { setNetworkState } from './utils/getState';
-
+import { setNetworkState, setOperations } from './utils/globals';
+import { Operations } from './operations/networkOperations';
 const NetworkGenerator = () => {
   const { network } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -22,6 +21,7 @@ const NetworkGenerator = () => {
   useEffect(() => {
     setNetworkState(network);
     generateStructure();
+    setOperations(new Operations());
     addZoom();
   }, []);
 

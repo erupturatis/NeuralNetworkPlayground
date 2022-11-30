@@ -5,7 +5,7 @@ export class Operations {
 
   setParams(network, inputs, outputs, params) {
     this.network = network;
-    this.inpus = inputs;
+    this.inputs = inputs;
     this.outputs = outputs;
     this.params = params;
   }
@@ -26,6 +26,15 @@ export class Operations {
   runNetwork(options) {
     if (this.recording !== undefined) {
       this.callWarning();
+      return;
+    }
+    if (this.inputs === undefined) {
+      return;
+    }
+    if (this.outputs === undefined) {
+      return;
+    }
+    if (this.network === undefined) {
       return;
     }
     //build initial network with brainjs

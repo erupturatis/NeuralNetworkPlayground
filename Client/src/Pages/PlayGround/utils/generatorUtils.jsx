@@ -21,7 +21,7 @@ import { select, easeLinear, zoom, zoomTransform } from 'd3';
 
 import * as d3 from 'd3';
 
-import { networkState as network } from './getState';
+import { networkState as network } from './globals';
 import {
   dispatchAddNeuron,
   dispatchRemoveLayer,

@@ -12,7 +12,7 @@ import {
   NeuronButtonsOffsetX,
 } from '../networkParams';
 
-import { networkState } from './getState';
+import { networkState } from './globals';
 
 let getLayerCoordX = (layerIdx) => {
   let network = networkState;
