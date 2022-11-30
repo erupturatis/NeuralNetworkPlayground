@@ -39,6 +39,27 @@ const NetworkGenerator = () => {
       <g id="RemoveGroup"></g>
       <g id="AddLayerGroup"></g>
       <g id="RemoveLayerGroup"></g>
+      <g id="tooltip-area">
+        <rect
+          x="120"
+          y="120"
+          width="95"
+          height="40"
+          rx="15"
+          stroke="white"
+          opacity={0}
+        ></rect>
+        <text
+          opacity={0}
+          id="tooltiptxt"
+          x="0"
+          y="50"
+          fontSize={15}
+          fill="white"
+        >
+          weight:60
+        </text>
+      </g>
     </>
   );
 };

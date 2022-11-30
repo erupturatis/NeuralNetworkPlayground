@@ -51,19 +51,11 @@ const initialState = generateNetwork(
   },
 
   {
-    numNeurons: 6,
+    numNeurons: 5,
     activation: 'relu',
   },
   {
-    numNeurons: 2,
-    activation: 'relu',
-  },
-  {
-    numNeurons: 7,
-    activation: 'relu',
-  },
-  {
-    numNeurons: 4,
+    numNeurons: 1,
     activation: 'relu',
   }
 );

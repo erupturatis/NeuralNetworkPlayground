@@ -1,6 +1,7 @@
 // utils for generating neural network initial data
 let neuronId = 0;
 let connectionId = 0;
+
 export const generateNeuron = (layerNum, index) => {
   neuronId += 1;
   return {
@@ -29,6 +30,10 @@ let assignNeuronId = () => {
   return neuronId;
 };
 
+let generateWeight = () => {
+  return ((Math.random() - 0.5) / 5) * 2;
+};
+
 export const generateLayer = (layerNum, numNeurons, activation) => {
   let layer = {
     // maybe add individual custom neurons
@@ -44,7 +49,7 @@ export const generateLayer = (layerNum, numNeurons, activation) => {
 export const generateRandomWeights = (numNeurons) => {
   let Weights = [];
   for (let i = 0; i < numNeurons; i++) {
-    Weights.push(Math.random());
+    Weights.push(generateWeight());
   }
   return Weights;
 };
@@ -52,7 +57,7 @@ export const generateRandomWeights = (numNeurons) => {
 export const generateRandomConnections = (numNeurons) => {
   let Weights = [];
   for (let i = 0; i < numNeurons; i++) {
-    Weights.push(Math.random());
+    Weights.push(generateWeight());
   }
   return Weights;
 };
@@ -72,7 +77,7 @@ export const generateNeuronsWeights = (
     let neuronWeightsLocal = [];
     for (let j = 0; j < numNeuronsLayer2; j++) {
       neuronWeightsLocal.push({
-        value: Math.random(),
+        value: generateWeight(),
         layer1,
         layer2,
         neuron1: i,
@@ -93,7 +98,7 @@ export const generateNeuronWeights = (
   let neuronWeightsLocal = [];
   for (let j = 0; j < numNeuronsLayer2; j++) {
     neuronWeightsLocal.push({
-      value: Math.random(),
+      value: generateWeight(),
       layer1,
       layer2,
       neuron1: neuron1Index,
@@ -113,7 +118,7 @@ export const generateNeuronWeightsBack = (
   let neuronWeightsLocal = [];
   for (let j = 0; j < numNeuronsLayer1; j++) {
     neuronWeightsLocal.push({
-      value: Math.random(),
+      value: generateWeight(),
       layer1,
       layer2,
       neuron1: j,

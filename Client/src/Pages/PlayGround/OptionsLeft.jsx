@@ -53,6 +53,10 @@ const OptionsLeft = () => {
     setLayers(network.length);
   }, [network.length]);
 
+  useEffect(() => {
+    setLayerSizes(network.layers.map((element) => element.numNeurons));
+  }, [network.layers]);
+
   let setlayerSizesIdx = (index, value) => {
     value = parseInt(value);
     let newSizes = [...layerSizes];

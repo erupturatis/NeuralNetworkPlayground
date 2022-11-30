@@ -69,6 +69,38 @@ let generateConnections = () => {
     .attr('opacity', 1);
 
   rootElement
+    .selectChildren('line')
+    .data(newConn, (data) => data.id)
+    .on('mouseenter', (data, value) => {
+      const { x, y } = getCoordNeuron(value.layer2, value.neuron2);
+      select('#tooltip-area')
+        .selectChildren('rect')
+        .attr('x', x)
+        .attr('y', y)
+        .attr('opacity', 0.5);
+
+      select('#tooltip-area')
+        .selectChildren('#tooltiptxt')
+        .text(`weight: ${value.value.toFixed(4)}`)
+        .attr('x', x + 15)
+        .attr('y', y + 25)
+        .attr('font-size', 10)
+
+        .attr('opacity', 1);
+    })
+    .on('mouseleave', (data, value) => {
+      const { x, y } = getCoordNeuron(value.layer2, value.neuron2);
+      select('#tooltip-area')
+        .selectChildren('rect')
+
+        .attr('opacity', 0);
+
+      select('#tooltip-area')
+        .selectChildren('#tooltiptxt')
+
+        .attr('opacity', 0);
+    });
+  rootElement
     .selectAll('line')
     .data(newConn, (data) => data.id)
     .exit()
@@ -327,6 +359,51 @@ let generateUI = () => {
   );
 };
 
+let textSize = (text) => {
+  if (!d3) return;
+  let container = select('body').append('svg');
+
+  container.append('text').attr('x', -99999).attr('y', -99999).text(text);
+  let size = container.node().getBBox();
+  container.remove();
+  return { x: size.width, y: size.height };
+};
+
+let mapInputs = (arrInputs) => {
+  select('#tooltip-area')
+    .selectChildren('text.inputs')
+    .data(arrInputs)
+    .join('text')
+    .attr(
+      'x',
+      (value, index) =>
+        getCoordNeuron(0, index).x - textSize(value).x - radius * 2
+    )
+    .attr('y', (value, index) => getCoordNeuron(0, index).y + 5)
+    .attr('fill', 'white')
+    .attr('class', 'inputs')
+    .text((value, index) => `${value}`);
+};
+
+let mapOutputs = (arrOutputs) => {
+  select('#tooltip-area')
+    .selectChildren('text.outputs')
+    .data(arrOutputs)
+    .join('text')
+    .attr(
+      'x',
+      (value, index) =>
+        getCoordNeuron(network.length - 1, index).x + textSize(value).x
+    )
+    .attr(
+      'y',
+      (value, index) => getCoordNeuron(network.length - 1, index).y + 5
+    )
+    .attr('fill', 'white')
+    .attr('class', 'outputs')
+    .text((value, index) => `${value}`);
+};
+
 const generatorUtils = () => {
   return (
     <div className="text-white">
@@ -347,4 +424,6 @@ export {
   generateUI,
   initialStructure,
   addZoom,
+  mapInputs,
+  mapOutputs,
 };
