@@ -9,7 +9,7 @@ import { dispatchSetInputs, dispatchSetOutputs } from './utils/dispatchers';
 import { operations } from './utils/globals';
 
 const OptionsTop = () => {
-  const { network } = useSelector((state) => state);
+  const { network, data } = useSelector((state) => state);
 
   useEffect(() => {
     processInputData();
@@ -46,6 +46,7 @@ const OptionsTop = () => {
 
   let runNetwork = () => {
     //run
+    operations.setParams(network, data.input, data.output);
     operations.runNetwork();
   };
 
@@ -70,7 +71,13 @@ const OptionsTop = () => {
         />
       </div>
       <div className="w-20">
-        <button onClick={() => {}}>run network</button>
+        <button
+          onClick={() => {
+            runNetwork();
+          }}
+        >
+          run network
+        </button>
       </div>
 
       <div>ceva si aici</div>
