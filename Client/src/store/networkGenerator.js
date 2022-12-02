@@ -31,8 +31,7 @@ let assignNeuronId = () => {
 };
 
 let generateWeight = () => {
-  return 0;
-  // return ((Math.random() - 0.5) / 5) * 2;
+  return Math.random() * 2 - 1; // between -1 and +1
 };
 
 export const generateLayer = (layerNum, numNeurons, activation) => {

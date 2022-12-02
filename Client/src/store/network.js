@@ -40,6 +40,8 @@ let generateNetwork = (...layers) => {
     layerIndex += 1;
     prevmumNeurons = nrNeurons;
   }
+  initState.biasesWeights[0] = [];
+  // initState.biasesWeights[layers.length - 1] = [];
   initState.connections = initState.connections.slice(1);
   return initState;
 };

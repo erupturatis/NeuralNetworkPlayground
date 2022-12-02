@@ -44,10 +44,10 @@ const OptionsTop = () => {
     } catch {}
   };
 
-  let runNetwork = () => {
+  let runNetwork = async () => {
     //run
     operations.setParams(network, data.input, data.output);
-    operations.runNetwork();
+    await operations.runNetwork();
   };
 
   return (
@@ -72,8 +72,8 @@ const OptionsTop = () => {
       </div>
       <div className="w-20">
         <button
-          onClick={() => {
-            runNetwork();
+          onClick={async () => {
+            await runNetwork();
           }}
         >
           run network
