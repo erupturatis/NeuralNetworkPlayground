@@ -6,6 +6,10 @@ import {
   dispatchAddSnapshot,
 } from '../utils/dispatchers';
 
+import { store } from '../../../store/store';
+import { changeRun, setEpoch, setFill } from '../../../store/running';
+import { replaceState } from '../../../store/network';
+
 export class Operations {
   loadRecording(recording) {
     this.recording = recording;
@@ -84,6 +88,7 @@ export class Operations {
   async runNetwork(options) {
     const model = tf.sequential();
     let length = this.network.length;
+    // generating model
     model.add(
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
@@ -105,7 +110,6 @@ export class Operations {
         activation: 'elu',
       })
     );
-
     //syncing weights
     for (let layerIdx = 0; layerIdx < model.layers.length; layerIdx++) {
       let valuesWeights = this.network.connections[layerIdx].map((element) =>
@@ -134,23 +138,38 @@ export class Operations {
       loss: 'meanSquaredError',
       metrics: ['accuracy'],
     });
+    store.dispatch(changeRun());
+    let epochs = 100;
     let res = await model.fit(inputData, outputData, {
-      epochs: 100,
+      epochs,
       batchSize: 4,
       callbacks: {
         onEpochEnd: async (epoch, params) => {
           if (epoch % 10 == 0) {
-            console.log(epoch, params.loss);
             this.epoch = epoch;
             this.model = model;
-
+            console.log(epoch, params.loss);
+            // saving model snapshot
             this.saveSnapshotCallback(model, epoch);
           }
+          store.dispatch(setEpoch(epoch));
+          store.dispatch(setFill(parseInt((epoch * 100) / epochs)));
+          // setFill(parseInt(epoch / epochs));
+          // setEpoch(epoch);
           await tf.nextFrame();
         },
       },
     });
+    store.dispatch(setEpoch(epochs));
+    store.dispatch(setFill(100));
+    store.dispatch(changeRun());
+    let storeData = store.getState();
+    console.log(storeData.recording.snapshots);
+    let lastNetwork = storeData.recording.snapshots.slice(-1);
 
-    // extracting tensor data
+    store.dispatch(replaceState(lastNetwork));
+    // setRunning(false);
+    // setEpoch(epochs);
+    // setFill(100);
   }
 }

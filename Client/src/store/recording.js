@@ -43,8 +43,17 @@ export const recordingSlice = createSlice({
         let biases;
         connections = weigths[0].arraySync();
         biases = weigths[1].arraySync();
-
-        networkState.connections[layerIdx] = connections;
+        //console.log(connections, networkState.connections[layerIdx]);
+        networkState.connections[layerIdx] = networkState.connections[
+          layerIdx
+        ].map((neuron) =>
+          neuron.map((obj) => {
+            return {
+              ...obj,
+              value: connections[obj.neuron1][obj.neuron2],
+            };
+          })
+        );
         networkState.biasesWeights[layerIdx + 1] = biases;
       }
 

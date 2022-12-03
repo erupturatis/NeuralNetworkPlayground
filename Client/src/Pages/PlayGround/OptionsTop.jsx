@@ -2,20 +2,34 @@ import React from 'react';
 import Papa from 'papaparse';
 import { useSelector } from 'react-redux';
 import { Operations } from './operations/networkOperations';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as brain from 'brain.js';
 import { mapInputs, mapOutputs } from './utils/generatorUtils';
 import { dispatchSetInputs, dispatchSetOutputs } from './utils/dispatchers';
 import { operations } from './utils/globals';
 
 const OptionsTop = () => {
-  const { network, data } = useSelector((state) => state);
+  const { network, recording, data, running } = useSelector((state) => state);
+  const [epoch, setEpoch] = useState(0);
+  const [isRunning, setIsRunning] = useState();
+  const [fill, setFill] = useState(0);
 
   useEffect(() => {
     processInputData();
     processOutputData();
   }, [network.length]);
 
+  useEffect(() => {
+    setIsRunning(running.running);
+  }, [running.running]);
+
+  useEffect(() => {
+    setFill(running.fill);
+  }, [running.fill]);
+
+  useEffect(() => {
+    setEpoch(running.epoch);
+  }, [running.epoch]);
   let processInputData = () => {
     try {
       Papa.parse(document.getElementById('inputData').files[0], {
@@ -45,42 +59,56 @@ const OptionsTop = () => {
   };
 
   let runNetwork = async () => {
-    //run
+    //running the network
     operations.setParams(network, data.input, data.output);
-    operations.runNetwork();
+    await operations.runNetwork();
+    console.log('finished running');
   };
 
   return (
     <div className=" w-full">
       <div className="flex">
-        <input
-          type="file"
-          id="inputData"
-          accept=".csv, .txt"
-          onChange={() => {
-            processInputData();
-          }}
-        />
-        <input
-          type="file"
-          id="outputData"
-          accept=".csv, .txt"
-          onChange={() => {
-            processOutputData();
-          }}
-        />
+        <div className="border-2">
+          <div>
+            <input
+              type="file"
+              id="inputData"
+              accept=".csv, .txt"
+              onChange={() => {
+                processInputData();
+              }}
+            />
+          </div>
+          <div>
+            <input
+              type="file"
+              id="outputData"
+              accept=".csv, .txt"
+              onChange={() => {
+                processOutputData();
+              }}
+            />
+          </div>
+        </div>
+        <div className="w-20">
+          <button
+            onClick={async () => {
+              await runNetwork();
+            }}
+          >
+            {recording.saved ? 'rerun network' : 'run network'}
+          </button>
+        </div>
       </div>
-      <div className="w-20">
-        <button
-          onClick={async () => {
-            await runNetwork();
+      <div className="w-64 h-6 bg-white mt-2">
+        <div
+          className="bg-blue-800 h-full"
+          style={{
+            width: `${fill}%`,
           }}
-        >
-          run network
-        </button>
+        ></div>
       </div>
-
-      <div>ceva si aici</div>
+      {isRunning ? `Epoch ${epoch}` : 'not running'}
     </div>
   );
 };

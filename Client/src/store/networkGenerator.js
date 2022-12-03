@@ -30,7 +30,7 @@ let assignNeuronId = () => {
   return neuronId;
 };
 
-let generateWeight = () => {
+export const generateWeight = () => {
   return Math.random() * 2 - 1; // between -1 and +1
 };
 

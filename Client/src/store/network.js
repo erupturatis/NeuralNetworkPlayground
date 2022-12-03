@@ -4,7 +4,7 @@ import {
   generateBiasesWeights,
   generateNeuronsWeights,
   generateNeuron,
-  generateRandomWeights,
+  generateWeight,
   generateNeuronWeights,
   generateNeuronWeightsBack,
 } from './networkGenerator';
@@ -105,7 +105,7 @@ export const networkSlice = createSlice({
         let conn = newConnectionsBack[i];
         newConnBack[i] = [...newConnBack[i], conn];
       }
-
+      state.biasesWeights[layerNum].push(generateWeight());
       state.connections[layerNum - 1] = newConnBack;
     },
 
@@ -225,11 +225,20 @@ export const networkSlice = createSlice({
 
       state.length += 1;
     },
+    replaceState: (state, action) => {
+      let newState = action.payload[0];
+      console.log(current(state), newState);
+      state.length = newState.length;
+      state.layers = newState.layers;
+      state.biases = newState.biases;
+      state.biasesWeights = newState.biasesWeights;
+      state.connections = newState.connections;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNeuron, removeNeuron, removeLayer, addLayer } =
+export const { addNeuron, removeNeuron, removeLayer, addLayer, replaceState } =
   networkSlice.actions;
 
 export default networkSlice.reducer;

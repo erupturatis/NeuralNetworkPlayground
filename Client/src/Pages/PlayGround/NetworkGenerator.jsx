@@ -26,6 +26,7 @@ const NetworkGenerator = () => {
   }, []);
 
   useEffect(() => {
+    console.log('regenerated drawing');
     setNetworkState(network);
     generateStructure();
     generateNetwork();

@@ -1,14 +1,14 @@
 let networkState;
 let operations;
+// need to be refactored with redux or some
+// non-polluting method
 
-// I made this file to be able to access the state without
-// the use of hooks since they are bound to components
-let setNetworkState = (state) => {
+export const setNetworkState = (state) => {
   networkState = state;
 };
 
-let setOperations = (obj) => {
+export const setOperations = (obj) => {
   operations = obj;
 };
 
-export { setNetworkState, setOperations, networkState, operations };
+export { networkState, operations };
