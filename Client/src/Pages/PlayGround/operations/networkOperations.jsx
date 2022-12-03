@@ -164,9 +164,8 @@ export class Operations {
     store.dispatch(setFill(100));
     store.dispatch(changeRun());
     let storeData = store.getState();
-    console.log(storeData.recording.snapshots);
-    let lastNetwork = storeData.recording.snapshots.slice(-1);
 
+    let lastNetwork = storeData.recording.snapshots.slice(-1);
     store.dispatch(replaceState(lastNetwork));
     // setRunning(false);
     // setEpoch(epochs);

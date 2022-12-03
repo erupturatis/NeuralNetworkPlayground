@@ -1,5 +1,6 @@
 let radius = 10;
 let strokeWNeurons = 1;
+let strokeWConnections = 1;
 let maxHeightY = window.innerHeight; //document.getElementById('').offsetWidth;
 let maxHeightX = window.innerWidth;
 let offsetX = 0;
@@ -16,6 +17,7 @@ let animationsSpeed = 100;
 export {
   radius,
   strokeWNeurons,
+  strokeWConnections,
   maxHeightY,
   maxHeightX,
   offsetX,
