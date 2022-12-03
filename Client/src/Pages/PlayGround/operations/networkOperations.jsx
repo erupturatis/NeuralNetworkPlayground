@@ -1,6 +1,11 @@
 import * as tf from '@tensorflow/tfjs';
 import { mode } from 'd3';
 import { transpose } from './utils';
+import {
+  dispatchInitializeRecording,
+  dispatchAddSnapshot,
+} from '../utils/dispatchers';
+
 export class Operations {
   loadRecording(recording) {
     this.recording = recording;
@@ -13,35 +18,92 @@ export class Operations {
     this.params = params;
   }
 
+  initRecording() {
+    dispatchInitializeRecording({
+      network: this.network,
+      inputs: this.inputsProcessed,
+      outputs: this.outputProcessed,
+      params: this.params,
+    });
+  }
+
   loadSnapshot(iteration) {
     //loading a snapshot of a specific iteration or the
     //closest to it
   }
 
-  saveSnapshot(network, iteration) {
+  saveSnapshotCallback() {
     // saving a snapshot of the network at a specific iteration
-    // in the recording store
+    dispatchAddSnapshot();
   }
 
   callWarning() {
     // call a warning to confirm we want to run
   }
-  runNetwork(options) {
+
+  processData() {
+    let inputKeys = [];
+    let outputKeys = [];
+    for (let key in this.inputs[0]) {
+      inputKeys.push(key);
+    }
+    for (let key in this.outputs[0]) {
+      outputKeys.push(key);
+    }
+    if (inputKeys.includes('__parsed_extra')) {
+      inputKeys.splice(inputKeys.indexOf('__parsed_extra'), 1);
+    }
+    if (outputKeys.includes('__parsed_extra')) {
+      outputKeys.splice(outputKeys.indexOf('__parsed_extra'), 1);
+    }
+
+    let inputData = [];
+    let outputData = [];
+
+    for (let val of this.inputs) {
+      let dataRow = [];
+
+      for (let key of inputKeys) {
+        dataRow.push(parseFloat(val[key]));
+      }
+      inputData.push(dataRow);
+    }
+
+    for (let val of this.outputs) {
+      let dataRow = [];
+
+      for (let key of outputKeys) {
+        dataRow.push(parseFloat(val[key]));
+      }
+      outputData.push(dataRow);
+    }
+    this.inputsProcessed = [inputData, inputKeys];
+    this.outputProcessed = [outputData, outputKeys];
+  }
+
+  async runNetwork(options) {
     const model = tf.sequential();
     let length = this.network.length;
     model.add(
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
         inputShape: [this.network.layers[0].numNeurons],
+        activation: 'elu',
       })
     );
     for (let layerIdx = 2; layerIdx < this.network.length - 1; layerIdx++) {
       model.add(
-        tf.layers.dense({ units: this.network.layers[layerIdx].numNeurons })
+        tf.layers.dense({
+          units: this.network.layers[layerIdx].numNeurons,
+          activation: 'elu',
+        })
       );
     }
     model.add(
-      tf.layers.dense({ units: this.network.layers[length - 1].numNeurons })
+      tf.layers.dense({
+        units: this.network.layers[length - 1].numNeurons,
+        activation: 'elu',
+      })
     );
 
     //syncing weights
@@ -59,5 +121,36 @@ export class Operations {
         replaceBiasesWeights,
       ]);
     }
+
+    //training model on csv data
+    this.processData();
+    this.initRecording();
+
+    let inputData = tf.tensor(this.inputsProcessed[0]);
+    let outputData = tf.tensor(this.outputProcessed[0]);
+
+    model.compile({
+      optimizer: tf.train.adam(0.1),
+      loss: 'meanSquaredError',
+      metrics: ['accuracy'],
+    });
+    let res = await model.fit(inputData, outputData, {
+      epochs: 100,
+      batchSize: 4,
+      callbacks: {
+        onEpochEnd: async (epoch, params) => {
+          if (epoch % 10 == 0) {
+            console.log(epoch, params.loss);
+            this.epoch = epoch;
+            this.model = model;
+
+            this.saveSnapshotCallback(model, epoch);
+          }
+          await tf.nextFrame();
+        },
+      },
+    });
+
+    // extracting tensor data
   }
 }

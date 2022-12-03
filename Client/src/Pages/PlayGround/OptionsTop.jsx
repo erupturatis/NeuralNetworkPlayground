@@ -47,7 +47,7 @@ const OptionsTop = () => {
   let runNetwork = async () => {
     //run
     operations.setParams(network, data.input, data.output);
-    await operations.runNetwork();
+    operations.runNetwork();
   };
 
   return (

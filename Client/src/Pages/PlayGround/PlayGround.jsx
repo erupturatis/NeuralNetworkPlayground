@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import NetworkGenerator from './NetworkGenerator';
 import OptionsLeft from './OptionsLeft';
 import OptionsTop from './OptionsTop';
-import { Layer, Network } from 'synaptic';
-import * as brain from 'brain.js';
-
 import { mode } from 'd3';
+
 const PlayGround = () => {
   useEffect(() => {
     document.body.classList.add('overflow-hidden');

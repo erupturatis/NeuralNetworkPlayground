@@ -7,6 +7,7 @@ import {
 } from '../../../store/network';
 
 import { setInputs, setOutputs, clearState } from '../../../store/data';
+import { initializeRecording, addSnapshot } from '../../../store/recording';
 
 let dispatch;
 // import { setInputs } from '../../../store/data';
@@ -37,4 +38,12 @@ export const dispatchRemoveLayer = (layer) => {
 
 export const dispatchAddLayer = (layer) => {
   dispatch(addLayer(layer));
+};
+
+export const dispatchInitializeRecording = (params) => {
+  dispatch(initializeRecording(params));
+};
+
+export const dispatchAddSnapshot = () => {
+  dispatch(addSnapshot());
 };
