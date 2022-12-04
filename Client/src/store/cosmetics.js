@@ -21,12 +21,19 @@ export const cosmeticSlice = createSlice({
   initialState,
   reducers: {
     changeSetting: (state, action) => {
+      // console.log(action.payload);
       let label = action.payload.label;
       let data = action.payload.data;
-      state[label] = data;
+      state[label] = parseFloat(data);
+    },
+    resetSettings: (state, action) => {
+      for (let key in initialState) {
+        console.log(key);
+        state[key] = initialState[key];
+      }
     },
   },
 });
 
-export const { changeSetting } = cosmeticSlice.actions;
+export const { changeSetting, resetSettings } = cosmeticSlice.actions;
 export default cosmeticSlice.reducer;

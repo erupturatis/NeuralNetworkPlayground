@@ -121,7 +121,7 @@ let addZoom = () => {
   svg.call(
     d3
       .zoom()
-      .scaleExtent([1 / 2, 3])
+      .scaleExtent([1 / 3, 3])
       .on('zoom', zoomed)
   );
   svg.on('dblclick.zoom', null);

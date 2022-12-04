@@ -15,7 +15,7 @@ import { setDispatch } from './utils/dispatchers';
 import { setNetworkState, setOperations } from './utils/globals';
 import { Operations } from './operations/networkOperations';
 const NetworkGenerator = () => {
-  const { network } = useSelector((state) => state);
+  const { network, cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const NetworkGenerator = () => {
     generateStructure();
     generateNetwork();
     generateUI();
-  }, [network]);
+  }, [network, cosmetics]);
 
   return (
     <>
