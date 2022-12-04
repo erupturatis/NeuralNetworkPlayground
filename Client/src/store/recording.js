@@ -30,6 +30,7 @@ export const recordingSlice = createSlice({
     addSnapshot: (state, action) => {
       const model = operations.model;
       const epoch = operations.epoch;
+      const loss = operations.loss;
       // translating model in network state
       let networkState = state.networkArhitecture;
 
@@ -57,7 +58,7 @@ export const recordingSlice = createSlice({
         networkState.biasesWeights[layerIdx + 1] = biases;
       }
 
-      state.snapshots.push(networkState);
+      state.snapshots.push({ network: networkState, loss });
     },
   },
 });

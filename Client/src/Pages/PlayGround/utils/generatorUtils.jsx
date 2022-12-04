@@ -1,9 +1,4 @@
-import {
-  radius,
-  strokeWNeurons,
-  layerDistance,
-  animationsSpeed,
-} from '../networkParams';
+import { store } from '../../../store/store';
 
 import {
   getCoordNeuron,
@@ -27,6 +22,8 @@ import {
 } from './dispatchers';
 
 let generateConnections = () => {
+  let { cosmetics } = store.getState();
+  let { animationsSpeed } = cosmetics;
   let newConn = [];
 
   // linearizing connection data
@@ -134,6 +131,8 @@ let addZoom = () => {
 };
 
 let generateNeurons = () => {
+  let { cosmetics } = store.getState();
+  let { radius, strokeWNeurons, animationsSpeed } = cosmetics;
   let layers = network.layers;
   let neuronsData = [];
   for (let layer of layers) {
@@ -251,6 +250,8 @@ let generateUIElements = (
   options.offsetX = validateOptions(options.offsetX);
   options.offsetY = validateOptions(options.offsetY);
 
+  let { cosmetics } = store.getState();
+  let { animationsSpeed } = cosmetics;
   // args are attributes
   originElement
     .selectAll('circle')
@@ -287,6 +288,8 @@ let generateUIElements = (
 };
 
 let generateUI = () => {
+  let { cosmetics } = store.getState();
+  let { radius, layerDistance } = cosmetics;
   let length = network.length;
   let arr = [];
   // generating neuron buttons

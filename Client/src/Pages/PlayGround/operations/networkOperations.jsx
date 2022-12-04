@@ -139,19 +139,38 @@ export class Operations {
       metrics: ['accuracy'],
     });
     store.dispatch(changeRun());
+
     let epochs = 100;
+    let recordFrequency = 2;
+    // getting initial loss
+    let initialPred = model.predict(inputData, outputData);
+    let lossInit = tf.losses.meanSquaredError(initialPred, outputData);
+    let lossVal = lossInit.arraySync();
+
+    this.epoch = 0;
+    this.model = model;
+    this.loss = lossVal;
+    // saving model snapshot
+    this.saveSnapshotCallback();
+
     let res = await model.fit(inputData, outputData, {
       epochs,
       batchSize: 4,
       callbacks: {
         onEpochEnd: async (epoch, params) => {
-          if (epoch % 10 == 0) {
+          if (epoch % recordFrequency == 0) {
             this.epoch = epoch;
             this.model = model;
-            console.log(epoch, params.loss);
+            this.loss = params.loss;
+            console.log(params.loss);
             // saving model snapshot
-            this.saveSnapshotCallback(model, epoch);
+            this.saveSnapshotCallback();
+            let storeData = store.getState();
+            let lastNetwork =
+              storeData.recording.snapshots.slice(-1)[0].network;
+            store.dispatch(replaceState(lastNetwork));
           }
+
           store.dispatch(setEpoch(epoch));
           store.dispatch(setFill(parseInt((epoch * 100) / epochs)));
           // setFill(parseInt(epoch / epochs));
@@ -164,8 +183,7 @@ export class Operations {
     store.dispatch(setFill(100));
     store.dispatch(changeRun());
     let storeData = store.getState();
-
-    let lastNetwork = storeData.recording.snapshots.slice(-1);
+    let lastNetwork = storeData.recording.snapshots.slice(-1)[0].network;
     store.dispatch(replaceState(lastNetwork));
     // setRunning(false);
     // setEpoch(epochs);

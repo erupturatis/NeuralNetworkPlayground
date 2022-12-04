@@ -226,8 +226,7 @@ export const networkSlice = createSlice({
       state.length += 1;
     },
     replaceState: (state, action) => {
-      let newState = action.payload[0];
-      console.log(current(state), newState);
+      let newState = action.payload;
       state.length = newState.length;
       state.layers = newState.layers;
       state.biases = newState.biases;

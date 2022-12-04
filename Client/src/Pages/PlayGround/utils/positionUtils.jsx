@@ -1,20 +1,10 @@
-import {
-  radius,
-  strokeWNeurons,
-  maxHeightY,
-  maxHeightX,
-  offsetX,
-  offsetY,
-  layerDistance,
-  neuronDistance,
-  AddLayerButtonOffsetY,
-  NeuronButtonsOffsetY,
-  NeuronButtonsOffsetX,
-} from '../networkParams';
-
 import { networkState } from './globals';
+import { store } from '../../../store/store';
 
 let getLayerCoordX = (layerIdx) => {
+  let { cosmetics } = store.getState();
+  let { maxHeightX, layerDistance } = cosmetics;
+
   let network = networkState;
   let totalLayersNum = network.length;
   let originPointX = 0;
@@ -33,6 +23,9 @@ let getLayerCoordX = (layerIdx) => {
 };
 
 let getCoordNeuron = (layer, index) => {
+  let { cosmetics } = store.getState();
+  let { maxHeightY, neuronDistance } = cosmetics;
+
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;
@@ -47,6 +40,8 @@ let getCoordNeuron = (layer, index) => {
 };
 
 let getCoordAddLayerButton = (layer) => {
+  let { cosmetics } = store.getState();
+  let { maxHeightY, neuronDistance, AddLayerButtonOffsetY } = cosmetics;
   let network = networkState;
   let step = neuronDistance;
   let minPoint = 100000;
@@ -64,6 +59,8 @@ let getCoordAddLayerButton = (layer) => {
 };
 
 let getCoordNeuronButtons = (layer) => {
+  let { cosmetics } = store.getState();
+  let { neuronDistance, maxHeightY, NeuronButtonsOffsetY } = cosmetics;
   // calculating the global pos based on the longest layer
   let network = networkState;
   let step = neuronDistance;
@@ -83,6 +80,8 @@ let getCoordNeuronButtons = (layer) => {
 
 let getCoordRemoveLayerButton = (layer) => {
   // calculating the global pos based on the longest layer
+  let { cosmetics } = store.getState();
+  let { radius, maxHeightY, neuronDistance, NeuronButtonsOffsetY } = cosmetics;
   let network = networkState;
   let step = neuronDistance;
   let minPoint = 0;
@@ -100,6 +99,8 @@ let getCoordRemoveLayerButton = (layer) => {
 };
 
 let getOriginCoordLayer = (layer, index) => {
+  let { cosmetics } = store.getState();
+  let { neuronDistance, maxHeightY } = cosmetics;
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;
@@ -109,6 +110,9 @@ let getOriginCoordLayer = (layer, index) => {
 };
 
 let getCoordYNeuronIdx = (originPointNeurons, index) => {
+  let { cosmetics } = store.getState();
+  let { neuronDistance } = cosmetics;
+
   let network = networkState;
   let step = neuronDistance;
   let numNeurons = network.layers[layer].numNeurons;

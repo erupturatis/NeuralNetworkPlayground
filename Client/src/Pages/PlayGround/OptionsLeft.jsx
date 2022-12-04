@@ -20,8 +20,20 @@ const OptionsLeft = () => {
   );
 
   useEffect(() => {
+    setLayers(network.length);
+  }, [network.length]);
+
+  useEffect(() => {
+    setLayerSizes(network.layers.map((element) => element.numNeurons));
+  }, [network.layers]);
+
+  useEffect(() => {
     setDispatch(dispatch);
   }, []);
+
+  useEffect(() => {
+    syncLayers();
+  }, [layers]);
 
   useEffect(() => {
     for (let i = 0; i < network.length; i++) {
@@ -44,18 +56,6 @@ const OptionsLeft = () => {
       }
     }
   }, [layerSizes]);
-
-  useEffect(() => {
-    syncLayers();
-  }, [layers]);
-
-  useEffect(() => {
-    setLayers(network.length);
-  }, [network.length]);
-
-  useEffect(() => {
-    setLayerSizes(network.layers.map((element) => element.numNeurons));
-  }, [network.layers]);
 
   let setlayerSizesIdx = (index, value) => {
     value = parseInt(value);
