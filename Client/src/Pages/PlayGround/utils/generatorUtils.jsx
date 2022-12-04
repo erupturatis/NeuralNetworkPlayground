@@ -1,12 +1,7 @@
 import {
   radius,
   strokeWNeurons,
-  maxHeightY,
-  maxHeightX,
-  offsetX,
-  offsetY,
   layerDistance,
-  neuronDistance,
   animationsSpeed,
 } from '../networkParams';
 
@@ -17,7 +12,9 @@ import {
   getCoordAddLayerButton,
 } from './positionUtils';
 
-import { select, easeLinear, zoom, zoomTransform } from 'd3';
+import { getColor, getOpacity, getStroke } from './graphicsUtils';
+
+import { select, easeLinear } from 'd3';
 
 import * as d3 from 'd3';
 
@@ -40,6 +37,14 @@ let generateConnections = () => {
     }
   }
 
+  let meanValue = 0,
+    maxValue = -999;
+  for (let conn of newConn) {
+    let valueAbs = Math.abs(conn.value);
+    meanValue += valueAbs;
+    maxValue = Math.max(maxValue, valueAbs);
+  }
+  meanValue = meanValue / newConn.length;
   let rootElement = select(`#connections`);
   //selecting entering lines for animation purposes
   rootElement
@@ -51,7 +56,7 @@ let generateConnections = () => {
     .attr('y1', (value) => getCoordNeuron(value.layer1, value.neuron1).y)
     .attr('x2', (value) => getCoordNeuron(value.layer2, value.neuron2).x)
     .attr('y2', (value) => getCoordNeuron(value.layer2, value.neuron2).y)
-
+    .attr('stroke-width', 1)
     .attr('opacity', 0);
 
   rootElement
@@ -65,8 +70,9 @@ let generateConnections = () => {
     .attr('y1', (value) => getCoordNeuron(value.layer1, value.neuron1).y)
     .attr('x2', (value) => getCoordNeuron(value.layer2, value.neuron2).x)
     .attr('y2', (value) => getCoordNeuron(value.layer2, value.neuron2).y)
-    .attr('stroke', 'white')
-    .attr('opacity', 1);
+    .attr('stroke-width', (value) => getStroke(value.value, meanValue))
+    .attr('stroke', (value) => getColor(value.value, maxValue))
+    .attr('opacity', (value) => getOpacity(value.value, maxValue));
 
   rootElement
     .selectChildren('line')
@@ -100,6 +106,7 @@ let generateConnections = () => {
 
         .attr('opacity', 0);
     });
+
   rootElement
     .selectAll('line')
     .data(newConn, (data) => data.id)
