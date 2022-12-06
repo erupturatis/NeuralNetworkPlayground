@@ -13,6 +13,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12"
   },
