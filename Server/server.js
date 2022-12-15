@@ -4,13 +4,22 @@ const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const MongoDBStore = require('connect-mongodb-session')(session);
-
-const app = express();
+const mongoose = require('mongoose');
+// const { MongoClient } = require('mongodb');
+const Recording = require('./model/Recording');
+const User = require('./model/User');
 
 let uri = process.env.MONGO_URI.replace(
   '<password>',
   process.env.MONGO_PASSWORD
 );
+
+mongoose.set('strictQuery', true);
+mongoose.connect(uri, () => {
+  console.log('conencted to mongo');
+});
+
+const app = express();
 
 let sessionStore = new MongoDBStore({
   uri,
@@ -41,6 +50,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
+  console.log('deserialziedd obj', obj);
   done(null, obj);
 });
 
@@ -53,21 +63,30 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, done) {
       // here I should save database ID/ identifier for the user
-      //console.log(profile);
-      findUser(profile.emails[0].value, (result) => {
-        console.log('returned in callback done');
-        console.log(result);
-        if (result.length > 0) {
-          console.log('got in first if');
-          console.log(result[0].userID);
-          return done(null, { userID: result[0].userID });
-        } else {
-          console.log('got in second if');
-          addUser(uuidv4(), profile.emails[0].value, profile.username, '');
-          return done(null, { userID: result[0].userID });
+
+      User.find(
+        {
+          email: profile.emails[0].value,
+        },
+        (err, items) => {
+          if (items.length > 0) {
+            item = items[0];
+
+            console.log('found item', item);
+
+            return done(null, { userEmail: item.email });
+          } else {
+            console.log('got in second if');
+
+            let newUser = User.create({
+              email: profile.emails[0].value,
+              username: profile.username,
+            });
+
+            return done(null, { userEmail: newUser.email });
+          }
         }
-      });
-      console.log('does it get here?');
+      );
     }
   )
 );
