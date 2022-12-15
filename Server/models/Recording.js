@@ -4,27 +4,27 @@ const Schema = mongoose.Schema;
 const recordingSchema = new Schema({
   networkArhitecture: {
     type: Object,
-    required: true,
+    //required: true,
   },
   inputData: {
     type: Array,
-    required: true,
+    //required: true,
   },
   outputData: {
     type: Array,
-    required: true,
+    //required: true,
   },
   inputDataLabels: {
     type: Array,
-    required: true,
+    //required: true,
   },
   outputDataLabels: {
     type: Array,
-    required: true,
+    //required: true,
   },
   snapshots: {
     type: Array,
-    required: true,
+    //required: true,
   },
 });
 

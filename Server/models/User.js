@@ -10,9 +10,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  recordingID: {
-    type: Array,
-  },
+  recordingID: [{ type: mongoose.Schema.Types.ObjectId, ref: 'recordings' }],
 });
 
 module.exports = mongoose.model('users', UserSchema);

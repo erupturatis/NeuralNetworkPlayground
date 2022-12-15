@@ -25,7 +25,6 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
-  console.log('des', obj);
   User.findOne(obj, (err, user) => {
     done(null, user);
   });
@@ -46,7 +45,7 @@ passport.use(
           email: profile.emails[0].value,
         });
         if (users.length > 0) {
-          item = items[0];
+          item = users[0];
           return done(null, { userEmail: item.email });
         }
 
