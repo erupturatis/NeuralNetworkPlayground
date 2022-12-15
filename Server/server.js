@@ -50,8 +50,9 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
-  console.log('deserialziedd obj', obj);
-  done(null, obj);
+  User.findOne(obj, (err, user) => {
+    done(null, user);
+  });
 });
 
 passport.use(
@@ -90,6 +91,15 @@ passport.use(
     }
   )
 );
+let isAuth = (req, res, next) => {
+  console.log(req.session.passport.user);
+  if (req.session.passport.user) {
+    console.log('is auth');
+    next();
+  } else {
+    res.redirect('/');
+  }
+};
 
 app.listen('3000', () => {
   console.log('started server');
@@ -97,6 +107,10 @@ app.listen('3000', () => {
 
 app.get('/', (req, res) => {
   res.send('abcd');
+});
+
+app.get('/test', isAuth, (req, res) => {
+  res.send('test');
 });
 
 app.get(
