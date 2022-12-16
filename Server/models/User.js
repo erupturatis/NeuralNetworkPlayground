@@ -10,6 +10,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  authType: {
+    type: String,
+    required: true,
+  },
   recordingID: [{ type: mongoose.Schema.Types.ObjectId, ref: 'recordings' }],
 });
 

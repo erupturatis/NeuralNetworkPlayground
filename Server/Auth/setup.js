@@ -2,6 +2,7 @@ const passport = require('passport');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 const GitHubStrategy = require('passport-github2').Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const session = require('express-session');
 require('dotenv').config();
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -25,7 +26,8 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
-  User.findOne(obj, (err, user) => {
+  User.findById(obj.userID, (err, user) => {
+    console.log(user);
     done(null, user);
   });
 });
@@ -39,25 +41,67 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, done) {
       // here I should save database ID/ identifier for the user
-
       let flow = async function () {
         let users = await User.find({
           email: profile.emails[0].value,
+          authType: 'github',
         });
         if (users.length > 0) {
           item = users[0];
-          return done(null, { userEmail: item.email });
+          return done(null, { userID: item.id });
         }
 
         let newUser = await User.create({
           email: profile.emails[0].value,
           username: profile.username,
+          authType: 'github',
         });
-        return done(null, { userEmail: newUser.email });
+        return done(null, { userID: newUser.id });
       };
 
       flow().then(() => {
         console.log('finished auth with github');
+      });
+    }
+  )
+);
+
+// console.log(process.env.GOOGLE_CLIENT_ID);
+// console.log(process.env.GOOGLE_CLIENT_SECRET);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: 'http://localhost:3000/auth/google/callback',
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      // here I should save database ID/ identifier for the user
+
+      let flow = async function () {
+        // console.log(profile);
+        let users = await User.find({
+          email: profile.email,
+          authType: 'google',
+        });
+        console.log(users);
+        if (users.length > 0) {
+          item = users[0];
+          console.log(item.id);
+          return done(null, { userID: item.id });
+        }
+
+        let newUser = await User.create({
+          email: profile.email,
+          username: profile.displayName,
+          authType: 'google',
+        });
+        return done(null, { userID: newUser.id });
+      };
+
+      flow().then(() => {
+        console.log('finished auth with google');
       });
     }
   )
