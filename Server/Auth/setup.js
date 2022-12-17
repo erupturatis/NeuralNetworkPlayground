@@ -39,29 +39,24 @@ passport.use(
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/auth/github/callback',
     },
-    function (accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       // here I should save database ID/ identifier for the user
-      let flow = async function () {
-        let users = await User.find({
-          email: profile.emails[0].value,
-          authType: 'github',
-        });
-        if (users.length > 0) {
-          item = users[0];
-          return done(null, { userID: item.id });
-        }
 
-        let newUser = await User.create({
-          email: profile.emails[0].value,
-          username: profile.username,
-          authType: 'github',
-        });
-        return done(null, { userID: newUser.id });
-      };
-
-      flow().then(() => {
-        console.log('finished auth with github');
+      let users = await User.find({
+        email: profile.emails[0].value,
+        authType: 'github',
       });
+      if (users.length > 0) {
+        item = users[0];
+        return done(null, { userID: item.id });
+      }
+
+      let newUser = await User.create({
+        email: profile.emails[0].value,
+        username: profile.username,
+        authType: 'github',
+      });
+      return done(null, { userID: newUser.id });
     }
   )
 );

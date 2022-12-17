@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const auth = require('./routes/auth');
 const recording = require('./routes/recording');
 const user = require('./routes/user');
-
+var cors = require('cors');
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,6 +19,14 @@ app.use(passport.session());
 app.listen('3000', () => {
   console.log('started server');
 });
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
+);
 
 app.get('/', (req, res) => {
   //let out = req.user.email;
