@@ -14,7 +14,7 @@ export const createNetwork = async (network) => {
 
 export const deleteNetwork = async (id) => {
   // deletes Network with that id
-  let url = BASE_URL + '/' + id;
+  let url = BASE_URL + '/network/' + id;
   let response = await ky.delete(url);
   return response;
 };

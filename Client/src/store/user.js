@@ -10,6 +10,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
+      console.log('in set user');
+      console.log(current(state));
+      console.log(action.payload);
+
       state.user = action.payload;
       state.isSet = true;
     },

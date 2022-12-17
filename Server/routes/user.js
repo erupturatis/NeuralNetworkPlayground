@@ -28,11 +28,8 @@ router.get('/getRecordings', async (req, res) => {
 router.patch(
   '/networkIDS',
   asyncErr(async (req, res, next) => {
-    console.log('pathcing ');
     let id = req.body.id;
     let networkIDS = req.body.networkIDS;
-    console.log(id);
-    console.log(networkIDS);
     // updating in database
     await User.findOneAndUpdate(id, {
       networkID: networkIDS,
