@@ -3,6 +3,7 @@ const router = express.Router();
 const network = require('../models/network');
 const ApiError = require('../error/ApiError');
 const { asyncErr } = require('../error/error_handler');
+
 router.get(
   '/:id',
   asyncErr(async (req, res, next) => {

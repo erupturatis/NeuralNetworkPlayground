@@ -33,3 +33,23 @@ export const getNetwork = async (id) => {
   });
   return response;
 };
+
+export const updateUserNetworkID = async (id, networkIDS) => {
+  // updating user according to the new passed user
+  let url = BASE_URL + '/user/networkIDS';
+  console.log('trying to update user');
+  console.log('id here', id);
+  let response = await ky.patch(url, {
+    json: {
+      id,
+      networkIDS,
+    },
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Credentials': true,
+    },
+  });
+  return response;
+};

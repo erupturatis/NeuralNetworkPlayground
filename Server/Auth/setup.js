@@ -25,6 +25,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
   User.findById(obj.userID, (err, user) => {
+    console.log('deserialzing');
     done(null, user);
   });
 });

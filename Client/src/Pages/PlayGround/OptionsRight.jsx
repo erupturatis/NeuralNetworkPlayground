@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import NetworkButton from './NetworkButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { createNetwork } from '../../api/requests';
+import { createNetwork, updateUserNetworkID } from '../../api/requests';
 import { setUser } from '../../store/user';
 
 const OptionsRight = () => {
@@ -34,11 +34,9 @@ const OptionsRight = () => {
     let packet = packageData();
     let response = await createNetwork(packet);
     response = await response.json();
-    console.log(response);
     // saving the id for the current user
     // locally
     let networkID = [...user.user.networkID];
-    console.log(networkID);
     let updatedUser = {
       ...user.user,
     };
@@ -46,6 +44,7 @@ const OptionsRight = () => {
     updatedUser.networkID = [...networkID];
     dispatch(setUser(updatedUser));
     // in database
+    let resp = await updateUserNetworkID(updatedUser[`_id`], networkID);
   };
 
   return (

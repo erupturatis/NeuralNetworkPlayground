@@ -10,11 +10,6 @@ const Navbar = ({ userSet, user, loaded }) => {
 
   let location = useLocation();
 
-  console.log(userSet);
-  console.log(user);
-  console.log(loaded);
-  console.log('\n');
-
   return (
     <div className="flex justify-between m-4 ">
       <div className="p-4 flex">
