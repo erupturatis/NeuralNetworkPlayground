@@ -36,8 +36,6 @@ function App() {
         })
         .catch((err) => {
           setLoaded(true);
-          console.log('err');
-          console.log(err);
         });
     };
     getUser();

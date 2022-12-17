@@ -18,8 +18,8 @@ mongoose.connect(uri, () => {
 });
 
 passport.serializeUser(function (user, done) {
-  console.log('serialized');
-  console.log(user);
+  // console.log('serialized');
+  // console.log(user);
   // we need to only serialize the databse userID of the user
   done(null, user);
 });
@@ -27,7 +27,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
   // fetch from databse the userData that we need based on the serialized ID
   User.findById(obj.userID, (err, user) => {
-    console.log(user);
+    // console.log(user);
     done(null, user);
   });
 });

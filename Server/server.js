@@ -9,16 +9,13 @@ const auth = require('./routes/auth');
 const recording = require('./routes/recording');
 const user = require('./routes/user');
 var cors = require('cors');
+const { apiErrorHandler } = require('./error/error_handler');
 const app = express();
 
 app.use(bodyParser.json());
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.listen('3000', () => {
-  console.log('started server');
-});
 
 app.use(
   cors({
@@ -37,6 +34,8 @@ app.use('/auth', auth);
 app.use('/recording', recording);
 app.use('/user', user);
 
-app.get('/ceva', async (req, res) => {
-  res.send('ceva');
+app.use(apiErrorHandler);
+
+app.listen('3000', () => {
+  console.log('started server');
 });
