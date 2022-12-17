@@ -4,6 +4,7 @@ import dataReducer from './data';
 import recordingReducer from './recording';
 import runningReducer from './running';
 import cosmeticReducer from './cosmetics';
+import userReducer from './user';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     recording: recordingReducer,
     running: runningReducer,
     cosmetics: cosmeticReducer,
+    user: userReducer,
   },
 });

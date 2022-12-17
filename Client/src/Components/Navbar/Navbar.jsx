@@ -3,7 +3,7 @@ import Button from './Button';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
-const Navbar = () => {
+const Navbar = ({ userSet, user, loaded }) => {
   let githubLink = 'https://github.com/erupturatis/NeuralNetworkPlayground';
   let githubImageLink =
     'https://cdn.discordapp.com/attachments/864542134391275543/1044628392093421598/octocat2.png';
@@ -24,16 +24,34 @@ const Navbar = () => {
           </a>
         </div>
       </div>
-      <div className="flex items-center">
-        <Button name="Home" pageLink="/Home" location={location.pathname} />
-        <Button name="SignUp" pageLink="/SignUp" location={location.pathname} />
-        <Button name="Login" pageLink="/Login" location={location.pathname} />
-        <Button
-          name="Playground"
-          pageLink="/Playground"
-          location={location.pathname}
-        />
-      </div>
+      {loaded && (
+        <>
+          <div className="flex items-center">
+            <Button name="Home" pageLink="/Home" location={location.pathname} />
+            {!userSet && (
+              <Button
+                name="SignUp"
+                pageLink="/SignUp"
+                location={location.pathname}
+              />
+            )}
+            {!userSet && (
+              <Button
+                name="Login"
+                pageLink="/Login"
+                location={location.pathname}
+              />
+            )}
+            {userSet && <div className=" text-white m-2 ">{user.username}</div>}
+
+            <Button
+              name="Playground"
+              pageLink="/Playground"
+              location={location.pathname}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

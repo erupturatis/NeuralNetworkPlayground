@@ -28,4 +28,18 @@ router.get(
   }
 );
 
+router.get('/login/success', (req, res) => {
+  if (req.user) {
+    res.status(200).json({
+      success: true,
+      message: 'successfull',
+      user: req.user,
+    });
+  } else {
+    res.status(201).json({
+      success: false,
+    });
+  }
+});
+
 module.exports = router;

@@ -12,8 +12,8 @@ router.post('/createPost', async (req, res) => {
   // creates a new post
   let recording = req.body.recording;
   let response = await Recording.create(recording);
-  console.log(response);
-  console.log(response.id);
+  // console.log(response);
+  // console.log(response.id);
 
   res.status(201).send(response.id);
 });
