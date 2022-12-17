@@ -9,6 +9,12 @@ const Navbar = ({ userSet, user, loaded }) => {
     'https://cdn.discordapp.com/attachments/864542134391275543/1044628392093421598/octocat2.png';
 
   let location = useLocation();
+
+  console.log(userSet);
+  console.log(user);
+  console.log(loaded);
+  console.log('\n');
+
   return (
     <div className="flex justify-between m-4 ">
       <div className="p-4 flex">

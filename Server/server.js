@@ -6,7 +6,7 @@ const { sessionMiddleware } = require('./Auth/setup');
 const { isAuth } = require('./Utils/utils');
 const bodyParser = require('body-parser');
 const auth = require('./routes/auth');
-const recording = require('./routes/recording');
+const network = require('./routes/network');
 const user = require('./routes/user');
 var cors = require('cors');
 const { apiErrorHandler } = require('./error/error_handler');
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', auth);
-app.use('/recording', recording);
+app.use('/network', network);
 app.use('/user', user);
 
 app.use(apiErrorHandler);

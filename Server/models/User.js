@@ -14,7 +14,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  recordingID: [{ type: mongoose.Schema.Types.ObjectId, ref: 'recordings' }],
+  networkID: {
+    type: [{ type: String, ref: 'networks' }],
+    default: ['0', '0', '0'],
+  },
 });
 
 module.exports = mongoose.model('users', UserSchema);

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import NetworkGenerator from './NetworkGenerator';
 import OptionsLeft from './OptionsLeft';
 import OptionsTop from './OptionsTop';
+import OptionsRight from './OptionsRight';
 import { mode } from 'd3';
 
 const PlayGround = () => {
@@ -17,9 +18,13 @@ const PlayGround = () => {
       <div className=" text-white left-0 absolute h-full  w-64 border-2 ">
         <OptionsLeft />
       </div>
-      <div className=" text-white left-64 absolute h-48  w-full border-2 ">
+      <div className=" text-white ml-64 mr-64 absolute h-48 w-full border-2 ">
         <OptionsTop />
       </div>
+      <div className=" text-white right-0 absolute w-64 h-full border-2 ">
+        <OptionsRight />
+      </div>
+
       <div className="w-full h-full">
         <svg
           id="root-svg"

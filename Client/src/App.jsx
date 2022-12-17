@@ -15,6 +15,8 @@ function App() {
   const { user } = useSelector((state) => state);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
+    console.log('try fetch response');
+
     const getUser = () => {
       fetch('http://localhost:3000/auth/login/success', {
         method: 'GET',

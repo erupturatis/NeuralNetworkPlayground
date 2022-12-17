@@ -13,6 +13,7 @@
     "@tensorflow/tfjs": "^4.1.0",
     "brain.js": "^2.0.0-beta.17",
     "d3": "^7.6.1",
+    "ky": "^0.33.0",
     "papaparse": "^5.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
