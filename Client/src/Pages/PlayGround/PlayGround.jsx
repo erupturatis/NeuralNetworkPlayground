@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import NetworkGenerator from './NetworkGenerator';
-import OptionsLeft from './OptionsLeft';
+import OptionsLeft from './OptionsPanels/Left/OptionsLeft';
 import OptionsTop from './OptionsTop';
 import OptionsRight from './OptionsRight';
-import { mode } from 'd3';
 
 const PlayGround = () => {
   useEffect(() => {
@@ -15,7 +14,7 @@ const PlayGround = () => {
 
   return (
     <div id="graph-container" className="w-full h-full ">
-      <div className=" text-white left-0 absolute h-full  w-64 border-2 ">
+      <div className=" text-white left-0 absolute h-full  w-72 border-2 ">
         <OptionsLeft />
       </div>
       <div className=" text-white ml-64 mr-64 absolute h-48 w-full border-2 ">

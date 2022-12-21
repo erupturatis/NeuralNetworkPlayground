@@ -19,7 +19,7 @@ export class Operations {
     this.network = network;
     this.inputs = inputs;
     this.outputs = outputs;
-    this.params = params;
+    this.params = {};
   }
 
   initRecording() {
@@ -88,12 +88,15 @@ export class Operations {
   async runNetwork(options) {
     const model = tf.sequential();
     let length = this.network.length;
+    // getting activation
+    let activation = this.params.activation ? this.params.activation : 'elu';
+
     // generating model
     model.add(
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
         inputShape: [this.network.layers[0].numNeurons],
-        activation: 'elu',
+        activation,
       })
     );
     for (let layerIdx = 2; layerIdx < this.network.length - 1; layerIdx++) {

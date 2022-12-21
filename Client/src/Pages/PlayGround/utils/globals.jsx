@@ -9,6 +9,7 @@ export const setNetworkState = (state) => {
 
 export const setOperations = (obj) => {
   operations = obj;
+  return obj;
 };
 
 export { networkState, operations };

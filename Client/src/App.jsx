@@ -14,6 +14,7 @@ function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state);
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     const getUser = () => {
       fetch('http://localhost:3000/auth/login/success', {

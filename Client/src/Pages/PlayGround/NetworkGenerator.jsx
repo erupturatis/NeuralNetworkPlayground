@@ -14,6 +14,7 @@ import {
 import { setDispatch } from './utils/dispatchers';
 import { setNetworkState, setOperations } from './utils/globals';
 import { Operations } from './operations/networkOperations';
+
 const NetworkGenerator = () => {
   const { network, cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();

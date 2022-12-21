@@ -12,6 +12,9 @@ import {
 let generateNetwork = (...layers) => {
   let initState = {
     length: layers.length,
+    activation: 'sigmoid',
+    loss: 'meanSquaredError',
+    epochs: 100,
     layers: [],
     biases: [],
     biasesWeights: [],
@@ -233,11 +236,22 @@ export const networkSlice = createSlice({
       state.biasesWeights = newState.biasesWeights;
       state.connections = newState.connections;
     },
+
+    changeProperty: (state, action) => {
+      let prop = action.payload.prop;
+      state[prop] = action.payload.value;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNeuron, removeNeuron, removeLayer, addLayer, replaceState } =
-  networkSlice.actions;
+export const {
+  addNeuron,
+  removeNeuron,
+  removeLayer,
+  addLayer,
+  replaceState,
+  changeProperty,
+} = networkSlice.actions;
 
 export default networkSlice.reducer;

@@ -7,16 +7,22 @@ import {
   dispatchAddNeuron,
   dispatchRemoveLayer,
   dispatchRemoveNeuron,
-} from './utils/dispatchers';
-import { setDispatch } from './utils/dispatchers';
-import RangeSlider from '../../Components/RangeSlider';
-import { changeSetting, resetSettings } from '../../store/cosmetics';
+} from '../../utils/dispatchers';
+import { setDispatch } from '../../utils/dispatchers';
+import RangeSlider from '../../../../Components/RangeSlider';
+import { changeSetting, resetSettings } from '../../../../store/cosmetics';
+import { changeProperty } from '../../../../store/network';
+import Settings from './Settings';
 
 const OptionsLeft = () => {
   const { network, cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();
-
   const [layers, setLayers] = useState(network.length);
+
+  const [showActivation, setShowActivation] = useState(false);
+  const [showLoss, setShowLoss] = useState(false);
+  const [showEpochs, setShowEpochs] = useState(false);
+
   const [layerSizes, setLayerSizes] = useState(
     network.layers.map((element) => element.numNeurons)
   );
@@ -115,7 +121,7 @@ const OptionsLeft = () => {
           );
         })}
       </div>
-      <div className="h-72 overflow-auto border-2">
+      <div className="overflow-auto border-2">
         <RangeSlider
           label={`Layer Distance ${cosmetics.layerDistance}`}
           min={25}
@@ -176,14 +182,35 @@ const OptionsLeft = () => {
             );
           }}
         />
-        <button
-          onClick={() => {
-            dispatch(resetSettings());
-          }}
-        >
-          reset settings
-        </button>
       </div>
+      <Settings
+        trigger={showActivation}
+        setTrigger={setShowActivation}
+        optionsValues={['Relu', 'Elu', 'Tanh', 'Sigmoid']}
+        name={'Activation'}
+        value={network.activation}
+        prop={'activation'}
+      />
+      <Settings
+        trigger={showEpochs}
+        setTrigger={setShowEpochs}
+        optionsValues={[50, 100, 250]}
+        name={'Epochs'}
+        value={network.epochs}
+        prop={'epochs'}
+      />
+      <Settings
+        trigger={showLoss}
+        setTrigger={setShowLoss}
+        optionsValues={[
+          'MeanSquaredError',
+          'CategoricalCrossEntropy',
+          'meanSquaredLogarithmicError',
+        ]}
+        name={'Loss'}
+        value={network.loss}
+        prop={'loss'}
+      />
     </div>
   );
 };
