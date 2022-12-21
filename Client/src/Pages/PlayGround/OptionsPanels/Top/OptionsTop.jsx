@@ -2,10 +2,11 @@ import React from 'react';
 import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { mapInputs, mapOutputs } from './utils/generatorUtils';
-import { dispatchSetInputs, dispatchSetOutputs } from './utils/dispatchers';
-import { operations } from './utils/globals';
-import { replaceState } from '../../store/network';
+import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
+import { dispatchSetInputs, dispatchSetOutputs } from '../../utils/dispatchers';
+import { operations } from '../../utils/globals';
+import { replaceState } from '../../../../store/network';
+import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
 
 const OptionsTop = () => {
   const { network, recording, data, running } = useSelector((state) => state);
@@ -13,6 +14,7 @@ const OptionsTop = () => {
   const [selectedSnapshot, setSelectedSnapshot] = useState(0);
   const [isRunning, setIsRunning] = useState();
   const [fill, setFill] = useState(0);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,9 +40,19 @@ const OptionsTop = () => {
     }
   }, [selectedSnapshot]);
 
+  const setInputs = (result) => {
+    dispatchSetInputs(result);
+    mapInputs(result.meta.fields);
+  };
+  const setOutputs = (result) => {
+    dispatchSetOutputs(result);
+    mapOutputs(result.meta.fields);
+  };
+
   useEffect(() => {
     setEpoch(running.epoch);
   }, [running.epoch]);
+
   let processInputData = () => {
     try {
       Papa.parse(document.getElementById('inputData').files[0], {
@@ -48,8 +60,10 @@ const OptionsTop = () => {
         header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          dispatchSetInputs(result);
-          mapInputs(result.meta.fields);
+          setInputs(result);
+          dispatch(
+            setInputsLabel(document.getElementById('inputData').files[0].name)
+          );
         },
       });
     } catch {}
@@ -62,8 +76,10 @@ const OptionsTop = () => {
         header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          dispatchSetOutputs(result);
-          mapOutputs(result.meta.fields);
+          setOutputs(result);
+          dispatch(
+            setOutputsLabel(document.getElementById('outputData').files[0].name)
+          );
         },
       });
     } catch {}
@@ -71,13 +87,20 @@ const OptionsTop = () => {
 
   let runNetwork = async () => {
     //running the network
+    operations.change(network, data.input, data.output);
     operations.setParams(network, data.input, data.output);
-    await operations.runNetwork();
-    console.log('finished running');
+    operations.runNetwork();
   };
 
   return (
     <div className=" w-full">
+      <button
+        onClick={() => {
+          loadFile();
+        }}
+      >
+        Load file
+      </button>
       <div className="flex">
         <div className="border-2">
           <div>
@@ -88,7 +111,19 @@ const OptionsTop = () => {
               onChange={() => {
                 processInputData();
               }}
+              className="hidden"
             />
+            <div className="flex">
+              <input
+                type="button"
+                value="input Browse..."
+                className=" border-2 w-28 h-10"
+                onClick={() => {
+                  document.getElementById('inputData').click();
+                }}
+              />
+              <div>{data.inputLabel}</div>
+            </div>
           </div>
           <div>
             <input
@@ -98,13 +133,25 @@ const OptionsTop = () => {
               onChange={() => {
                 processOutputData();
               }}
+              className="hidden"
             />
+            <div className="flex">
+              <input
+                type="button"
+                value="output Browse..."
+                className=" border-2 w-28 h-10"
+                onClick={() => {
+                  document.getElementById('outputData').click();
+                }}
+              />
+              <div>{data.outputLabel}</div>
+            </div>
           </div>
         </div>
         <div className="w-20">
           <button
-            onClick={async () => {
-              await runNetwork();
+            onClick={() => {
+              runNetwork();
             }}
           >
             {recording.saved ? 'rerun network' : 'run network'}
@@ -124,9 +171,7 @@ const OptionsTop = () => {
       {!isRunning && recording.saved ? (
         <>
           <div className="relative pt-1 w-72">
-            <label for="customRange3" className="form-label">
-              Example range
-            </label>
+            <label className="form-label">Example range</label>
             <input
               id="range"
               type="range"
@@ -136,7 +181,6 @@ const OptionsTop = () => {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
               onChange={(e) => {
                 setSelectedSnapshot(e.target.value);
-                // console.log(selectedSnapshot);
               }}
             />
           </div>

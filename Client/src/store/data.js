@@ -3,8 +3,8 @@ import { createSlice, current } from '@reduxjs/toolkit';
 const initialState = {
   input: '',
   output: '',
-  inputLabels: '',
-  outputLabels: '',
+  inputLabel: 'no file selected',
+  outputLabel: 'no file selected',
   inputisSet: false,
   outputisSet: false,
 };
@@ -23,11 +23,23 @@ export const dataSlice = createSlice({
       state.outputLabels = action.payload.meta.fields;
       state.outputisSet = true;
     },
+    setInputsLabel: (state, action) => {
+      state.inputLabel = action.payload;
+    },
+    setOutputsLabel: (state, action) => {
+      state.outputLabel = action.payload;
+    },
     clearState: (state, action) => {
       state = initialState;
     },
   },
 });
 
-export const { setInputs, setOutputs, clearState } = dataSlice.actions;
+export const {
+  setInputs,
+  setOutputs,
+  clearState,
+  setInputsLabel,
+  setOutputsLabel,
+} = dataSlice.actions;
 export default dataSlice.reducer;

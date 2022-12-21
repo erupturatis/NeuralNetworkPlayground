@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import NetworkGenerator from './NetworkGenerator';
 import OptionsLeft from './OptionsPanels/Left/OptionsLeft';
-import OptionsTop from './OptionsTop';
+import OptionsTop from './OptionsPanels/Top/OptionsTop';
 import OptionsRight from './OptionsRight';
 
 const PlayGround = () => {

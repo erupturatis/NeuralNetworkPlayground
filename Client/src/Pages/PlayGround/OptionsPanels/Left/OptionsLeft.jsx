@@ -13,9 +13,12 @@ import RangeSlider from '../../../../Components/RangeSlider';
 import { changeSetting, resetSettings } from '../../../../store/cosmetics';
 import { changeProperty } from '../../../../store/network';
 import Settings from './Settings';
+import { setInputs, setOutputs } from '../../../../store/data';
+import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
+import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
 
 const OptionsLeft = () => {
-  const { network, cosmetics } = useSelector((state) => state);
+  const { network, cosmetics, data } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [layers, setLayers] = useState(network.length);
 
@@ -91,6 +94,82 @@ const OptionsLeft = () => {
         dispatchRemoveLayer(layers - 1);
       }
     }
+  };
+  const setInputsFunc = (result) => {
+    dispatch(setInputs(result));
+    mapInputs(result.meta.fields);
+  };
+  const setOutputsFunc = (result) => {
+    dispatch(setOutputs(result));
+    mapOutputs(result.meta.fields);
+  };
+  const FILES = {
+    XOR: ['/public/Files/XORinputs.txt', '/public/Files/XORoutputs.txt'],
+    files2: ['', ''],
+  };
+
+  let uploadFiles = async (name) => {
+    let paths = FILES[`${name}`];
+
+    let inputPath = paths[0];
+    let outputPath = paths[1];
+    dispatch(setInputsLabel(`${name} inputs.txt`));
+    dispatch(setOutputsLabel(`${name} outputs.txt`));
+
+    let inputResult = {
+      meta: {
+        fields: '',
+      },
+      data: [],
+    };
+    let outputResult = {
+      meta: {
+        fields: '',
+      },
+      data: [],
+    };
+
+    // reading the premade files
+    let inputText = await fetch(inputPath).then((response) => response.text());
+    let outputText = await fetch(outputPath).then((response) =>
+      response.text()
+    );
+
+    inputText = inputText.split(/\r?\n/);
+    outputText = outputText.split(/\r?\n/);
+
+    // creating the result
+    let inputLabels = inputText.splice(0, 1)[0].split(',');
+    let outputLabels = outputText.splice(0, 1)[0].split(',');
+
+    inputResult['meta']['fields'] = inputLabels;
+    outputResult['meta']['fields'] = outputLabels;
+
+    inputResult['data'] = [];
+    outputResult['data'] = [];
+
+    let formatData = (inputText, inputLabels, arr) => {
+      for (let line of inputText) {
+        let obj = {};
+        line = line.split(',');
+        line = line.filter((el) => {
+          if (el !== '') {
+            return el;
+          }
+        });
+        console.log(line);
+        for (let index in line) {
+          // console.log(line, index);
+          obj[`${inputLabels[index]}`] = parseInt(line[index]);
+        }
+        arr['data'].push(obj);
+      }
+    };
+    formatData(inputText, inputLabels, inputResult);
+    formatData(outputText, outputLabels, outputResult);
+
+    setInputsFunc(inputResult);
+    setOutputsFunc(outputResult);
   };
   return (
     <div>
@@ -211,6 +290,18 @@ const OptionsLeft = () => {
         value={network.loss}
         prop={'loss'}
       />
+      <div className="flex w-72 border-2 h-60">
+        <button className="border-2 w-10 h-10"> down</button>
+        <div>The xor dataset</div>
+        <button
+          onClick={() => {
+            uploadFiles('XOR');
+          }}
+          className="border-2 w-10 h-10"
+        >
+          uplo
+        </button>
+      </div>
     </div>
   );
 };

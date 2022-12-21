@@ -21,6 +21,10 @@ export class Operations {
     this.outputs = outputs;
   }
 
+  constructor() {
+    this.model = tf.sequential();
+  }
+
   initRecording() {
     dispatchInitializeRecording({
       network: this.network,
@@ -83,18 +87,12 @@ export class Operations {
     this.outputProcessed = [outputData, outputKeys];
   }
 
-  async runNetwork(options) {
-    const model = tf.sequential();
-    // let length = this.network.length;
-    // getting activation
+  networkPreprocessing() {
     let length = this.network.length;
     let activation = this.network.activation;
     let loss = this.network.loss;
-    let epochs = this.network.epochs;
 
-    // generating model
-    // input layer
-    model.add(
+    this.model.add(
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
         inputShape: [this.network.layers[0].numNeurons],
@@ -103,7 +101,7 @@ export class Operations {
     );
     // hidden layers
     for (let layerIdx = 2; layerIdx < this.network.length - 1; layerIdx++) {
-      model.add(
+      this.model.add(
         tf.layers.dense({
           units: this.network.layers[layerIdx].numNeurons,
           activation,
@@ -111,14 +109,19 @@ export class Operations {
       );
     }
     //ouput layer
-    model.add(
+    this.model.add(
       tf.layers.dense({
         units: this.network.layers[length - 1].numNeurons,
         activation,
       })
     );
     //syncing weights
-    for (let layerIdx = 0; layerIdx < model.layers.length; layerIdx++) {
+
+    for (
+      let layerIdx = 0;
+      layerIdx < this.network.layers.length - 1;
+      layerIdx++
+    ) {
       let valuesWeights = this.network.connections[layerIdx].map((element) =>
         element.map((el) => el.value)
       );
@@ -127,30 +130,46 @@ export class Operations {
       let replaceTensorWeights = tf.tensor(valuesWeights);
       let replaceBiasesWeights = tf.tensor(valuesBiases);
 
-      model.layers[layerIdx].setWeights([
+      this.model.layers[layerIdx].setWeights([
         replaceTensorWeights,
         replaceBiasesWeights,
       ]);
     }
 
-    //training model on csv data
+    //training this.model on csv data
     this.processData();
     this.initRecording();
 
-    let inputData = tf.tensor(this.inputsProcessed[0]);
-    let outputData = tf.tensor(this.outputProcessed[0]);
+    this.inputData = tf.tensor(this.inputsProcessed[0]);
+    this.outputData = tf.tensor(this.outputProcessed[0]);
 
-    model.compile({
+    this.model.compile({
       optimizer: tf.train.adam(0.1),
       loss,
       metrics: ['accuracy'],
     });
+  }
+
+  change() {
     store.dispatch(changeRun());
+  }
+
+  async runNetwork() {
+    // let length = this.network.length;
+    // getting activation
+
+    let epochs = this.network.epochs;
+    let model = this.model;
+
+    // network preprocessing
+    this.networkPreprocessing();
 
     let recordFrequency = 2;
     // getting initial loss
-    let initialPred = model.predict(inputData, outputData);
-    let lossInit = tf.losses.meanSquaredError(initialPred, outputData);
+
+    let initialPred = model.predict(this.inputData, this.outputData);
+    let lossInit = tf.losses.meanSquaredError(initialPred, this.outputData);
+
     let lossVal = lossInit.arraySync();
 
     this.epoch = 0;
@@ -158,8 +177,7 @@ export class Operations {
     this.loss = lossVal;
     // saving model snapshot
     this.saveSnapshotCallback();
-
-    let res = await model.fit(inputData, outputData, {
+    let res = await model.fit(this.inputData, this.outputData, {
       epochs,
       batchSize: 12,
       callbacks: {
@@ -185,7 +203,7 @@ export class Operations {
       },
     });
     store.dispatch(setEpoch(epochs));
-    store.dispatch(setFill(100));
+    store.dispatch(setFill(this.network.epochs));
     store.dispatch(changeRun());
     let storeData = store.getState();
     let lastNetwork = storeData.recording.snapshots.slice(-1)[0].network;
