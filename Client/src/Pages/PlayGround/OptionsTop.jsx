@@ -22,6 +22,8 @@ const OptionsTop = () => {
 
   useEffect(() => {
     setIsRunning(running.running);
+    setSelectedSnapshot(running.epoch);
+    // setSelectedSnapshot(network.epoch);
   }, [running.running]);
 
   useEffect(() => {
@@ -134,7 +136,7 @@ const OptionsTop = () => {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
               onChange={(e) => {
                 setSelectedSnapshot(e.target.value);
-                console.log(selectedSnapshot);
+                // console.log(selectedSnapshot);
               }}
             />
           </div>

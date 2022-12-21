@@ -19,7 +19,6 @@ export class Operations {
     this.network = network;
     this.inputs = inputs;
     this.outputs = outputs;
-    this.params = {};
   }
 
   initRecording() {
@@ -27,7 +26,6 @@ export class Operations {
       network: this.network,
       inputs: this.inputsProcessed,
       outputs: this.outputProcessed,
-      params: this.params,
     });
   }
 
@@ -87,11 +85,15 @@ export class Operations {
 
   async runNetwork(options) {
     const model = tf.sequential();
-    let length = this.network.length;
+    // let length = this.network.length;
     // getting activation
-    let activation = this.params.activation ? this.params.activation : 'elu';
+    let length = this.network.length;
+    let activation = this.network.activation;
+    let loss = this.network.loss;
+    let epochs = this.network.epochs;
 
     // generating model
+    // input layer
     model.add(
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
@@ -99,18 +101,20 @@ export class Operations {
         activation,
       })
     );
+    // hidden layers
     for (let layerIdx = 2; layerIdx < this.network.length - 1; layerIdx++) {
       model.add(
         tf.layers.dense({
           units: this.network.layers[layerIdx].numNeurons,
-          activation: 'elu',
+          activation,
         })
       );
     }
+    //ouput layer
     model.add(
       tf.layers.dense({
         units: this.network.layers[length - 1].numNeurons,
-        activation: 'elu',
+        activation,
       })
     );
     //syncing weights
@@ -138,12 +142,11 @@ export class Operations {
 
     model.compile({
       optimizer: tf.train.adam(0.1),
-      loss: 'meanSquaredError',
+      loss,
       metrics: ['accuracy'],
     });
     store.dispatch(changeRun());
 
-    let epochs = 100;
     let recordFrequency = 2;
     // getting initial loss
     let initialPred = model.predict(inputData, outputData);
@@ -158,14 +161,13 @@ export class Operations {
 
     let res = await model.fit(inputData, outputData, {
       epochs,
-      batchSize: 4,
+      batchSize: 12,
       callbacks: {
         onEpochEnd: async (epoch, params) => {
           if (epoch % recordFrequency == 0) {
             this.epoch = epoch;
             this.model = model;
             this.loss = params.loss;
-            console.log(params.loss);
             // saving model snapshot
             this.saveSnapshotCallback();
             let storeData = store.getState();

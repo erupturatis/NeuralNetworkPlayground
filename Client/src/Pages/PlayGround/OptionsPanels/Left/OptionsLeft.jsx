@@ -186,7 +186,7 @@ const OptionsLeft = () => {
       <Settings
         trigger={showActivation}
         setTrigger={setShowActivation}
-        optionsValues={['Relu', 'Elu', 'Tanh', 'Sigmoid']}
+        optionsValues={['relu', 'elu', 'tanh', 'sigmoid']}
         name={'Activation'}
         value={network.activation}
         prop={'activation'}

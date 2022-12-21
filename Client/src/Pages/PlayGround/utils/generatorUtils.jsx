@@ -380,6 +380,8 @@ let textSize = (text) => {
 };
 
 let mapInputs = (arrInputs) => {
+  let { cosmetics } = store.getState();
+  let { radius } = cosmetics;
   select('#tooltip-area')
     .selectChildren('text.inputs')
     .data(arrInputs)
