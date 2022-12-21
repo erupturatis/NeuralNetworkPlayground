@@ -157,7 +157,6 @@ const OptionsLeft = () => {
             return el;
           }
         });
-        console.log(line);
         for (let index in line) {
           // console.log(line, index);
           obj[`${inputLabels[index]}`] = parseInt(line[index]);

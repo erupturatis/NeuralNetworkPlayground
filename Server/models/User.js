@@ -14,6 +14,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  networkName: {
+    type: [{ type: String }],
+    default: ['empty slot', 'empty slot', 'emtpy slot'],
+  },
   networkID: {
     type: [{ type: String, ref: 'networks' }],
     default: ['0', '0', '0'],

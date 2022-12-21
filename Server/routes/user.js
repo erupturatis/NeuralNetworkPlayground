@@ -38,4 +38,17 @@ router.patch(
   })
 );
 
+router.patch(
+  '/networkName',
+  asyncErr(async (req, res, next) => {
+    let id = req.body.id;
+    let networkName = req.body.networkName;
+    // updating in database
+    await User.findOneAndUpdate(id, {
+      networkName,
+    });
+    res.status(201).send('ok');
+  })
+);
+
 module.exports = router;

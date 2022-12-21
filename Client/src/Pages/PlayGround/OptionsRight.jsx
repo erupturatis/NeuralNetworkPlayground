@@ -7,6 +7,7 @@ import {
   updateUserNetworkID,
   deleteNetwork,
   getNetwork,
+  updateUserNetworkName,
 } from '../../api/requests';
 import { setUser } from '../../store/user';
 import { replaceState } from '../../store/network';
@@ -38,19 +39,28 @@ const OptionsRight = () => {
     // saving a new network on the index slot
     setSelected(index);
     let packet = packageData();
+
     let response = await createNetwork(packet);
     response = await response.json();
+    console.log('response', response);
     // saving the id for the current user
     // locally
     let networkID = [...user.user.networkID];
+    let networkName = [...user.user.networkName];
+
     let updatedUser = {
       ...user.user,
     };
     networkID[index] = response.id;
+    networkName[index] = response.name;
+
     updatedUser.networkID = [...networkID];
+    updatedUser.networkName = [...networkName];
+
     dispatch(setUser(updatedUser));
     // in database
-    let resp = await updateUserNetworkID(updatedUser[`_id`], networkID);
+    await updateUserNetworkID(updatedUser[`_id`], networkID);
+    await updateUserNetworkName(updatedUser[`_id`], networkName);
   };
 
   let clearNetwork = async (index) => {
@@ -59,19 +69,21 @@ const OptionsRight = () => {
       ...user.user,
     };
     let networkID = [...updatedUser.networkID];
+    let networkName = [...updatedUser.networkName];
+
     let targetID = updatedUser.networkID[index];
     // deleting Network from database
     let response = await deleteNetwork(targetID);
     // deleting from user data locally
     networkID[index] = '0';
+    networkName[index] = 'empty slot';
 
     updatedUser.networkID = [...networkID];
+    updatedUser.networkName = [...networkName];
     dispatch(setUser(updatedUser));
     // deleting ID from user data in database
-    response = await updateUserNetworkID(
-      updatedUser[`_id`],
-      updatedUser.networkID
-    );
+    await updateUserNetworkID(updatedUser[`_id`], updatedUser.networkID);
+    await updateUserNetworkName(updatedUser[`_id`], updatedUser.networkName);
   };
 
   let loadNetwork = async (index) => {
@@ -92,25 +104,31 @@ const OptionsRight = () => {
   return (
     <div className=" flex flex-col justify-center align-middle text-center">
       <div>Saved Networks</div>
-      {totalNetworks.map((el) => {
-        return (
-          <NetworkButton
-            key={el}
-            saveNetwork={saveNetwork}
-            clearNetwork={clearNetwork}
-            loadNetwork={loadNetwork}
-            index={el}
+      <div>Please Login or Sign Up</div>
+      {user.isSet && (
+        <>
+          {totalNetworks.map((el) => {
+            return (
+              <NetworkButton
+                name={user.user.networkName[el]}
+                key={el}
+                saveNetwork={saveNetwork}
+                clearNetwork={clearNetwork}
+                loadNetwork={loadNetwork}
+                index={el}
+              />
+            );
+          })}
+          <input
+            className="text-black"
+            type="text"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           />
-        );
-      })}
-      <input
-        className="text-black"
-        type="text"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
+        </>
+      )}
     </div>
   );
 };

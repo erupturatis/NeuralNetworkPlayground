@@ -1,11 +1,16 @@
 import React from 'react';
 import download from '../../assets/download.svg';
-
-const NetworkButton = ({ saveNetwork, clearNetwork, loadNetwork, index }) => {
+const NetworkButton = ({
+  saveNetwork,
+  clearNetwork,
+  loadNetwork,
+  index,
+  name,
+}) => {
   return (
     <div className="border-2">
       <div className="flex justify-center align-middle  m-2">
-        <button>Network1</button>
+        <button>{name}</button>
       </div>
       <div className="flex justify-center">
         <button

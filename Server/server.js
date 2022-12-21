@@ -12,15 +12,20 @@ var cors = require('cors');
 const { apiErrorHandler } = require('./error/error_handler');
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
   cors({
-    origin: 'http://127.0.0.1:5173',
-    methods: 'GET,POST,PUT,DELETE,PATCH',
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5173/',
+      'http://localhost:5173/Playground',
+      '*',
+    ],
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
     credentials: true,
   })
 );

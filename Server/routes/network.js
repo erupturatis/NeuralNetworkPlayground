@@ -26,10 +26,12 @@ router.post(
   '/create',
   asyncErr(async (req, res) => {
     // creates a new post
+    console.log('here got');
     let package = req.body.network;
     let response = await network.create({ ...package });
     res.status(201).send({
       id: response.id,
+      name: response.name,
     });
   })
 );
