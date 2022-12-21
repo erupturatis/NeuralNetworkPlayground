@@ -27,10 +27,8 @@ export const updateNetwork = async (id, network) => {
 };
 
 export const getNetwork = async (id) => {
-  let url = BASE_URL + '/' + id;
-  let response = await ky.get(url, {
-    network,
-  });
+  let url = BASE_URL + '/network/' + id;
+  let response = await ky.get(url, {});
   return response;
 };
 

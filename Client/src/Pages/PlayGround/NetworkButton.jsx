@@ -1,14 +1,11 @@
 import React from 'react';
 import download from '../../assets/download.svg';
 
-const NetworkButton = ({ saveNetwork, clearNetwork, index }) => {
+const NetworkButton = ({ saveNetwork, clearNetwork, loadNetwork, index }) => {
   return (
     <div className="border-2">
       <div className="flex justify-center align-middle  m-2">
         <button>Network1</button>
-        <button className="border-2">
-          <img src={download} width={30} height={30} />
-        </button>
       </div>
       <div className="flex justify-center">
         <button
@@ -19,11 +16,17 @@ const NetworkButton = ({ saveNetwork, clearNetwork, index }) => {
         >
           save
         </button>
-        <button className="m-2">load</button>
         <button
           className="m-2"
           onClick={() => {
-            console.log('clearng');
+            loadNetwork(index);
+          }}
+        >
+          load
+        </button>
+        <button
+          className="m-2"
+          onClick={() => {
             clearNetwork(index);
           }}
         >

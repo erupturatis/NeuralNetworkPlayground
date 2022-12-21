@@ -6,9 +6,11 @@ import {
   createNetwork,
   updateUserNetworkID,
   deleteNetwork,
+  getNetwork,
 } from '../../api/requests';
 import { setUser } from '../../store/user';
-
+import { replaceState } from '../../store/network';
+import { replaceRecording } from '../../store/recording';
 const OptionsRight = () => {
   const { network, recording, user, running } = useSelector((state) => state);
   const [selected, setSelected] = useState(-1);
@@ -57,15 +59,11 @@ const OptionsRight = () => {
       ...user.user,
     };
     let networkID = [...updatedUser.networkID];
-    console.log(updatedUser);
     let targetID = updatedUser.networkID[index];
     // deleting Network from database
     let response = await deleteNetwork(targetID);
-    console.log(response);
     // deleting from user data locally
-    console.log(networkID);
     networkID[index] = '0';
-    console.log(networkID);
 
     updatedUser.networkID = [...networkID];
     dispatch(setUser(updatedUser));
@@ -74,11 +72,21 @@ const OptionsRight = () => {
       updatedUser[`_id`],
       updatedUser.networkID
     );
-    console.log(response);
   };
 
   let loadNetwork = async (index) => {
     // just load the network and the recording in redux
+    let targetID = user.user.networkID[index];
+    let network = await getNetwork(targetID);
+    network = await network.json();
+    let recording = network.result.recording;
+    network = network.result.networkArhitecture;
+    // replacing the network arhitecture
+    dispatch(replaceState(network));
+    // replacing the recording and other data
+    if (recording) {
+      dispatch(replaceRecording(recording));
+    }
   };
 
   return (
@@ -90,6 +98,7 @@ const OptionsRight = () => {
             key={el}
             saveNetwork={saveNetwork}
             clearNetwork={clearNetwork}
+            loadNetwork={loadNetwork}
             index={el}
           />
         );

@@ -60,8 +60,17 @@ export const recordingSlice = createSlice({
 
       state.snapshots.push({ network: networkState, loss });
     },
+    replaceRecording: (state, action) => {
+      let recording = action.payload;
+      console.log(current(state));
+      console.log(recording);
+      for (let key in state) {
+        state[`${key}`] = recording[`${key}`];
+      }
+    },
   },
 });
 
-export const { initializeRecording, addSnapshot } = recordingSlice.actions;
+export const { initializeRecording, addSnapshot, replaceRecording } =
+  recordingSlice.actions;
 export default recordingSlice.reducer;

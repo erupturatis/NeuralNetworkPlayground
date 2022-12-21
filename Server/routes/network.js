@@ -11,7 +11,7 @@ router.get(
     let id = req.params.id;
     let package;
     try {
-      result = await network.findById('639b7d0ba0117ef4e0ed54e3');
+      result = await network.findById(id);
     } catch (err) {
       throw 'network not found';
     }
