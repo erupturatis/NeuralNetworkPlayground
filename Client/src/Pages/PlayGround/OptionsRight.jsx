@@ -22,7 +22,6 @@ const OptionsRight = () => {
   useEffect(() => {
     // loading the Network from the database
     if (selected === -1) return;
-    console.log('loading selected');
   }, [selected]);
 
   let packageData = () => {
