@@ -104,7 +104,7 @@ const OptionsLeft = () => {
     mapOutputs(result.meta.fields);
   };
   const FILES = {
-    XOR: ['/public/Files/XORinputs.txt', '/public/Files/XORoutputs.txt'],
+    XOR: ['/Files/XORinputs.txt', '/Files/XORoutputs.txt'],
     files2: ['', ''],
   };
 
