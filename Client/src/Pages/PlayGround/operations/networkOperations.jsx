@@ -164,7 +164,7 @@ export class Operations {
     // network preprocessing
     this.networkPreprocessing();
 
-    let recordFrequency = 2;
+    let recordFrequency = 5;
     // getting initial loss
 
     let initialPred = model.predict(this.inputData, this.outputData);
