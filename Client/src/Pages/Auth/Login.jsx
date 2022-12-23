@@ -1,8 +1,9 @@
 import React from 'react';
+const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
 
 const Login = () => {
   const google = () => {
-    window.open('http://localhost:3000/auth/google', '_self');
+    window.open(`${BASE_URL}/auth/google`, '_self');
   };
 
   return (
