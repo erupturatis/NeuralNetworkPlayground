@@ -13,27 +13,24 @@ const { apiErrorHandler } = require('./error/error_handler');
 const app = express();
 
 app.use(bodyParser.json({ limit: '50mb' }));
+
+app.get('/', (req, res) => {
+  //let out = req.user.email;
+  console.log('envar');
+  res.send(JSON.stringify(process.env));
+});
+
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:5173/',
-      'http://localhost:5173/Playground',
-      '*',
-    ],
+    origin: [process.env.CLIENT_URL],
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
     credentials: true,
   })
 );
-
-app.get('/', (req, res) => {
-  //let out = req.user.email;
-  res.send(`abcd ${JSON.stringify(req.user)}`);
-});
 
 app.use('/auth', auth);
 app.use('/network', network);

@@ -1,5 +1,6 @@
 import ky from 'ky';
-const BASE_URL = 'http://localhost:3000';
+
+const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
 
 export const createNetwork = async (network) => {
   // creates a new network
