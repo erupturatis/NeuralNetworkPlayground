@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import NetworkButton from './NetworkButton';
+import NetworkButton from '../../NetworkButton';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   createNetwork,
@@ -8,10 +8,12 @@ import {
   deleteNetwork,
   getNetwork,
   updateUserNetworkName,
-} from '../../api/requests';
-import { setUser } from '../../store/user';
-import { replaceState } from '../../store/network';
-import { replaceRecording } from '../../store/recording';
+} from '../../../../api/requests';
+import { setUser } from '../../../../store/user';
+import { replaceState } from '../../../../store/network';
+import { replaceRecording } from '../../../../store/recording';
+import Popup from './Popup';
+
 const OptionsRight = () => {
   const { network, recording, user, running } = useSelector((state) => state);
   const [selected, setSelected] = useState(-1);
