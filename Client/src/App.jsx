@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { setUser } from './store/user';
 import { useSelector } from 'react-redux';
 
+const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
+
 function App() {
   // const [user, setUser] = useState(null);
   const dispatch = useDispatch();
@@ -17,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const getUser = () => {
-      fetch('http://localhost:3000/auth/login/success', {
+      fetch(BASE_URL + '/auth/login/success', {
         method: 'GET',
         credentials: 'include',
         headers: {
