@@ -1,7 +1,6 @@
 import ky from 'ky';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-console.log('test change');
 export const createNetwork = async (network) => {
   // creates a new network
   console.log('net ehre', network);
