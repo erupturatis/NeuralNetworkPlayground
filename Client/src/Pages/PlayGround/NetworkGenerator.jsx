@@ -3,6 +3,8 @@ import { useRef, useEffect } from 'react';
 import { select, easeLinear } from 'd3';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNeuron } from '../../store/network';
+import { useMemo } from 'react';
+import { createContext, useContext } from 'react';
 
 import {
   generateStructure,
@@ -12,12 +14,13 @@ import {
 } from './utils/generatorUtils';
 
 import { Operations } from './operations/networkOperations';
+import { setOperation } from './utils/operation';
 
 const NetworkGenerator = () => {
   const { network, cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();
-
   useEffect(() => {
+    setOperation(new Operations());
     generateStructure();
     addZoom();
   }, []);

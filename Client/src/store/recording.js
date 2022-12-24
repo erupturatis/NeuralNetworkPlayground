@@ -1,5 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { operations } from '../Pages/PlayGround/utils/globals';
+import { store } from './store';
+import { operation } from '../Pages/PlayGround/utils/operation';
 const initialState = {
   saved: false,
   networkArhitecture: {},
@@ -28,6 +29,7 @@ export const recordingSlice = createSlice({
     },
 
     addSnapshot: (state, action) => {
+      const operations = operation;
       const model = operations.model;
       const epoch = operations.epoch;
       const loss = operations.loss;

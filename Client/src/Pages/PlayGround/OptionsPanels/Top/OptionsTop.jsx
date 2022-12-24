@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
 import { setInputs, setOutputs } from '../../../../store/data';
-import { operations } from '../../utils/globals';
 import { replaceState } from '../../../../store/network';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
-
+import { operation } from '../../utils/operation';
 const OptionsTop = () => {
   const { network, recording, data, running } = useSelector((state) => state);
   const [epoch, setEpoch] = useState(0);
@@ -87,9 +86,10 @@ const OptionsTop = () => {
 
   let runNetwork = async () => {
     //running the network
-    operations.change(network, data.input, data.output);
-    operations.setParams(network, data.input, data.output);
-    operations.runNetwork();
+    console.log(operation);
+    operation.change(network, data.input, data.output);
+    operation.setParams(network, data.input, data.output);
+    operation.runNetwork();
   };
 
   return (

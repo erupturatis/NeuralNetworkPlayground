@@ -1,5 +1,4 @@
 import React from 'react';
-import download from '../../assets/download.svg';
 import Popup from './OptionsPanels/Right/Popup';
 import { useState } from 'react';
 
