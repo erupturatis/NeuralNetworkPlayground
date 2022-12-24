@@ -9,10 +9,10 @@ import { useDispatch } from 'react-redux';
 import { setUser } from './store/user';
 import { useSelector } from 'react-redux';
 
-const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
+// const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 function App() {
-  // const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state);
   const [loaded, setLoaded] = useState(false);

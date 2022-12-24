@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-const BASE_URL = 'https://seal-app-4qpjq.ondigitalocean.app/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const createNetwork = async (network) => {
   // creates a new network
