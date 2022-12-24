@@ -3,6 +3,8 @@ const initialState = {
   running: false,
   fill: 0,
   epoch: 0,
+  operations: null,
+  networkState: null,
 };
 
 export const runningSlice = createSlice({

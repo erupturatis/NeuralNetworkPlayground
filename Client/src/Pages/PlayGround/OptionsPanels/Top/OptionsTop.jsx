@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
-import { dispatchSetInputs, dispatchSetOutputs } from '../../utils/dispatchers';
+import { setInputs, setOutputs } from '../../../../store/data';
 import { operations } from '../../utils/globals';
 import { replaceState } from '../../../../store/network';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
@@ -41,11 +41,11 @@ const OptionsTop = () => {
   }, [selectedSnapshot]);
 
   const setInputs = (result) => {
-    dispatchSetInputs(result);
+    dispatch(setInputs(result));
     mapInputs(result.meta.fields);
   };
   const setOutputs = (result) => {
-    dispatchSetOutputs(result);
+    dispatch(setOutputs(result));
     mapOutputs(result.meta.fields);
   };
 

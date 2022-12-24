@@ -11,8 +11,6 @@ import {
   addZoom,
 } from './utils/generatorUtils';
 
-import { setDispatch } from './utils/dispatchers';
-import { setNetworkState, setOperations } from './utils/globals';
 import { Operations } from './operations/networkOperations';
 
 const NetworkGenerator = () => {
@@ -20,14 +18,11 @@ const NetworkGenerator = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setNetworkState(network);
     generateStructure();
-    setOperations(new Operations());
     addZoom();
   }, []);
 
   useEffect(() => {
-    setNetworkState(network);
     generateStructure();
     generateNetwork();
     generateUI();

@@ -1,10 +1,8 @@
 import * as tf from '@tensorflow/tfjs';
 import { mode } from 'd3';
 import { transpose } from './utils';
-import {
-  dispatchInitializeRecording,
-  dispatchAddSnapshot,
-} from '../utils/dispatchers';
+
+import { initializeRecording, addSnapshot } from '../../../store/recording';
 
 import { store } from '../../../store/store';
 import { changeRun, setEpoch, setFill } from '../../../store/running';
@@ -26,25 +24,18 @@ export class Operations {
   }
 
   initRecording() {
-    dispatchInitializeRecording({
-      network: this.network,
-      inputs: this.inputsProcessed,
-      outputs: this.outputProcessed,
-    });
-  }
-
-  loadSnapshot(iteration) {
-    //loading a snapshot of a specific iteration or the
-    //closest to it
+    store.dispatch(
+      initializeRecording({
+        network: this.network,
+        inputs: this.inputsProcessed,
+        outputs: this.outputProcessed,
+      })
+    );
   }
 
   saveSnapshotCallback() {
     // saving a snapshot of the network at a specific iteration
-    dispatchAddSnapshot();
-  }
-
-  callWarning() {
-    // call a warning to confirm we want to run
+    store.dispatch(addSnapshot());
   }
 
   processData() {

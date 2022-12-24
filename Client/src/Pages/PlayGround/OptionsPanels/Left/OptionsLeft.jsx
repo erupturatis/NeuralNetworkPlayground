@@ -2,20 +2,20 @@ import React from 'react';
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import {
-  dispatchAddLayer,
-  dispatchAddNeuron,
-  dispatchRemoveLayer,
-  dispatchRemoveNeuron,
-} from '../../utils/dispatchers';
-import { setDispatch } from '../../utils/dispatchers';
+
 import RangeSlider from '../../../../Components/RangeSlider';
-import { changeSetting, resetSettings } from '../../../../store/cosmetics';
-import { changeProperty } from '../../../../store/network';
+import { changeSetting } from '../../../../store/cosmetics';
 import Settings from './Settings';
 import { setInputs, setOutputs } from '../../../../store/data';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
+
+import {
+  addLayer,
+  addNeuron,
+  removeLayer,
+  removeNeuron,
+} from '../../../../store/network';
 
 const OptionsLeft = () => {
   const { network, cosmetics, data } = useSelector((state) => state);
@@ -39,10 +39,6 @@ const OptionsLeft = () => {
   }, [network.layers]);
 
   useEffect(() => {
-    setDispatch(dispatch);
-  }, []);
-
-  useEffect(() => {
     syncLayers();
   }, [layers]);
 
@@ -54,7 +50,7 @@ const OptionsLeft = () => {
           iter > 0;
           iter--
         ) {
-          dispatchAddNeuron(i);
+          dispatch(addNeuron(i));
         }
       } else if (layerSizes[i] < network.layers[i].numNeurons) {
         for (
@@ -62,7 +58,7 @@ const OptionsLeft = () => {
           iter > 0;
           iter--
         ) {
-          dispatchRemoveNeuron(i);
+          dispatch(removeNeuron(i));
         }
       }
     }
@@ -87,11 +83,11 @@ const OptionsLeft = () => {
     if (layers > network.length) {
       // need to add layers
       for (let iter = layers - network.length; iter > 0; iter--) {
-        dispatchAddLayer(network.length - 2);
+        dispatch(addLayer(network.length - 2));
       }
     } else if (layers < network.length) {
       for (let iter = network.length - layers; iter > 0; iter--) {
-        dispatchRemoveLayer(layers - 1);
+        dispatch(removeLayer(layers - 1));
       }
     }
   };
