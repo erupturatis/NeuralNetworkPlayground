@@ -14,12 +14,6 @@ const app = express();
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
-app.get('/', (req, res) => {
-  //let out = req.user.email;
-  console.log('envar');
-  res.send(JSON.stringify(process.env));
-});
-
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());

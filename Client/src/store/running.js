@@ -1,8 +1,10 @@
 import { createSlice, current } from '@reduxjs/toolkit';
+import { Operations } from '../Pages/PlayGround/operations/networkOperations';
 const initialState = {
   running: false,
   fill: 0,
   epoch: 0,
+  // operations: new Operations(),
 };
 
 export const runningSlice = createSlice({

@@ -13,11 +13,11 @@ const PlayGround = () => {
   }, []);
 
   return (
-    <div id="graph-container" className="w-full h-full ">
-      <div className=" text-white left-0 absolute h-full  w-72 border-2 ">
+    <div id="graph-container" className="w-full h-full relative">
+      <div className=" text-white left-0 absolute h-full  w-72 m-6 ">
         <OptionsLeft />
       </div>
-      <div className=" text-white ml-64 mr-64 absolute h-48 w-full border-2 ">
+      <div className=" text-white left-80 absolute h-48 w-full border-2 ">
         <OptionsTop />
       </div>
       <div className=" text-white right-0 absolute w-64 h-full border-2 ">

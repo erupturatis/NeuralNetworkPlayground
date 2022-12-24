@@ -13,16 +13,29 @@ import { select, easeLinear } from 'd3';
 
 import * as d3 from 'd3';
 
-import { networkState as network } from './globals';
 import {
-  dispatchAddNeuron,
-  dispatchRemoveLayer,
-  dispatchRemoveNeuron,
-  dispatchAddLayer,
-} from './dispatchers';
+  addNeuron,
+  removeLayer,
+  removeNeuron,
+  addLayer,
+} from '../../../store/network';
+
+let dispatchAddNeuron = (...args) => {
+  store.dispatch(addNeuron(...args));
+};
+
+let dispatchRemoveLayer = (...args) => {
+  store.dispatch(removeLayer(...args));
+};
+let dispatchRemoveNeuron = (...args) => {
+  store.dispatch(removeNeuron(...args));
+};
+let dispatchAddLayer = (...args) => {
+  store.dispatch(addLayer(...args));
+};
 
 let generateConnections = () => {
-  let { cosmetics } = store.getState();
+  let { cosmetics, network } = store.getState();
   let { animationsSpeed } = cosmetics;
   let newConn = [];
 
@@ -131,7 +144,7 @@ let addZoom = () => {
 };
 
 let generateNeurons = () => {
-  let { cosmetics } = store.getState();
+  let { cosmetics, network } = store.getState();
   let { radius, strokeWNeurons, animationsSpeed } = cosmetics;
   let layers = network.layers;
   let neuronsData = [];
@@ -190,6 +203,8 @@ let generateNeurons = () => {
 };
 
 let initialStructure = () => {
+  let { network } = store.getState();
+
   let layers = network.layers;
   let unpLayers = [...layers];
   let g = select('#originGroup');
@@ -212,6 +227,8 @@ let initialStructure = () => {
 };
 
 let generateStructure = () => {
+  let { network } = store.getState();
+
   let layers = network.layers;
   let unpLayers = [...layers];
   let g = select('#originGroup');
@@ -288,7 +305,8 @@ let generateUIElements = (
 };
 
 let generateUI = () => {
-  let { cosmetics } = store.getState();
+  let { cosmetics, network } = store.getState();
+  // store.dispatch()
   let { radius, layerDistance } = cosmetics;
   let length = network.length;
   let arr = [];
@@ -398,6 +416,8 @@ let mapInputs = (arrInputs) => {
 };
 
 let mapOutputs = (arrOutputs) => {
+  let { network } = store.getState();
+
   select('#tooltip-area')
     .selectChildren('text.outputs')
     .data(arrOutputs)

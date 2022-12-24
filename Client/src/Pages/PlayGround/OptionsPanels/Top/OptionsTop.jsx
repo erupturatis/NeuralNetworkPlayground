@@ -3,11 +3,10 @@ import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
-import { dispatchSetInputs, dispatchSetOutputs } from '../../utils/dispatchers';
-import { operations } from '../../utils/globals';
+import { setInputs, setOutputs } from '../../../../store/data';
 import { replaceState } from '../../../../store/network';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
-
+import { operation } from '../../utils/operation';
 const OptionsTop = () => {
   const { network, recording, data, running } = useSelector((state) => state);
   const [epoch, setEpoch] = useState(0);
@@ -41,11 +40,11 @@ const OptionsTop = () => {
   }, [selectedSnapshot]);
 
   const setInputs = (result) => {
-    dispatchSetInputs(result);
+    dispatch(setInputs(result));
     mapInputs(result.meta.fields);
   };
   const setOutputs = (result) => {
-    dispatchSetOutputs(result);
+    dispatch(setOutputs(result));
     mapOutputs(result.meta.fields);
   };
 
@@ -87,9 +86,10 @@ const OptionsTop = () => {
 
   let runNetwork = async () => {
     //running the network
-    operations.change(network, data.input, data.output);
-    operations.setParams(network, data.input, data.output);
-    operations.runNetwork();
+    console.log(operation);
+    operation.change(network, data.input, data.output);
+    operation.setParams(network, data.input, data.output);
+    operation.runNetwork();
   };
 
   return (
