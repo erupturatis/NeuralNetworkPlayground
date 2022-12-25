@@ -2,7 +2,7 @@ import React from 'react';
 import arrow from './assets/arrowdown.png';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import RangeSlider from '../../../../Components/RangeSlider';
+import RangeSlider from '../../../../Components/Slider/RangeSlider';
 import { useDispatch } from 'react-redux';
 import {
   addNeuron,
@@ -18,7 +18,7 @@ const Arhitecture = () => {
   const [layerSizes, setLayerSizes] = useState(
     network.layers.map((element) => element.numNeurons)
   );
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
 
   let setlayerSizesIdx = (index, value) => {
     value = parseInt(value);

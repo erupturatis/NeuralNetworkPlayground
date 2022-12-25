@@ -1,5 +1,5 @@
 import React from 'react';
-import RangeSlider from '../../../../Components/RangeSlider';
+import RangeSlider from '../../../../Components/Slider/RangeSlider';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { changeSetting } from '../../../../store/cosmetics';
