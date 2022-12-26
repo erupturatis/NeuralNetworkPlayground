@@ -27,6 +27,16 @@ const Arhitecture = () => {
     setLayerSizes(newSizes);
   };
 
+  let setMultipleLayerSizes = (...args) => {
+    let newSizes = [...layerSizes];
+
+    args.forEach((element) => {
+      const { index, value } = element;
+      newSizes.splice(index, 1, value);
+    });
+    setLayerSizes(newSizes);
+  };
+
   let setLayerSizeFactory = (index) => {
     return (value) => {
       setlayerSizesIdx(index, value);
@@ -83,7 +93,7 @@ const Arhitecture = () => {
 
   return (
     <div>
-      <div className="z-10">
+      <div className="z-10 select-none">
         <button
           onClick={() => {
             setDisplay((e) => !e);
@@ -108,23 +118,36 @@ const Arhitecture = () => {
             : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
         }`}
       >
-        <div>Layers {layers}</div>
-        <div className="">
+        <div className="select-none opacity-70 flex justify-center mb-2 mt-2">
+          Layers {layers}
+        </div>
+        <div className="mb-2">
           <input
             id="range"
             type="range"
             min="2"
             max="20"
             value={layers}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            style={{
+              background: `linear-gradient(90deg, rgba(74,95,170,1) 0%, rgba(74,95,170,1) ${
+                (layers / 20) * 100
+              }%, rgba(27,41,69,1) ${
+                (layers / 20) * 100
+              }%, rgba(27,41,69,1) 100%)`,
+            }}
+            className="w-full h-3 mb-10  bg-[#1B2945] rounded-lg appearance-none cursor-pointer slider"
             onChange={(e) => {
               setLayers(e.target.value);
             }}
           />
+          <div className="flex justify-between mb-4 text-lg">
+            <div className="opacity-70 select-none">Layer</div>
+            <div className="opacity-70 select-none">neurons</div>
+          </div>
           {network.layers.map((element) => {
             return (
               <RangeSlider
-                label={`Layer ${element.layerNum} with ${element.numNeurons} neurons`}
+                label={`${element.layerNum} `}
                 min={1}
                 max={25}
                 key={`${element.layerNum}`}
@@ -134,6 +157,20 @@ const Arhitecture = () => {
               />
             );
           })}
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={async () => {
+              setLayers(3);
+              setMultipleLayerSizes(
+                { index: 0, value: 2 },
+                { index: 1, value: 5 }
+              );
+            }}
+            className="select-none text-center opacity-25 mt-4 font-light hover:opacity-100 hover:font-normal transition "
+          >
+            Reset settings
+          </button>
         </div>
       </div>
     </div>
