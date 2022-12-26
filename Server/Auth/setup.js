@@ -35,7 +35,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: `${process.env.CLIENT_URL}/api/auth/github/callback`,
+      callbackURL: `${process.env.SERVER_URL}/auth/github/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       // here I should save database ID/ identifier for the user
@@ -67,7 +67,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.CLIENT_URL}/api/auth/google/callback`,
+      callbackURL: `${process.env.SERVER_URL}/auth/google/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       // here I should save database ID/ identifier for the user

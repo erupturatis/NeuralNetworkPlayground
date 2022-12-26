@@ -26,6 +26,9 @@ app.use(
   })
 );
 
+app.get('/', (req, res) => {
+  res.send('.');
+});
 app.use('/auth', auth);
 app.use('/network', network);
 app.use('/user', user);

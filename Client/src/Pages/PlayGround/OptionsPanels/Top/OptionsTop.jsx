@@ -172,19 +172,17 @@ const OptionsTop = () => {
               </button>
             </div>
           </div>
-          <div className=" w-96">
-            <div className=" w-full h-6  border-2 rounded-md mt-2">
-              <div
-                className="bg-[#2A85ED] h-full"
-                style={{
-                  width: `${fill}%`,
-                }}
-              ></div>
-            </div>
+          <div className="w-96 relative">
+            <div
+              className="w-full h-6  border-2  rounded-md mt-2 z-10"
+              style={{
+                background: `linear-gradient(90deg, rgba(42,133,237,1) 0%, rgba(42,133,237,1) ${fill}%, rgba(74,95,170,0) ${fill}%, rgba(27,41,69,0) 100%)`,
+              }}
+            ></div>
             <div>
               {!isRunning && recording.saved ? (
                 <>
-                  <div className="relative pt-1 w-full">
+                  <div className="relative pt-1 w-full ">
                     <input
                       id="range"
                       type="range"

@@ -19,6 +19,7 @@ export const recordingSlice = createSlice({
     initializeRecording: (state, action) => {
       const { network, inputs, outputs, params } = action.payload;
       state.networkArhitecture = network;
+      state.saved = false;
       state.trainParams = params;
       state.inputData = inputs[0];
       state.inputDataLabels = inputs[1];
