@@ -3,7 +3,7 @@ import NetworkGenerator from './NetworkGenerator';
 import OptionsLeft from './OptionsPanels/Left/OptionsLeft';
 import OptionsTop from './OptionsPanels/Top/OptionsTop';
 import OptionsRight from './OptionsPanels/Right/OptionsRight';
-
+import './playground.css';
 const PlayGround = () => {
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
@@ -14,12 +14,12 @@ const PlayGround = () => {
 
   return (
     <div id="graph-container" className="w-full h-full relative">
-      <div className=" text-white left-0 absolute h-full  w-72 m-6 ">
+      <div className=" text-white left-0 absolute m-6 h-full w-80 ">
         <OptionsLeft />
       </div>
-      <div className=" text-white left-80 absolute h-48 w-full border-2 ">
+      {/* <div className=" text-white left-80 absolute h-48 w-full ">
         <OptionsTop />
-      </div>
+      </div> */}
       <div className=" text-white right-0 absolute w-64 h-full border-2 ">
         <OptionsRight />
       </div>

@@ -10,7 +10,7 @@ const RangeSlider = ({
   wval = 10,
 }) => {
   return (
-    <div className=" flex  items-center mb-1 justify-between">
+    <div className="flex items-center mb-1 justify-between select-none">
       <div className={`text-sm opacity-60 w-${wval} text-center select-none`}>
         {label}
       </div>
@@ -28,7 +28,7 @@ const RangeSlider = ({
               ((valueTracker - min) / (max - min)) * 100
             }%, rgba(27,41,69,1) 100%)`,
           }}
-          className="w-full h-2  bg-[#1B2945] rounded-lg appearance-none cursor-pointer slider"
+          className=" w-full h-3 bg-[#1B2945] rounded-lg appearance-none slider"
           onChange={(e) => {
             setValue(e.target.value);
           }}

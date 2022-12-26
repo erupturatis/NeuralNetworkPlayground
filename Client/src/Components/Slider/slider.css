@@ -10,9 +10,6 @@
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none;
-  width: 0px;
-  height: 0px;
-  background: #2e3633;
-  cursor: pointer;
+  width: 10px;
+  height: 10px;
 }

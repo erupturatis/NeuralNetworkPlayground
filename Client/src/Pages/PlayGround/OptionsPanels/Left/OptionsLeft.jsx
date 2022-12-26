@@ -6,6 +6,7 @@ import Cosmetics from './Cosmetics';
 import Arhitecture from './Arhitecture';
 import Advanced from './Advanced';
 import Datasets from './Datasets';
+import './left.css';
 
 const OptionsLeft = () => {
   const { network, cosmetics, data } = useSelector((state) => state);
@@ -17,7 +18,12 @@ const OptionsLeft = () => {
   );
 
   return (
-    <div>
+    <div
+      style={{
+        'scrollbar-gutter': 'stable',
+      }}
+      className=" h-5/6 overflow-y-auto overflow-x-hidden w-full scroll pr-4"
+    >
       <Arhitecture />
       <Cosmetics />
       <Advanced />

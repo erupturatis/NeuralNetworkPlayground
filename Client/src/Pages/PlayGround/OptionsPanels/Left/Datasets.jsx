@@ -5,6 +5,10 @@ import { useDispatch } from 'react-redux';
 import { setInputsLabel, setInputs } from '../../../../store/data';
 import { setOutputsLabel, setOutputs } from '../../../../store/data';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
+
+import download from './assets/download.png';
+import upload from './assets/upload.png';
+
 const Datasets = () => {
   const [display, setDisplay] = useState(true);
   const dispatch = useDispatch();
@@ -100,7 +104,7 @@ const Datasets = () => {
               display ? ' -rotate-90' : ''
             }`}
           />
-          <div className=" text-lg ml-4 ">Network cosmetics</div>
+          <div className=" text-lg ml-4 ">Premade datasets</div>
         </button>
       </div>
 
@@ -111,16 +115,34 @@ const Datasets = () => {
             : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
         }`}
       >
-        <div className="flex w-72  h-60">
-          <button className=" w-10 h-10"> down</button>
-          <div>The xor dataset</div>
+        <div className="flex w-100 justify-between mt-4">
+          <div className="w-20 text-center  opacity-30 font-light">
+            download
+          </div>
+          <div className="w-40 text-center"></div>
+          <div className="w-40 text-center opacity-30 font-light">
+            load in network
+          </div>
+        </div>
+
+        <div className="flex w-64 mt-6 justify-between">
+          <button className=" w-12 h-10  flex justify-center">
+            <img src={download} alt="" className="w-10" />
+          </button>
+          <div className="w-40 flex items-center justify-center font-medium">
+            <div>
+              The xor dataset
+              <div className=" font-light text-center">2 inputs 1 output</div>
+            </div>
+          </div>
+
           <button
             onClick={() => {
               uploadFiles('XOR');
             }}
-            className=" w-10 h-10"
+            className=" w-30 h-10 flex justify-center"
           >
-            uplo
+            <img src={upload} alt="" className="w-10" />
           </button>
         </div>
       </div>

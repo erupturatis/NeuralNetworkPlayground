@@ -8,12 +8,12 @@ const Advanced = () => {
   const [showActivation, setShowActivation] = useState(false);
   const [showLoss, setShowLoss] = useState(false);
   const [showEpochs, setShowEpochs] = useState(false);
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(true);
 
   return (
     <>
-      <div>
-        <div>
+      <div className="w-full">
+        <div className="">
           <button
             onClick={() => {
               setDisplay((e) => !e);
@@ -23,24 +23,32 @@ const Advanced = () => {
             <img
               src={arrow}
               alt=""
-              className={`mt-1 w-5 h-5 transition-transform ${
+              className={`mt-1 mb-2 w-5 h-5 transition-transform ${
                 display ? ' -rotate-90' : ''
               }`}
             />
-            <div className=" text-lg ml-4 ">Network cosmetics</div>
+            <div className=" text-lg ml-4 select-none ">Advanced settings</div>
           </button>
         </div>
 
         <div
-          className={` transition-all mb-4 ${
+          className={` transition-all mb-4  ${
             !display
-              ? ' '
+              ? '  '
               : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
           }`}
         >
           <Settings
             trigger={showActivation}
-            setTrigger={setShowActivation}
+            setTrigger={() => {
+              setShowActivation((e) => !e);
+              if (showEpochs) {
+                setShowEpochs(false);
+              }
+              if (showLoss) {
+                setShowLoss(false);
+              }
+            }}
             optionsValues={['relu', 'elu', 'tanh', 'sigmoid']}
             name={'Activation'}
             value={network.activation}
@@ -48,7 +56,15 @@ const Advanced = () => {
           />
           <Settings
             trigger={showEpochs}
-            setTrigger={setShowEpochs}
+            setTrigger={() => {
+              setShowEpochs((e) => !e);
+              if (showActivation) {
+                setShowActivation(false);
+              }
+              if (showLoss) {
+                setShowLoss(false);
+              }
+            }}
             optionsValues={[50, 100, 250]}
             name={'Epochs'}
             value={network.epochs}
@@ -56,11 +72,19 @@ const Advanced = () => {
           />
           <Settings
             trigger={showLoss}
-            setTrigger={setShowLoss}
+            setTrigger={() => {
+              setShowLoss((e) => !e);
+              if (showActivation) {
+                setShowActivation(false);
+              }
+              if (showEpochs) {
+                setShowEpochs(false);
+              }
+            }}
             optionsValues={[
               'MeanSquaredError',
               'CategoricalCrossEntropy',
-              'meanSquaredLogarithmicError',
+              'MeanSquaredLogarithmicError',
             ]}
             name={'Loss'}
             value={network.loss}

@@ -13,7 +13,7 @@ let generateNetwork = (...layers) => {
   let initState = {
     length: layers.length,
     activation: 'sigmoid',
-    loss: 'meanSquaredError',
+    loss: 'MeanSquaredError',
     epochs: 100,
     layers: [],
     biases: [],

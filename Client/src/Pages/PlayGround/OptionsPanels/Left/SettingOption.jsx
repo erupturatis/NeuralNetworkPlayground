@@ -6,7 +6,7 @@ const SettingOption = ({ prop, value, setTrigger }) => {
   const dispatch = useDispatch();
   return (
     <button
-      className=" cursor-pointer w-full"
+      className=" cursor-pointer w-full bg-[#192332] hover:bg-[#243247] transition mb-1 font-light"
       onClick={() => {
         dispatch(
           changeProperty({
@@ -14,10 +14,10 @@ const SettingOption = ({ prop, value, setTrigger }) => {
             value,
           })
         );
-        setTrigger((e) => !e);
+        setTrigger();
       }}
     >
-      Select {value}
+      {value}
     </button>
   );
 };

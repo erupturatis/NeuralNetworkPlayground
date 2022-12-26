@@ -10,7 +10,7 @@ import arrow from './assets/arrowdown.png';
 const Cosmetics = () => {
   const { cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(true);
 
   return (
     <div>
