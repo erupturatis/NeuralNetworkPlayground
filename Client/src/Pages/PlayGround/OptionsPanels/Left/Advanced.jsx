@@ -82,9 +82,9 @@ const Advanced = () => {
               }
             }}
             optionsValues={[
-              'MeanSquaredError',
-              'CategoricalCrossEntropy',
-              'MeanSquaredLogarithmicError',
+              'meanSquaredError',
+              'categoricalCrossEntropy',
+              'meanSquaredLogarithmicError',
             ]}
             name={'Loss'}
             value={network.loss}

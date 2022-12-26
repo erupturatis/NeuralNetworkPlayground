@@ -5,6 +5,7 @@ import { transpose } from './utils';
 import { initializeRecording, addSnapshot } from '../../../store/recording';
 
 import { store } from '../../../store/store';
+import { changeSaved } from '../../../store/recording';
 import { changeRun, setEpoch, setFill } from '../../../store/running';
 import { replaceState } from '../../../store/network';
 
@@ -155,21 +156,10 @@ export class Operations {
     // network preprocessing
     this.networkPreprocessing();
 
-    let recordFrequency = 5;
-    // getting initial loss
+    let recordFrequency = this.network.recordFreq;
 
-    let initialPred = model.predict(this.inputData, this.outputData);
-    let lossInit = tf.losses.meanSquaredError(initialPred, this.outputData);
-
-    let lossVal = lossInit.arraySync();
-
-    this.epoch = 0;
-    this.model = model;
-    this.loss = lossVal;
-    // saving model snapshot
-    this.saveSnapshotCallback();
     let res = await model.fit(this.inputData, this.outputData, {
-      epochs,
+      epochs: epochs + 1,
       batchSize: 12,
       callbacks: {
         onEpochEnd: async (epoch, params) => {
@@ -195,10 +185,12 @@ export class Operations {
     });
     store.dispatch(setEpoch(epochs));
     store.dispatch(setFill(this.network.epochs));
-    store.dispatch(changeRun());
     let storeData = store.getState();
     let lastNetwork = storeData.recording.snapshots.slice(-1)[0].network;
     store.dispatch(replaceState(lastNetwork));
+    store.dispatch(changeSaved());
+    store.dispatch(changeRun());
+
     // setRunning(false);
     // setEpoch(epochs);
     // setFill(100);

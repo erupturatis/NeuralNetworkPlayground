@@ -17,9 +17,9 @@ const PlayGround = () => {
       <div className=" text-white left-0 absolute m-6 h-full w-80 ">
         <OptionsLeft />
       </div>
-      {/* <div className=" text-white left-80 absolute h-48 w-full ">
+      <div className=" top-6 text-white absolute h-48 left-80 ml-6 right-60 mr-6  ">
         <OptionsTop />
-      </div> */}
+      </div>
       <div className=" text-white right-0 absolute w-64 h-full border-2 ">
         <OptionsRight />
       </div>

@@ -7,6 +7,8 @@ import { setInputs, setOutputs } from '../../../../store/data';
 import { replaceState } from '../../../../store/network';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
 import { operation } from '../../utils/operation';
+import pause from './assets/pause.png';
+import run from './assets/running.png';
 const OptionsTop = () => {
   const { network, recording, data, running } = useSelector((state) => state);
   const [epoch, setEpoch] = useState(0);
@@ -23,7 +25,7 @@ const OptionsTop = () => {
 
   useEffect(() => {
     setIsRunning(running.running);
-    setSelectedSnapshot(running.epoch);
+    setSelectedSnapshot(running.epoch / network.recordFreq);
     // setSelectedSnapshot(network.epoch);
   }, [running.running]);
 
@@ -94,15 +96,8 @@ const OptionsTop = () => {
 
   return (
     <div className=" w-full">
-      <button
-        onClick={() => {
-          loadFile();
-        }}
-      >
-        Load file
-      </button>
-      <div className="flex">
-        <div className="border-2">
+      <div className="">
+        <div className=" flex justify-center">
           <div>
             <input
               type="file"
@@ -114,15 +109,17 @@ const OptionsTop = () => {
               className="hidden"
             />
             <div className="flex">
-              <input
-                type="button"
-                value="input Browse..."
-                className=" border-2 w-28 h-10"
+              <button
+                className="w-40 h-8 bg-[#2677d4] rounded-lg "
                 onClick={() => {
                   document.getElementById('inputData').click();
                 }}
-              />
-              <div>{data.inputLabel}</div>
+              >
+                Choose input file
+              </button>
+              <div className="flex justify-center items-center mx-4">
+                {data.inputLabel}
+              </div>
             </div>
           </div>
           <div>
@@ -136,58 +133,87 @@ const OptionsTop = () => {
               className="hidden"
             />
             <div className="flex">
-              <input
-                type="button"
-                value="output Browse..."
-                className=" border-2 w-28 h-10"
+              <button
+                className=" w-40 h-8 bg-[#2677d4] rounded-lg "
                 onClick={() => {
                   document.getElementById('outputData').click();
                 }}
-              />
-              <div>{data.outputLabel}</div>
+              >
+                Choose output file
+              </button>
+              <div className="flex justify-center items-center mx-4">
+                {data.outputLabel}
+              </div>
             </div>
           </div>
         </div>
-        <div className="w-20">
-          <button
-            onClick={() => {
-              runNetwork();
-            }}
-          >
-            {recording.saved ? 'rerun network' : 'run network'}
-          </button>
+        <div className="w-full  flex justify-center items-center h-60 ">
+          <div className=" w-52 mr-16">
+            <div className=" h-10  text-lg font-normal flex justify-center items-center">
+              <div className="flex ">
+                <button
+                  onClick={() => {
+                    runNetwork();
+                  }}
+                  className="text-xl font-light opacity-50 hover:opacity-100"
+                >
+                  {recording.saved ? 'Rerun network' : 'Run network'}
+                </button>
+                <img
+                  src={isRunning ? run : pause}
+                  alt=""
+                  className="w-7 h-7 ml-3"
+                />
+              </div>
+            </div>
+            <div className="w-full flex justify-center ">
+              <button className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100">
+                Randomize weights
+              </button>
+            </div>
+          </div>
+          <div className=" w-96">
+            <div className=" w-full h-6  border-2 rounded-md mt-2">
+              <div
+                className="bg-[#2A85ED] h-full"
+                style={{
+                  width: `${fill}%`,
+                }}
+              ></div>
+            </div>
+            <div>
+              {!isRunning && recording.saved ? (
+                <>
+                  <div className="relative pt-1 w-full">
+                    <input
+                      id="range"
+                      type="range"
+                      min="0"
+                      max={recording.snapshots.length - 1}
+                      value={selectedSnapshot}
+                      className="w-full mt-4 h-3 bg-transparent rounded-lg appearance-none cursor-pointer border-2"
+                      onChange={(e) => {
+                        setSelectedSnapshot(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="w-full flex justify-center font-light opacity-30">
+                    select any epoch
+                  </div>
+                  <div className="flex justify-center text-lg ">
+                    Epoch {selectedSnapshot * network.recordFreq}
+                  </div>
+                  <div className="flex justify-center text-md ">
+                    Loss {recording.snapshots[selectedSnapshot].loss.toFixed(6)}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="w-64 h-6 bg-white mt-2">
-        <div
-          className="bg-blue-800 h-full"
-          style={{
-            width: `${fill}%`,
-          }}
-        ></div>
-      </div>
-      {isRunning ? `Epoch ${epoch}` : 'not running'}
-      <br />
-      {!isRunning && recording.saved ? (
-        <>
-          <div className="relative pt-1 w-72">
-            <label className="form-label">Example range</label>
-            <input
-              id="range"
-              type="range"
-              min="0"
-              max={recording.snapshots.length}
-              value={selectedSnapshot}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-              onChange={(e) => {
-                setSelectedSnapshot(e.target.value);
-              }}
-            />
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

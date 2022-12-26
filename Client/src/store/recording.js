@@ -18,7 +18,6 @@ export const recordingSlice = createSlice({
   reducers: {
     initializeRecording: (state, action) => {
       const { network, inputs, outputs, params } = action.payload;
-      state.saved = true;
       state.networkArhitecture = network;
       state.trainParams = params;
       state.inputData = inputs[0];
@@ -26,6 +25,11 @@ export const recordingSlice = createSlice({
       state.outputData = outputs[0];
       state.outputDataLabels = outputs[1];
       state.snapshots = [];
+    },
+
+    changeSaved: (state, action) => {
+      // console.log(action.payload);
+      state.saved = !state.saved;
     },
 
     addSnapshot: (state, action) => {
@@ -64,8 +68,6 @@ export const recordingSlice = createSlice({
     },
     replaceRecording: (state, action) => {
       let recording = action.payload;
-      console.log(current(state));
-      console.log(recording);
       for (let key in state) {
         state[`${key}`] = recording[`${key}`];
       }
@@ -73,6 +75,10 @@ export const recordingSlice = createSlice({
   },
 });
 
-export const { initializeRecording, addSnapshot, replaceRecording } =
-  recordingSlice.actions;
+export const {
+  initializeRecording,
+  addSnapshot,
+  changeSaved,
+  replaceRecording,
+} = recordingSlice.actions;
 export default recordingSlice.reducer;
