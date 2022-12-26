@@ -18,7 +18,7 @@ const Arhitecture = () => {
   const [layerSizes, setLayerSizes] = useState(
     network.layers.map((element) => element.numNeurons)
   );
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState(true);
 
   let setlayerSizesIdx = (index, value) => {
     value = parseInt(value);
@@ -160,7 +160,7 @@ const Arhitecture = () => {
         </div>
         <div className="flex justify-center">
           <button
-            onClick={async () => {
+            onClick={() => {
               setLayers(3);
               setMultipleLayerSizes(
                 { index: 0, value: 2 },
