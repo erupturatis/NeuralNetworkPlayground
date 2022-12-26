@@ -147,7 +147,7 @@ const OptionsTop = () => {
             </div>
           </div>
         </div>
-        <div className="w-full  flex justify-center items-center h-60 ">
+        <div className="w-full  flex justify-center  mt-6 ">
           <div className=" w-52 mr-16">
             <div className=" h-10  text-lg font-normal flex justify-center items-center">
               <div className="flex ">

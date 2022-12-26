@@ -20,7 +20,7 @@ const PlayGround = () => {
       <div className=" top-6 text-white absolute h-48 left-80 ml-6 right-60 mr-6  ">
         <OptionsTop />
       </div>
-      <div className=" text-white right-0 absolute w-64 h-full border-2 ">
+      <div className=" text-white right-0 absolute w-64 h-full ">
         <OptionsRight />
       </div>
 

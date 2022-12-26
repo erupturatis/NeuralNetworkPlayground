@@ -3,13 +3,13 @@ import React from 'react';
 const Popup = ({ text, callbackForward, callbackCancel, option }) => {
   return (
     <>
-      <div className="absolute border-2 w-44 h-20 -left-16 z-10 bg-lime-600 ">
+      <div className="absolute border-2 w-64 h-28  right-0 z-10 bg-white rounded-md ">
         <div>
-          <div> {text}</div>
+          <div className=" text-black font-medium m-2 text-lg"> {text}</div>
           <div className="flex justify-end">
             <div>
               <button
-                className=" mr-2 ml-2"
+                className="  bg-[#941C1C] p-1 px-3 rounded-md font-medium"
                 onClick={() => {
                   callbackCancel();
                 }}
@@ -19,7 +19,7 @@ const Popup = ({ text, callbackForward, callbackCancel, option }) => {
             </div>
             <div>
               <button
-                className=" mr-2 ml-2"
+                className=" mx-4 bg-[#1E9BB7] p-1 px-3 rounded-md font-medium"
                 onClick={() => {
                   callbackForward();
                   callbackCancel();

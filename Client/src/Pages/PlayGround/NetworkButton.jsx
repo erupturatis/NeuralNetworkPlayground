@@ -43,14 +43,14 @@ const NetworkButton = ({
     }
   };
   return (
-    <div className="border-2">
+    <div className="mt-6">
       <div className="flex justify-center align-middle  m-2">
-        <button>{name}</button>
+        <button className="text-xl font-light">{name}</button>
       </div>
       <div className="flex justify-center">
         <div className="relative">
           <button
-            className="m-2 relative "
+            className="m-2 relative font-extralight opacity-60 hover:opacity-100 transition"
             onClick={() => {
               flipSave();
             }}
@@ -73,7 +73,7 @@ const NetworkButton = ({
 
         <div className="relative">
           <button
-            className="m-2"
+            className="m-2 font-extralight opacity-60 hover:opacity-100 transition"
             onClick={() => {
               flipLoad();
             }}
@@ -95,7 +95,7 @@ const NetworkButton = ({
         </div>
         <div className="relative">
           <button
-            className="m-2"
+            className="m-2 font-extralight opacity-60 hover:opacity-100 transition"
             onClick={() => {
               flipClear();
             }}

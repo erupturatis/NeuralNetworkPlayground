@@ -103,9 +103,9 @@ const OptionsRight = () => {
   };
 
   return (
-    <div className=" flex flex-col justify-center align-middle text-center">
-      <div>Saved Networks</div>
-      <div>Please Login or Sign Up</div>
+    <div className=" flex flex-col justify-center align-middle text-center ">
+      <div className="font-medium text-xl mt-6 mb-4">Saved Networks</div>
+      {!user.isSet && <div>Please Login or Sign Up</div>}
       {user.isSet && (
         <>
           {totalNetworks.map((el) => {
@@ -120,14 +120,21 @@ const OptionsRight = () => {
               />
             );
           })}
-          <input
-            className="text-black"
-            type="text"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
+          <div className="flex justify-center mt-10">
+            <div>
+              <div className="text-center opacity-30 text-white text-sm mb-4">
+                Network Name
+              </div>
+              <input
+                className=" text-white bg-white bg-opacity-5 w-full h-8 text-center outline-none transition border-b-2 focus:border-b-[#0094FF]"
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+          </div>
         </>
       )}
     </div>
