@@ -83,6 +83,7 @@ export class Operations {
     let length = this.network.length;
     let activation = this.network.activation;
     let loss = this.network.loss;
+    let learningRate = this.network.learningRate;
 
     this.model.add(
       tf.layers.dense({
@@ -135,8 +136,13 @@ export class Operations {
     this.inputData = tf.tensor(this.inputsProcessed[0]);
     this.outputData = tf.tensor(this.outputProcessed[0]);
 
+    console.log(this.outputData);
+
+    if (loss == 'categoricalCrossentropy') {
+    }
+
     this.model.compile({
-      optimizer: tf.train.adam(0.1),
+      optimizer: tf.train.adam(learningRate),
       loss,
       metrics: ['accuracy'],
     });
@@ -154,7 +160,11 @@ export class Operations {
     let model = this.model;
 
     // network preprocessing
-    this.networkPreprocessing();
+    try {
+      this.networkPreprocessing();
+    } catch (err) {
+      return err;
+    }
 
     let recordFrequency = this.network.recordFreq;
 

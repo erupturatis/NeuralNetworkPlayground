@@ -16,6 +16,7 @@ let generateNetwork = (...layers) => {
     loss: 'meanSquaredError',
     epochs: 100,
     recordFreq: 5,
+    learningRate: 0.01,
     layers: [],
     biases: [],
     biasesWeights: [],

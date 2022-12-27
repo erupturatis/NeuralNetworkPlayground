@@ -8,6 +8,8 @@ const Advanced = () => {
   const [showActivation, setShowActivation] = useState(false);
   const [showLoss, setShowLoss] = useState(false);
   const [showEpochs, setShowEpochs] = useState(false);
+  const [learningRate, setShowLearningRate] = useState(false);
+
   const [display, setDisplay] = useState(true);
 
   return (
@@ -83,12 +85,22 @@ const Advanced = () => {
             }}
             optionsValues={[
               'meanSquaredError',
-              'categoricalCrossEntropy',
+              'categoricalCrossentropy',
               'meanSquaredLogarithmicError',
             ]}
-            name={'Loss'}
+            name={'Loss function'}
             value={network.loss}
             prop={'loss'}
+          />
+          <Settings
+            trigger={learningRate}
+            setTrigger={() => {
+              setShowLearningRate((e) => !e);
+            }}
+            optionsValues={[0.05, 0.01, 0.005, 0.001, 0.0001]}
+            name={'Learning rate'}
+            value={network.learningRate}
+            prop={'learningRate'}
           />
         </div>
       </div>
