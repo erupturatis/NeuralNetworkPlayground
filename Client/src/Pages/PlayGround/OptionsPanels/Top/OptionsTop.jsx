@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
 import { setInputs, setOutputs } from '../../../../store/data';
-import { replaceState } from '../../../../store/network';
+import { replaceState, randomizeWeights } from '../../../../store/network';
 import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
 import { operation } from '../../utils/operation';
 import pause from './assets/pause.png';
@@ -89,19 +89,15 @@ const OptionsTop = () => {
 
   let runNetwork = async () => {
     //running the network
-    operation.change(network, data.input, data.output);
+    operation.change();
+    // console.log(network);
     operation.setParams(network, data.input, data.output);
     let response = await operation.runNetwork();
-    console.log(response);
-
-    response = JSON.stringify(response);
     if (response !== false) {
+      response = JSON.stringify(response);
       setError(response);
     }
   };
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <div className=" w-full">
@@ -176,7 +172,12 @@ const OptionsTop = () => {
               </div>
             </div>
             <div className="w-full flex justify-center ">
-              <button className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100">
+              <button
+                onClick={() => {
+                  dispatch(randomizeWeights());
+                }}
+                className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100"
+              >
                 Randomize weights
               </button>
             </div>

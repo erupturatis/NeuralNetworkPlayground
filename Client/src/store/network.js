@@ -156,6 +156,7 @@ export const networkSlice = createSlice({
       state.connections.splice(layerNum, 1);
       //removing front layer
       state.layers.splice(layerNum, 1);
+      state.biasesWeights.splice(layerNum, 1);
 
       // removing connections from the back
       state.connections[layerNum - 1] = [];
@@ -246,6 +247,15 @@ export const networkSlice = createSlice({
 
     randomizeWeights: (state, action) => {
       let weights = state.connections;
+      for (let layer in weights) {
+        for (let neuron in weights[layer]) {
+          for (let conn in weights[layer][neuron]) {
+            weights[layer][neuron][conn].value = generateWeight();
+          }
+        }
+      }
+      state.connections = weights;
+      // rest of logic here
     },
   },
 });
@@ -258,6 +268,7 @@ export const {
   addLayer,
   replaceState,
   changeProperty,
+  randomizeWeights,
 } = networkSlice.actions;
 
 export default networkSlice.reducer;

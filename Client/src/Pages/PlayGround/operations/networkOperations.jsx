@@ -106,7 +106,8 @@ export class Operations {
       })
     );
     //syncing weights
-
+    console.log(this.network);
+    console.log(this.model);
     for (
       let layerIdx = 0;
       layerIdx < this.network.layers.length - 1;
@@ -158,12 +159,12 @@ export class Operations {
     let outputsNum = this.network.layers[this.network.length - 1].numNeurons;
     // this.networkPreprocessing();
 
-    try {
-      this.networkPreprocessing();
-    } catch (err) {
-      store.dispatch(changeRun());
-      return err;
-    }
+    this.networkPreprocessing();
+    // try {
+    // } catch (err) {
+    //   store.dispatch(changeRun());
+    //   return err;
+    // }
 
     if (inputsNum !== this.inputsProcessed[1].length) {
       store.dispatch(changeRun());
