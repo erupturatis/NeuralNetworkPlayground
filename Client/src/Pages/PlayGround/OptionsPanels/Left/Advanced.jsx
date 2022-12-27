@@ -25,7 +25,7 @@ const Advanced = () => {
             <img
               src={arrow}
               alt=""
-              className={`mt-1 mb-2 w-5 h-5 transition-transform ${
+              className={`mt-1 mb-2 w-5 h-5 transition-transform select-none ${
                 display ? ' -rotate-90' : ''
               }`}
             />

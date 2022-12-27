@@ -115,14 +115,14 @@ const OptionsTop = () => {
             />
             <div className="flex">
               <button
-                className="w-40 h-8 bg-[#2677d4] rounded-lg "
+                className="w-40 h-8 bg-[#2677d4] rounded-lg select-none"
                 onClick={() => {
                   document.getElementById('inputData').click();
                 }}
               >
                 Choose input file
               </button>
-              <div className="flex justify-center items-center mx-4">
+              <div className="flex justify-center items-center mx-4  select-none">
                 {data.inputLabel}
               </div>
             </div>
@@ -139,14 +139,14 @@ const OptionsTop = () => {
             />
             <div className="flex">
               <button
-                className=" w-40 h-8 bg-[#2677d4] rounded-lg "
+                className=" w-40 h-8 bg-[#2677d4] rounded-lg  select-none"
                 onClick={() => {
                   document.getElementById('outputData').click();
                 }}
               >
                 Choose output file
               </button>
-              <div className="flex justify-center items-center mx-4">
+              <div className="flex justify-center items-center mx-4  select-none">
                 {data.outputLabel}
               </div>
             </div>
@@ -160,14 +160,14 @@ const OptionsTop = () => {
                   onClick={() => {
                     runNetwork();
                   }}
-                  className="text-xl font-light opacity-50 hover:opacity-100"
+                  className="text-xl font-light opacity-50 hover:opacity-100  select-none"
                 >
                   {recording.saved ? 'Rerun network' : 'Run network'}
                 </button>
                 <img
                   src={isRunning ? run : pause}
                   alt=""
-                  className="w-7 h-7 ml-3"
+                  className="w-7 h-7 ml-3  select-none"
                 />
               </div>
             </div>
@@ -176,7 +176,7 @@ const OptionsTop = () => {
                 onClick={() => {
                   dispatch(randomizeWeights());
                 }}
-                className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100"
+                className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100  select-none"
               >
                 Randomize weights
               </button>

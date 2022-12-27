@@ -23,7 +23,7 @@ const Datasets = () => {
   };
   const FILES = {
     XOR: ['/Files/XORinputs.txt', '/Files/XORoutputs.txt'],
-    files2: ['', ''],
+    IRIS: ['/Files/IRISInputs.csv', '/Files/IRISOutputs.csv'],
   };
 
   let uploadFiles = async (name) => {
@@ -75,9 +75,12 @@ const Datasets = () => {
             return el;
           }
         });
+        if (!line.length) {
+          continue;
+        }
         for (let index in line) {
           // console.log(line, index);
-          obj[`${inputLabels[index]}`] = parseInt(line[index]);
+          obj[`${inputLabels[index]}`] = parseFloat(line[index]);
         }
         arr['data'].push(obj);
       }
@@ -100,11 +103,11 @@ const Datasets = () => {
           <img
             src={arrow}
             alt=""
-            className={`mt-1 w-5 h-5 transition-transform ${
+            className={`mt-1 w-5 h-5 transition-transform select-none ${
               display ? ' -rotate-90' : ''
             }`}
           />
-          <div className=" text-lg ml-4 ">Premade datasets</div>
+          <div className=" text-lg ml-4 select-none ">Premade datasets</div>
         </button>
       </div>
 
@@ -116,20 +119,20 @@ const Datasets = () => {
         }`}
       >
         <div className="flex w-100 justify-between mt-4">
-          <div className="w-20 text-center  opacity-30 font-light">
+          <div className="w-20 text-center  opacity-30 font-light select-none">
             download
           </div>
           <div className="w-40 text-center"></div>
-          <div className="w-40 text-center opacity-30 font-light">
+          <div className="w-40 text-center opacity-30 font-light select-none">
             load in network
           </div>
         </div>
 
         <div className="flex w-64 mt-6 justify-between">
-          <button className=" w-12 h-10  flex justify-center">
-            <img src={download} alt="" className="w-10" />
+          <button className=" w-12 h-10  flex justify-center items-center">
+            <img src={download} alt="" className="w-8 select-none" />
           </button>
-          <div className="w-40 flex items-center justify-center font-medium">
+          <div className="w-40 flex items-center justify-center font-medium select-none">
             <div>
               The xor dataset
               <div className=" font-light text-center">2 inputs 1 output</div>
@@ -140,9 +143,29 @@ const Datasets = () => {
             onClick={() => {
               uploadFiles('XOR');
             }}
-            className=" w-30 h-10 flex justify-center"
+            className=" w-30 h-10 flex justify-center  items-center"
           >
-            <img src={upload} alt="" className="w-10" />
+            <img src={upload} alt="" className="w-8 select-none" />
+          </button>
+        </div>
+        <div className="flex w-64 mt-6 justify-between">
+          <button className=" w-12 h-10  flex justify-center items-center">
+            <img src={download} alt="" className="w-8 select-none" />
+          </button>
+          <div className="w-40 flex items-center justify-center font-medium select-none">
+            <div>
+              The IRIS dataset
+              <div className=" font-light text-center">4 inputs 3 output</div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              uploadFiles('IRIS');
+            }}
+            className=" w-30 h-10 flex justify-center  items-center"
+          >
+            <img src={upload} alt="" className="w-8 select-none" />
           </button>
         </div>
       </div>

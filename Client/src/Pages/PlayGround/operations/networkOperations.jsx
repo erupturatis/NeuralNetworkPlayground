@@ -106,8 +106,7 @@ export class Operations {
       })
     );
     //syncing weights
-    console.log(this.network);
-    console.log(this.model);
+
     for (
       let layerIdx = 0;
       layerIdx < this.network.layers.length - 1;
@@ -134,12 +133,10 @@ export class Operations {
     this.inputData = tf.tensor(this.inputsProcessed[0]);
     this.outputData = tf.tensor(this.outputProcessed[0]);
 
-    if (loss == 'categoricalCrossentropy') {
-    }
-
     this.model.compile({
       optimizer: tf.train.adam(learningRate),
       loss,
+
       metrics: ['accuracy'],
     });
   }
@@ -159,12 +156,12 @@ export class Operations {
     let outputsNum = this.network.layers[this.network.length - 1].numNeurons;
     // this.networkPreprocessing();
 
-    this.networkPreprocessing();
-    // try {
-    // } catch (err) {
-    //   store.dispatch(changeRun());
-    //   return err;
-    // }
+    try {
+      this.networkPreprocessing();
+    } catch (err) {
+      store.dispatch(changeRun());
+      return err;
+    }
 
     if (inputsNum !== this.inputsProcessed[1].length) {
       store.dispatch(changeRun());
@@ -183,13 +180,16 @@ export class Operations {
 
     let res = await model.fit(this.inputData, this.outputData, {
       epochs: epochs + 1,
-      batchSize: 12,
+      batchSize: 10,
+      shuffle: true,
       callbacks: {
         onEpochEnd: async (epoch, params) => {
+          // console.log(epoch, params.loss);
           if (epoch % recordFrequency == 0) {
             this.epoch = epoch;
             this.model = model;
             this.loss = params.loss;
+            console.log(this.loss);
             // saving model snapshot
             this.saveSnapshotCallback();
             let storeData = store.getState();
