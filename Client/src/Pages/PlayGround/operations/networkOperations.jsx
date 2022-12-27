@@ -18,9 +18,6 @@ export class Operations {
     this.network = network;
     this.inputs = inputs;
     this.outputs = outputs;
-  }
-
-  constructor() {
     this.model = tf.sequential();
   }
 
@@ -136,8 +133,6 @@ export class Operations {
     this.inputData = tf.tensor(this.inputsProcessed[0]);
     this.outputData = tf.tensor(this.outputProcessed[0]);
 
-    console.log(this.outputData);
-
     if (loss == 'categoricalCrossentropy') {
     }
 
@@ -159,12 +154,29 @@ export class Operations {
     let epochs = this.network.epochs;
     let model = this.model;
 
-    // network preprocessing
+    let inputsNum = this.network.layers[0].numNeurons;
+    let outputsNum = this.network.layers[this.network.length - 1].numNeurons;
+    // this.networkPreprocessing();
+
     try {
       this.networkPreprocessing();
     } catch (err) {
+      store.dispatch(changeRun());
       return err;
     }
+
+    if (inputsNum !== this.inputsProcessed[1].length) {
+      store.dispatch(changeRun());
+
+      return "input neurons don't match input data";
+    }
+    if (outputsNum !== this.outputProcessed[1].length) {
+      store.dispatch(changeRun());
+
+      return "output neurons don't match output data";
+    }
+
+    // network preprocessing
 
     let recordFrequency = this.network.recordFreq;
 
@@ -201,6 +213,7 @@ export class Operations {
     store.dispatch(changeSaved());
     store.dispatch(changeRun());
 
+    return false;
     // setRunning(false);
     // setEpoch(epochs);
     // setFill(100);

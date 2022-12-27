@@ -243,6 +243,10 @@ export const networkSlice = createSlice({
       let prop = action.payload.prop;
       state[prop] = action.payload.value;
     },
+
+    randomizeWeights: (state, action) => {
+      let weights = state.connections;
+    },
   },
 });
 

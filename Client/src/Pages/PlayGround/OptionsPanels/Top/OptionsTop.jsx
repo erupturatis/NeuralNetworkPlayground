@@ -15,6 +15,7 @@ const OptionsTop = () => {
   const [selectedSnapshot, setSelectedSnapshot] = useState(0);
   const [isRunning, setIsRunning] = useState();
   const [fill, setFill] = useState(0);
+  const [error, setError] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -88,11 +89,19 @@ const OptionsTop = () => {
 
   let runNetwork = async () => {
     //running the network
-    console.log(operation);
     operation.change(network, data.input, data.output);
     operation.setParams(network, data.input, data.output);
-    operation.runNetwork();
+    let response = await operation.runNetwork();
+    console.log(response);
+
+    response = JSON.stringify(response);
+    if (response !== false) {
+      setError(response);
+    }
   };
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <div className=" w-full">
@@ -180,6 +189,11 @@ const OptionsTop = () => {
               }}
             ></div>
             <div>
+              {error && (
+                <div className="text-red-900 text-lg text-center mt-4 ">
+                  {error}
+                </div>
+              )}
               {!isRunning && recording.saved ? (
                 <>
                   <div className="relative pt-1 w-full ">
