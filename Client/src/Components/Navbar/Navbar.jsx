@@ -29,13 +29,14 @@ const Navbar = ({ userSet, user, loaded }) => {
         <>
           <div className="flex items-center">
             <Button name="Home" pageLink="/Home" location={location.pathname} />
-            {!userSet && (
-              <Button
-                name="SignUp"
-                pageLink="/SignUp"
-                location={location.pathname}
-              />
-            )}
+
+            <Button
+              name="Playground"
+              pageLink="/Playground"
+              location={location.pathname}
+            />
+            {userSet && <div className=" text-white m-2 ">{user.username}</div>}
+
             {!userSet && (
               <Button
                 name="Login"
@@ -43,13 +44,6 @@ const Navbar = ({ userSet, user, loaded }) => {
                 location={location.pathname}
               />
             )}
-            {userSet && <div className=" text-white m-2 ">{user.username}</div>}
-
-            <Button
-              name="Playground"
-              pageLink="/Playground"
-              location={location.pathname}
-            />
           </div>
         </>
       )}
