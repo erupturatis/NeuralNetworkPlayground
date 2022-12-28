@@ -72,7 +72,6 @@ let generateConnections = () => {
   rootElement
     .selectAll('line')
     .data(newConn, (data) => data.id)
-    // .join('line')
     .transition()
     .duration(animationsSpeed)
     .ease(easeLinear)

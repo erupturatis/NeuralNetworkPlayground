@@ -13,7 +13,9 @@ const Navbar = ({ userSet, user, loaded }) => {
   return (
     <div className="flex justify-between m-4 ">
       <div className="p-4 flex">
-        <img src={githubImageLink} className="w-10 absolute top-4 " />
+        <a href={githubLink} target="_blank" rel="noreferrer">
+          <img src={githubImageLink} className="w-10 h-10 absolute top-4 " />
+        </a>
         <div className="ml-12">
           <a
             href={githubLink}
