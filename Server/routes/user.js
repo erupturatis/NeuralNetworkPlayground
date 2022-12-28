@@ -29,9 +29,10 @@ router.patch(
   '/networkIDS',
   asyncErr(async (req, res, next) => {
     let id = req.body.id;
+
     let networkIDS = req.body.networkIDS;
     // updating in database
-    await User.findOneAndUpdate(id, {
+    await User.findByIdAndUpdate(id, {
       networkID: networkIDS,
     });
     res.status(201).send('ok');
@@ -44,7 +45,7 @@ router.patch(
     let id = req.body.id;
     let networkName = req.body.networkName;
     // updating in database
-    await User.findOneAndUpdate(id, {
+    await User.findByIdAndUpdate(id, {
       networkName,
     });
     res.status(201).send('ok');

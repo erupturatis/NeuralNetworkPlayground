@@ -38,6 +38,7 @@ const OptionsRight = () => {
 
   let saveNetwork = async (index) => {
     // saving a new network on the index slot
+    console.log('saving ', index);
     setSelected(index);
     let packet = packageData();
 
@@ -60,8 +61,11 @@ const OptionsRight = () => {
 
     dispatch(setUser(updatedUser));
     // in database
-    await updateUserNetworkID(updatedUser[`_id`], networkID);
-    await updateUserNetworkName(updatedUser[`_id`], networkName);
+    console.log(updatedUser[`_id`]);
+    response = await updateUserNetworkID(updatedUser[`_id`], networkID);
+    console.log(response);
+    response = await updateUserNetworkName(updatedUser[`_id`], networkName);
+    console.log(response);
   };
 
   let clearNetwork = async (index) => {

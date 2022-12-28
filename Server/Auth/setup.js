@@ -78,7 +78,6 @@ passport.use(
           email: profile.email,
           authType: 'google',
         });
-        console.log(users);
         if (users.length > 0) {
           item = users[0];
           console.log(item.id);

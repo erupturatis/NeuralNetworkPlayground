@@ -46,7 +46,7 @@ function App() {
 
   return (
     <Router>
-      <div className="w-screen h-screen overflow-hidden">
+      <div className="w-screen h-screen overflow-x-hidden">
         <Navbar userSet={user.isSet} user={user.user} loaded={loaded} />
         <Routes>
           <Route path="/Home" element={<Home />} />
