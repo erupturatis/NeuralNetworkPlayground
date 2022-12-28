@@ -13,9 +13,14 @@ export class NeuronPainter {
   coeff = 0.5;
   hazardCoeff = 0.1;
   returnCoeff = 0.005;
+  destroyed = false;
 
   parametrize(frameCb) {
     this.frameCb = frameCb;
+  }
+
+  destroy() {
+    this.destroy = true;
   }
 
   async start() {
@@ -25,6 +30,9 @@ export class NeuronPainter {
     //starting up everything
     //generating initial data
     for (this.frame = 0; this.frame < 500; this.frame++) {
+      if (this.destroy === true) {
+        return;
+      }
       this.generateNeurons();
       this.generateConnections();
       this.adjustData();
@@ -47,7 +55,7 @@ export class NeuronPainter {
     //liniarizing data
     let dataCopy = [...this.data];
     for (let idx in dataCopy) {
-      dataCopy[idx].radius = randomMult(0.85, 1.15) * this.radius;
+      dataCopy[idx].radius = randomMult(0.9, 1.15) * this.radius;
     }
     rootElement
       .selectAll('circle')

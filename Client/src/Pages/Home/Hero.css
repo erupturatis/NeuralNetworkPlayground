@@ -1,0 +1,43 @@
+.heroText {
+  background: linear-gradient(90deg, #7debf2 18.49%, #60a4ff 78.16%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.backgroundGoo {
+  width: 915px;
+  height: 457px;
+  left: 250px;
+  top: 339px;
+
+  background: rgba(99, 139, 216, 0.08);
+  filter: blur(250px);
+}
+.mask {
+  mask-image: -webkit-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(0, 0, 0, 1) 51%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+.mask1 {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
