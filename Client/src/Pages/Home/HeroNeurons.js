@@ -29,6 +29,7 @@ export class NeuronPainter {
       this.generateConnections();
       this.adjustData();
       this.mutateData();
+      this.mutateData();
 
       if (this.frame % 10 === 0) {
         this.frame = 0;
@@ -45,15 +46,18 @@ export class NeuronPainter {
     let rootElement = select(`#root-group`);
     //liniarizing data
     let dataCopy = [...this.data];
+    for (let idx in dataCopy) {
+      dataCopy[idx].radius = randomMult(0.85, 1.15) * this.radius;
+    }
     rootElement
       .selectAll('circle')
       .data(dataCopy)
       .enter()
       .append('circle')
       .attr('opacity', 1)
-      .attr('strokeWidth', 2)
+      .attr('stroke-width', 2)
       .attr('stroke', 'white')
-      .attr('r', this.radius)
+      .attr('r', (val) => val.radius)
       .attr('cx', (value) => value.cx)
       .attr('cy', (value) => value.cy);
 
@@ -67,10 +71,30 @@ export class NeuronPainter {
       // .ease(easeLinear)
       .attr('opacity', 1)
       .attr('strokeWidth', 2)
-      .attr('stroke', 'red')
-      .attr('r', this.radius)
+      .attr('stroke', 'white')
+      // .attr('r', )
       .attr('cx', (value) => value.cx)
       .attr('cy', (value) => value.cy);
+
+    rootElement
+      .selectAll('text')
+      .data(dataCopy)
+      .enter()
+      .append('text')
+      // .text((value) => {
+      //   return `${value.id}`;
+      // })
+      .attr('fill', 'white')
+      .attr('x', (value) => value.cx)
+      .attr('y', (value) => value.cy);
+
+    // rootElement
+    //   .selectAll('text')
+    //   .data(dataCopy)
+    //   .append('text')
+    //   .attr('attr', 'ceva')
+    //   .attr('x', (value) => value.cx)
+    //   .attr('y', (value) => value.cy);
   };
 
   getNeuronData = (id) => {
@@ -104,7 +128,6 @@ export class NeuronPainter {
       .append('line')
       .attr('opacity', 1)
       .attr('stroke', 'white')
-
       .attr('x1', (value) => this.getNeuronData(value.n1ID).cx)
       .attr('y1', (value) => this.getNeuronData(value.n1ID).cy)
       .attr('x2', (value) => this.getNeuronData(value.n2ID).cx)
@@ -138,22 +161,21 @@ export class NeuronPainter {
       });
       this.id += 1;
     }
-    console.log(data);
     return data;
   };
 
   generateNeuronsData = (minX, maxX, minY, maxY) => {
     let data = [];
     let args = [];
-    let structure = [3, 2, 1, 1, 2, 3];
+    let structure = [6, 4, 3, 1, 2, 3, 4, 6];
     //3 2 1 1 2 3
     // 6 layers in width
 
     let stepX = (maxX - minX) / (structure.length - 1);
     let posX = minX;
 
-    for (let layerX = 0; layerX < 6; layerX++) {
-      let stepY = (maxY - minY) / 4;
+    for (let layerX = 0; layerX < structure.length; layerX++) {
+      let stepY = (maxY - minY) / 6;
       let posY = (-stepY / 2) * (structure[layerX] - 1) + (maxY + minY) / 2;
       for (let Yneuron = 0; Yneuron < structure[layerX]; Yneuron++) {
         let props = {
@@ -184,25 +206,27 @@ export class NeuronPainter {
 
   generateInitialData = () => {
     //getting windows size and the proper number of neurons
-    let minX = 100;
-    let maxX = window.innerWidth - 100;
-    console.log(window.innerWidth);
-    let minY = 0;
-    let maxY = 500;
+    let minX = -50;
+    let maxX = window.innerWidth + 50;
+    let minY = -100;
+    let maxY = 600;
 
     let numNeurons = parseInt(maxX / 100);
 
     let data = this.generateNeuronsData(minX, maxX, minY, maxY);
-    let connData = [
-      {
-        n1ID: 0,
-        n2ID: 1,
-      },
-      {
-        n1ID: 2,
-        n2ID: 3,
-      },
+    let newConnData = [
+      0, 6, 2, 1, 3, 7, 3, 8, 4, 9, 5, 9, 6, 10, 10, 13, 7, 10, 7, 11, 8, 12, 9,
+      12, 8, 11, 13, 14, 8, 10, 11, 13, 12, 13, 13, 15, 15, 17, 15, 18, 17, 20,
+      17, 21, 17, 22, 14, 16, 16, 19, 16, 20, 18, 21, 22, 27, 22, 28, 22, 26,
+      21, 26, 20, 26, 19, 23,
     ];
+    let connData = [];
+    for (let i = 0; i < newConnData.length; i += 2) {
+      connData.push({
+        n1ID: newConnData[i],
+        n2ID: newConnData[i + 1],
+      });
+    }
     this.connData = connData;
     this.data = data;
   };
@@ -266,3 +290,6 @@ export class NeuronPainter {
   }
 }
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+const randomMult = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
