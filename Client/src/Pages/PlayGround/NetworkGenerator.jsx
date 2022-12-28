@@ -1,10 +1,8 @@
 import React from 'react';
 import { useRef, useEffect } from 'react';
-import { select, easeLinear } from 'd3';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNeuron } from '../../store/network';
-import { useMemo } from 'react';
-import { createContext, useContext } from 'react';
+
+import { mapInputs, mapOutputs } from './utils/generatorUtils';
 
 import {
   generateStructure,
@@ -17,7 +15,7 @@ import { Operations } from './operations/networkOperations';
 import { setOperation } from './utils/operation';
 
 const NetworkGenerator = () => {
-  const { network, cosmetics } = useSelector((state) => state);
+  const { network, cosmetics, data } = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
     setOperation(new Operations());
@@ -29,6 +27,12 @@ const NetworkGenerator = () => {
     generateStructure();
     generateNetwork();
     // generateUI();
+    if (data.inputisSet) {
+      mapInputs(data.inputLabels);
+    }
+    if (data.outputisSet) {
+      mapOutputs(data.outputLabels);
+    }
   }, [network, cosmetics]);
 
   return (

@@ -416,7 +416,8 @@ let mapInputs = (arrInputs) => {
 };
 
 let mapOutputs = (arrOutputs) => {
-  let { network } = store.getState();
+  let { network, cosmetics } = store.getState();
+  let { radius } = cosmetics;
 
   select('#tooltip-area')
     .selectChildren('text.outputs')
@@ -424,8 +425,7 @@ let mapOutputs = (arrOutputs) => {
     .join('text')
     .attr(
       'x',
-      (value, index) =>
-        getCoordNeuron(network.length - 1, index).x + textSize(value).x
+      (value, index) => getCoordNeuron(network.length - 1, index).x + radius * 2
     )
     .attr(
       'y',

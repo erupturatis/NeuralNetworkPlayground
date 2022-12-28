@@ -42,11 +42,11 @@ const OptionsTop = () => {
     }
   }, [selectedSnapshot]);
 
-  const setInputs = (result) => {
+  const setInputsCb = (result) => {
     dispatch(setInputs(result));
     mapInputs(result.meta.fields);
   };
-  const setOutputs = (result) => {
+  const setOutputsCb = (result) => {
     dispatch(setOutputs(result));
     mapOutputs(result.meta.fields);
   };
@@ -62,7 +62,7 @@ const OptionsTop = () => {
         header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          setInputs(result);
+          setInputsCb(result);
           dispatch(
             setInputsLabel(document.getElementById('inputData').files[0].name)
           );
@@ -78,7 +78,7 @@ const OptionsTop = () => {
         header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          setOutputs(result);
+          setOutputsCb(result);
           dispatch(
             setOutputsLabel(document.getElementById('outputData').files[0].name)
           );
