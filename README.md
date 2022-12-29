@@ -1,7 +1,5 @@
-<h1 style="text-align: center;">🚀 NeuralNetworkPlayground
-<br/><div style="font-size: 20px;">A better way of visualzing neural networks</div>
-</h1>
-
+<h1 align="center">🚀 NeuralNetworkPlayground</h1>
+<div align="center">A better way of visualzing neural networks</div>
 # Overview
 
 As the title implies, this is a website made in order to help visualize neural network in the process of training and backpropagating. You can currently:
