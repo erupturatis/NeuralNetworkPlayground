@@ -18,7 +18,7 @@ const Arhitecture = () => {
   const [layerSizes, setLayerSizes] = useState(
     network.layers.map((element) => element.numNeurons)
   );
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
 
   let setlayerSizesIdx = (index, value) => {
     value = parseInt(value);
