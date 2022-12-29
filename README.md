@@ -58,4 +58,4 @@ SERVER_URL = ''
 
 and set up the oauth services properly. If you have any issues running the project just open a new issue and I will help you as fast as I can
 
-### Apart from this, I hope you like the website!!!!!
+### Apart from this, I hope you like the website!
