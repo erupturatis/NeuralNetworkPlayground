@@ -6,9 +6,10 @@ import OptionsRight from './OptionsPanels/Right/OptionsRight';
 import './playground.css';
 const PlayGround = () => {
   useEffect(() => {
-    document.body.classList.add('overflow-hidden');
+    document.getElementById('rootApp').scrollTo(0, 0);
+    document.getElementById('rootApp').classList.add('overflow-hidden');
     return () => {
-      document.body.classList.remove('overflow-hidden');
+      document.getElementById('rootApp').classList.remove('overflow-hidden');
     };
   }, []);
 

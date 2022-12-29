@@ -22,7 +22,7 @@ const OptionsLeft = () => {
       style={{
         'scrollbar-gutter': 'stable',
       }}
-      className=" h-5/6 overflow-y-auto overflow-x-hidden w-full scroll pr-4"
+      className=" h-5/6 overflow-y-auto overflow-x-hidden w-full scroll pr-4 select-none "
     >
       <Arhitecture />
       <Cosmetics />

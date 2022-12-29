@@ -1,8 +1,7 @@
 import React from 'react';
 import Button from './Button';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-
+import { useEffect } from 'react';
 const Navbar = ({ userSet, user, loaded }) => {
   let githubLink = 'https://github.com/erupturatis/NeuralNetworkPlayground';
   let githubImageLink =
@@ -14,14 +13,17 @@ const Navbar = ({ userSet, user, loaded }) => {
     <div className="flex justify-between m-4 ">
       <div className="p-4 flex">
         <a href={githubLink} target="_blank" rel="noreferrer">
-          <img src={githubImageLink} className="w-10 h-10 absolute top-4 " />
+          <img
+            src={githubImageLink}
+            className="w-10 h-10 select-none absolute top-4 "
+          />
         </a>
         <div className="ml-12">
           <a
             href={githubLink}
             target="_blank"
             rel="noreferrer"
-            className=" text-navtextFaded"
+            className=" text-navtextFaded select-none"
           >
             Contribute
           </a>
@@ -37,7 +39,11 @@ const Navbar = ({ userSet, user, loaded }) => {
               pageLink="/Playground"
               location={location.pathname}
             />
-            {userSet && <div className=" text-white m-2 ">{user.username}</div>}
+            {userSet && (
+              <div className=" text-white m-2 select-none ">
+                {user.username}
+              </div>
+            )}
 
             {!userSet && (
               <Button

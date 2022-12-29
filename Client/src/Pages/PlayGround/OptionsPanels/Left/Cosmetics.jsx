@@ -13,8 +13,8 @@ const Cosmetics = () => {
   const [display, setDisplay] = useState(true);
 
   return (
-    <div>
-      <div>
+    <div className=" select-none">
+      <div className=" select-none">
         <button
           onClick={() => {
             setDisplay((e) => !e);

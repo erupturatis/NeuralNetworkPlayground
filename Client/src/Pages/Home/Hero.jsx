@@ -1,14 +1,13 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { NeuronPainter } from './HeroNeurons';
+import { NeuronPainter } from './NeuronPainters';
 import './Hero.css';
 const Hero = () => {
-  const [painter, setPainter] = useState(new NeuronPainter());
+  const [painter, setPainter] = useState(new NeuronPainter('root-group-hero'));
   const [frame, setFrame] = useState(0);
 
   useEffect(() => {
-    painter.parametrize(setFrame);
     painter.start();
 
     return () => {
@@ -25,20 +24,20 @@ const Hero = () => {
       <div className="w-full flex justify-center items-center bg-transparent">
         <div className="mt-8">
           <div className=" z-10  relative mt-44">
-            <div className="text-center heroText  relative z-10  ">
+            <div className="text-center heroText  relative z-10 select-none">
               Play with neural networks right
               <br /> here in your browser
             </div>
             <div className="flex justify-center ">
               <div
-                className="text-center mt-6 text-lg "
+                className="text-center mt-6 text-[#B0ECFF] opacity-75 text-lg select-none"
                 style={{
                   width: '35rem',
                 }}
               >
-                neural networks and deep learning have been a hot topic for the
+                Neural networks and deep learning have been a hot topic for the
                 last few years. Take the chance now to visualize neural networks
-                and interactively tinker with its insides for free
+                and interactively tinker with their insides for free
               </div>
             </div>
           </div>
@@ -58,8 +57,8 @@ const Hero = () => {
           height="100%"
           className="absolute top-0 -z-10"
         >
-          <g id="root-group2"></g>
-          <g id="root-group"></g>
+          <g id="root-group-hero-conn"></g>
+          <g id="root-group-hero"></g>
         </svg>
       </div>
     </div>
