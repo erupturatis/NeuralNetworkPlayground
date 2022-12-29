@@ -1,5 +1,6 @@
 <h1 align="center">🚀 NeuralNetworkPlayground</h1>
 <div align="center">A better way of visualzing neural networks</div>
+
 # Overview
 
 As the title implies, this is a website made in order to help visualize neural network in the process of training and backpropagating. You can currently:
@@ -57,4 +58,4 @@ SERVER_URL = ''
 
 and set up the oauth services properly. If you have any issues running the project just open a new issue and I will help you as fast as I can
 
-### Apart from this, I hope you like the website!!!!!
+### Apart from this, I hope you like the website!
