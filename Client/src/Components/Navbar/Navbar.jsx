@@ -11,7 +11,7 @@ const Navbar = ({ userSet, user, loaded }) => {
 
   return (
     <div className="flex justify-between m-4 ">
-      <div className="p-4 flex">
+      <div className="p-4 flex hidden sm:block">
         <a href={githubLink} target="_blank" rel="noreferrer">
           <img
             src={githubImageLink}

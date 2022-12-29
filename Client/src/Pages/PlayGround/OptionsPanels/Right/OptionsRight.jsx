@@ -107,7 +107,7 @@ const OptionsRight = () => {
   };
 
   return (
-    <div className=" flex flex-col justify-center align-middle text-center ">
+    <div className=" flex flex-col justify-center align-middle text-center  hidden sm:block ">
       <div className="font-medium text-xl mt-6 mb-4 select-none">
         Saved Networks
       </div>

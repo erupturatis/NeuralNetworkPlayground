@@ -102,7 +102,7 @@ const OptionsTop = () => {
   return (
     <div className=" w-full">
       <div className="">
-        <div className=" flex justify-center">
+        <div className=" flex justify-center ">
           <div>
             <input
               type="file"
