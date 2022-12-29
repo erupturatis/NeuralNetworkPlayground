@@ -49,10 +49,10 @@ function App() {
       <div id="rootApp" className="w-screen h-screen overflow-x-hidden">
         <Navbar userSet={user.isSet} user={user.user} loaded={loaded} />
         <Routes>
-          <Route path="/Home" element={<Home />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Playground" element={<PlayGround />} />
+          <Route exact path="/Home" element={<Home />} />
+          <Route exact path="/SignUp" element={<SignUp />} />
+          <Route exact path="/Login" element={<Login />} />
+          <Route exact path="/Playground" element={<PlayGround />} />
         </Routes>
       </div>
     </Router>
