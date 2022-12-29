@@ -10,7 +10,7 @@ import download from './assets/download.png';
 import upload from './assets/upload.png';
 
 const Datasets = () => {
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
   const dispatch = useDispatch();
 
   const setInputsFunc = (result) => {
