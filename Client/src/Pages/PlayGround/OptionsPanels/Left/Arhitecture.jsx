@@ -107,7 +107,7 @@ const Arhitecture = () => {
               display ? ' -rotate-90' : ''
             }`}
           />
-          <div className=" text-lg ml-4 select-none">Network arhitecture</div>
+          <div className=" text-lg ml-4 select-none">Network architecture</div>
         </button>
       </div>
 
