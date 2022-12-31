@@ -10,7 +10,7 @@ const End = () => {
           <div className="lineFinal h-96 w-2"></div>
         </div>
       </div>
-      <Link to={'/playground'}>
+      <Link to={'/Playground'}>
         <div className="flex justify-center text-3xl font-bold mb-24">
           Go to Playground
         </div>
