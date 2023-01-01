@@ -165,7 +165,7 @@ const OptionsTop = () => {
                   {recording.saved ? 'Rerun network' : 'Run network'}
                 </button>
                 <img
-                  src={isRunning ? run : pause}
+                  src={!isRunning ? run : pause}
                   alt=""
                   className="w-7 h-7 ml-3  select-none"
                 />
