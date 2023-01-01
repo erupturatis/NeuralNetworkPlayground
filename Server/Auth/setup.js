@@ -39,9 +39,10 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       // here I should save database ID/ identifier for the user
-
+      let identifier =
+        profile.emails !== undefined ? profile.emails[0].value : profile.id;
       let users = await User.find({
-        email: profile.emails[0].value,
+        email: identifier,
         authType: 'github',
       });
       if (users.length > 0) {
@@ -50,7 +51,7 @@ passport.use(
       }
 
       let newUser = await User.create({
-        email: profile.emails[0].value,
+        email: identifier,
         username: profile.username,
         authType: 'github',
       });
