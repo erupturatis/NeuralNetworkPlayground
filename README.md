@@ -41,7 +41,7 @@ As the title implies, this is a website made in order to help visualize neural n
 #### To start just clone the repo
 
 - If you want to contribute to the frontend just run `npm install` in the client folder and then`npm run dev`. You will only need a `VITE_API_URL` variable in your .env file if you want to work with the server too.
-  -If you want to contribute to the backend run `npm install` in the server folder and then`npm run dev`. You will need the env file with the following
+  - If you want to contribute to the backend run `npm install` in the server folder and then`npm run dev`. You will need the env file with the following
 
 ```
 GITHUB_CLIENT_ID = ''
