@@ -2,7 +2,7 @@ import React from 'react';
 import Button from './Button';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-const Navbar = ({ userSet, user, loaded }) => {
+const Desktop = ({ userSet, user, loaded }) => {
   let githubLink = 'https://github.com/erupturatis/NeuralNetworkPlayground';
   let githubImageLink =
     'https://cdn.discordapp.com/attachments/864542134391275543/1044628392093421598/octocat2.png';
@@ -59,4 +59,4 @@ const Navbar = ({ userSet, user, loaded }) => {
   );
 };
 
-export default Navbar;
+export default Desktop;

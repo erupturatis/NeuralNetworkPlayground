@@ -20,16 +20,16 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative bg-transparent">
+    <div className="mt-20 lg:mt-0 relative bg-transparent">
       <div className="w-full flex justify-center items-center bg-transparent">
         <div className="mt-8">
           <div className=" z-10  relative sm:mt-44">
-            <div className="text-center heroText  relative z-10 select-none ">
+            <div className="text-center heroText px-3 relative z-10 select-none ">
               Play with neural networks right
-              <br /> here in your browser
+              <br className={'hidden lg:block'} /> here in your browser
             </div>
             <div className="flex justify-center ">
-              <div className="text-center mt-6 text-[#B0ECFF] opacity-75 text-sm select-none w-60 sm:w-96 sm:text-lg">
+              <div className="text-center mt-6 text-[#B0ECFF] font-medium opacity-75 text-sm select-none w-60 sm:w-96 sm:text-lg">
                 Neural networks and deep learning have been a hot topic for the
                 last few years. Take the chance now to visualize neural networks
                 and interactively tinker with their insides for free

@@ -28,7 +28,7 @@ const RangeSlider = ({
               ((valueTracker - min) / (max - min)) * 100
             }%, rgba(27,41,69,1) 100%)`,
           }}
-          className=" w-full h-3 bg-[#1B2945] rounded-lg appearance-none slider"
+          className=" w-full h-6 my-1 lg:my-0 lg:h-3 bg-[#1B2945] rounded-lg appearance-none slider"
           onChange={(e) => {
             setValue(e.target.value);
           }}

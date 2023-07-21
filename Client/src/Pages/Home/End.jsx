@@ -7,7 +7,7 @@ const End = () => {
     <div>
       <div className="w-full flex justify-center">
         <div className="mask2">
-          <div className="lineFinal h-96 w-2"></div>
+          <div className="lineFinal h-96 w-[2px]"></div>
         </div>
       </div>
       <Link to={'/Playground'}>

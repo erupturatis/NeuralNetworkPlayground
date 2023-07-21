@@ -93,7 +93,7 @@ const Arhitecture = () => {
 
   return (
     <div>
-      <div className="z-10 select-none">
+      <div className="z-10 select-none  flex justify-center md:justify-start">
         <button
           onClick={() => {
             setDisplay((e) => !e);

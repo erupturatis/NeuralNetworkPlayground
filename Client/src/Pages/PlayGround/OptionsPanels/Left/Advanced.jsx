@@ -15,7 +15,7 @@ const Advanced = () => {
   return (
     <>
       <div className="w-full">
-        <div className="">
+        <div className="  flex justify-center md:justify-start">
           <button
             onClick={() => {
               setDisplay((e) => !e);

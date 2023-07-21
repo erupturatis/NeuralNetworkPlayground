@@ -14,7 +14,7 @@ const Cosmetics = () => {
 
   return (
     <div className=" select-none">
-      <div className=" select-none">
+      <div className=" select-none  flex justify-center md:justify-start">
         <button
           onClick={() => {
             setDisplay((e) => !e);

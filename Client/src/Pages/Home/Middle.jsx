@@ -32,11 +32,11 @@ const Middle = () => {
       <div className="h-96" />
       <div className="flex justify-center items-center w-full">
         <div className=" flex justify-center items-center h-full">
-          <div className="w-96 -mt-20  MiddleFirst text-2xl font-medium text-center">
-            With the rising interest for AI and{' '}
+          <div className="w-96 -mt-20  MiddleFirst text-lg lg:text-2xl font-medium text-center">
+            With the rising interest for AI and
             <div className="font-bold">Deep Learning</div>
             <div className="flex justify-center">
-              <div className="font-normal text-lg mt-7 w-5/6 text-center">
+              <div className="font-normal text-base lg:text-lg mt-7 w-5/6 text-center">
                 I wanted to create an interactive way of running neural networks
               </div>
             </div>

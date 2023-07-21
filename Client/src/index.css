@@ -6,6 +6,7 @@
 body {
   background-color: #03060a;
   /* background-color: #8a8a8a; */
+  scrollbar-width: none;
 }
 
 .networkButton {
@@ -18,11 +19,22 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .networkButton:hover {
   background-color: aqua;
   transition: all 150ms;
 }
+
 .networkButtonDiv {
   color: white;
   margin-top: -3px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

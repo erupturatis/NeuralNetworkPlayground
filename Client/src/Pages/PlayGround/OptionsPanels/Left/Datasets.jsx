@@ -9,6 +9,30 @@ import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
 import download from './assets/download.png';
 import upload from './assets/upload.png';
 
+
+const Dataset = ({datasetName, uploadFiles, params}) => {
+  return (
+    <div className="flex w-full  mt-6 justify-center md:justify-start">
+      <div className="w-40 flex items-center justify-center font-medium select-none">
+        <div>
+          The {datasetName} dataset
+          <div className=" font-light text-center">{params.inputs} inputs {params.outputs} output</div>
+        </div>
+      </div>
+
+      <button
+        onClick={() => {
+          uploadFiles(datasetName);
+        }}
+        className=" w-30 h-10 flex justify-center  items-center"
+      >
+      </button>
+    </div>
+  );
+};
+
+
+
 const Datasets = () => {
   const [display, setDisplay] = useState(false);
   const dispatch = useDispatch();
@@ -93,7 +117,7 @@ const Datasets = () => {
   };
   return (
     <div>
-      <div>
+      <div className={' flex justify-center md:justify-start'}>
         <button
           onClick={() => {
             setDisplay((e) => !e);
@@ -107,7 +131,7 @@ const Datasets = () => {
               display ? ' -rotate-90' : ''
             }`}
           />
-          <div className=" text-lg ml-4 select-none ">Premade datasets</div>
+          <div className=" text-lg ml-4 select-none ">Quickstart</div>
         </button>
       </div>
 
@@ -118,56 +142,9 @@ const Datasets = () => {
             : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
         }`}
       >
-        <div className="flex w-100 justify-between mt-4">
-          <div className="w-20 text-center  opacity-30 font-light select-none">
-            download
-          </div>
-          <div className="w-40 text-center"></div>
-          <div className="w-40 text-center opacity-30 font-light select-none">
-            load in network
-          </div>
-        </div>
 
-        <div className="flex w-64 mt-6 justify-between">
-          <button className=" w-12 h-10  flex justify-center items-center">
-            <img src={download} alt="" className="w-8 select-none" />
-          </button>
-          <div className="w-40 flex items-center justify-center font-medium select-none">
-            <div>
-              The xor dataset
-              <div className=" font-light text-center">2 inputs 1 output</div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              uploadFiles('XOR');
-            }}
-            className=" w-30 h-10 flex justify-center  items-center"
-          >
-            <img src={upload} alt="" className="w-8 select-none" />
-          </button>
-        </div>
-        <div className="flex w-64 mt-6 justify-between">
-          <button className=" w-12 h-10  flex justify-center items-center">
-            <img src={download} alt="" className="w-8 select-none" />
-          </button>
-          <div className="w-40 flex items-center justify-center font-medium select-none">
-            <div>
-              The IRIS dataset
-              <div className=" font-light text-center">4 inputs 3 output</div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              uploadFiles('IRIS');
-            }}
-            className=" w-30 h-10 flex justify-center  items-center"
-          >
-            <img src={upload} alt="" className="w-8 select-none" />
-          </button>
-        </div>
+        <Dataset datasetName={'XOR'} uploadFiles={uploadFiles} params={{inputs: 2, outputs: 1}}/>
+        <Dataset datasetName={'IRIS'} uploadFiles={uploadFiles} params={{inputs: 4, outputs: 3}}/>
       </div>
     </div>
   );

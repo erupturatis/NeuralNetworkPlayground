@@ -1,4 +1,4 @@
-import Navbar from './Components/Navbar/Navbar';
+import Navbar from './Components/Navbar/Manager.jsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import SignUp from './Pages/Auth/SignUp';
