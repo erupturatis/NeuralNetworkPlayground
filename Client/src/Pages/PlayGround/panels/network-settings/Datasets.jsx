@@ -26,6 +26,7 @@ const Dataset = ({datasetName, uploadFiles, params}) => {
         }}
         className=" w-30 h-10 flex justify-center  items-center"
       >
+        <img src={'running.png'} alt="" className="w-8 h-8 mr-2" />
       </button>
     </div>
   );
@@ -117,7 +118,7 @@ const Datasets = () => {
   };
   return (
     <div>
-      <div className={' flex justify-center md:justify-start'}>
+      <div className={' flex justify-center md:justify-start mb-4'}>
         <button
           onClick={() => {
             setDisplay((e) => !e);

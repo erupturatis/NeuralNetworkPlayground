@@ -9,6 +9,7 @@ import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
 import { operation } from '../../utils/operation';
 import pause from './assets/pause.png';
 import run from './assets/running.png';
+
 const OptionsTop = () => {
   const { network, recording, data, running } = useSelector((state) => state);
   const [epoch, setEpoch] = useState(0);

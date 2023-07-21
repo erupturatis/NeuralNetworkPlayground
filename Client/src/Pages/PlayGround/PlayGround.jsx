@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import NetworkGenerator from './NetworkGenerator';
-import OptionsLeft from './OptionsPanels/Left/OptionsLeft';
-import OptionsTop from './OptionsPanels/Top/OptionsTop';
-import OptionsRight from './OptionsPanels/Right/OptionsRight';
+import OptionsLeft from './panels/network-settings/OptionsLeft';
+import OptionsTop from './panels/network-run/OptionsTop';
+import OptionsRight from './panels/network-saved/OptionsRight';
 import './playground.css';
 const PlayGround = () => {
   const leftRef= useRef(null);
@@ -22,7 +22,7 @@ const PlayGround = () => {
       }} className={'w-7 h-7 absolute left-5 top-6 block lg:hidden'}>
         <img src={'optionsWheel.png'} className={'w-full h-full '} />
       </button>
-      <div ref={leftRef} className="text-white transition-all duration-300 left-0 absolute mt-16 z-20 bg-bgdefault md:bg-transparent md:z-0 md:m-6 h-full w-full md:w-80">
+      <div ref={leftRef} className="text-white left-0 left-[-100%] lg:left-0 transition-all duration-300  absolute mt-16 z-20 bg-bgdefault md:bg-transparent md:z-0 md:m-6 h-full w-full md:w-80">
         <OptionsLeft />
       </div>
       <div className=" top-0 sm:top-6 text-white absolute h-48 left-0 right-0 hidden lg:block sm:left-80 sm:right-60   ">

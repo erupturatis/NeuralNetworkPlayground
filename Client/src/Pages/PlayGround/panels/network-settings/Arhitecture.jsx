@@ -1,102 +1,26 @@
 import React from 'react';
 import arrow from './assets/arrowdown.png';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState} from 'react';
 import RangeSlider from '../../../../Components/Slider/RangeSlider';
-import { useDispatch } from 'react-redux';
-import {
-  addNeuron,
-  removeLayer,
-  removeNeuron,
-  addLayer,
-} from '../../../../store/network';
+import { useArchitecture } from '../../operations/useArhitecture.jsx';
 
 const Arhitecture = () => {
-  const dispatch = useDispatch();
-  const { network } = useSelector((state) => state);
-  const [layers, setLayers] = useState(network.length);
-  const [layerSizes, setLayerSizes] = useState(
-    network.layers.map((element) => element.numNeurons)
-  );
-  const [display, setDisplay] = useState(false);
-
-  let setlayerSizesIdx = (index, value) => {
-    value = parseInt(value);
-    let newSizes = [...layerSizes];
-    newSizes.splice(index, 1, value);
-    setLayerSizes(newSizes);
-  };
-
-  let setMultipleLayerSizes = (...args) => {
-    let newSizes = [...layerSizes];
-
-    args.forEach((element) => {
-      const { index, value } = element;
-      newSizes.splice(index, 1, value);
-    });
-    setLayerSizes(newSizes);
-  };
-
-  let setLayerSizeFactory = (index) => {
-    return (value) => {
-      setlayerSizesIdx(index, value);
-    };
-  };
-
-  let syncLayers = () => {
-    // layers sync
-    if (layers > network.length) {
-      // need to add layers
-      for (let iter = layers - network.length; iter > 0; iter--) {
-        dispatch(addLayer(network.length - 2));
-      }
-    } else if (layers < network.length) {
-      for (let iter = network.length - layers; iter > 0; iter--) {
-        dispatch(removeLayer(layers - 1));
-      }
-    }
-  };
-  useEffect(() => {
-    setLayers(network.length);
-  }, [network.length]);
-
-  useEffect(() => {
-    setLayerSizes(network.layers.map((element) => element.numNeurons));
-  }, [network.layers]);
-
-  useEffect(() => {
-    syncLayers();
-  }, [layers]);
-
-  useEffect(() => {
-    for (let i = 0; i < network.length; i++) {
-      if (layerSizes[i] > network.layers[i].numNeurons) {
-        for (
-          let iter = layerSizes[i] - network.layers[i].numNeurons;
-          iter > 0;
-          iter--
-        ) {
-          dispatch(addNeuron(i));
-        }
-      } else if (layerSizes[i] < network.layers[i].numNeurons) {
-        for (
-          let iter = network.layers[i].numNeurons - layerSizes[i];
-          iter > 0;
-          iter--
-        ) {
-          dispatch(removeNeuron(i));
-        }
-      }
-    }
-    //
-  }, [layerSizes]);
+  const {
+    network,
+    layers,
+    layerSizes,
+    setLayers,
+    setMultipleLayerSizes,
+    setLayerSizeFactory,
+  } = useArchitecture();
+  const [hide, setHide] = useState(true);
 
   return (
     <div>
       <div className="z-10 select-none  flex justify-center md:justify-start">
         <button
           onClick={() => {
-            setDisplay((e) => !e);
+            setHide((e) => !e);
           }}
           className="flex"
         >
@@ -104,7 +28,7 @@ const Arhitecture = () => {
             src={arrow}
             alt=""
             className={`mt-1 w-5 h-5 transition-transform ${
-              display ? ' -rotate-90' : ''
+              hide ? ' -rotate-90' : ''
             }`}
           />
           <div className=" text-lg ml-4 select-none">Network architecture</div>
@@ -113,7 +37,7 @@ const Arhitecture = () => {
 
       <div
         className={` transition-all mb-4 ${
-          !display
+          !hide
             ? ' '
             : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
         }`}

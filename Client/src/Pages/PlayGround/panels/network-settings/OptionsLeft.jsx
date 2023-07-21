@@ -24,10 +24,10 @@ const OptionsLeft = () => {
       }}
       className=' p-3 h-5/6 overflow-y-auto overflow-x-hidden w-full scroll pr-4 select-none '
     >
+      <Datasets />
       <Arhitecture />
       <Cosmetics />
       <Advanced />
-      <Datasets />
     </div>
   );
 };

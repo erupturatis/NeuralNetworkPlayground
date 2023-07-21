@@ -1,5 +1,5 @@
 import React from 'react';
-import Popup from './OptionsPanels/Right/Popup';
+import Popup from './panels/network-saved/Popup';
 import { useState } from 'react';
 
 const NetworkButton = ({

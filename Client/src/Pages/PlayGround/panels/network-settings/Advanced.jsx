@@ -10,7 +10,7 @@ const Advanced = () => {
   const [showEpochs, setShowEpochs] = useState(false);
   const [learningRate, setShowLearningRate] = useState(false);
 
-  const [display, setDisplay] = useState(true);
+  const [hide, setHide] = useState(true);
 
   return (
     <>
@@ -18,7 +18,7 @@ const Advanced = () => {
         <div className="  flex justify-center md:justify-start">
           <button
             onClick={() => {
-              setDisplay((e) => !e);
+              setHide((e) => !e);
             }}
             className="flex mt-4"
           >
@@ -26,7 +26,7 @@ const Advanced = () => {
               src={arrow}
               alt=""
               className={`mt-1 mb-2 w-5 h-5 transition-transform select-none ${
-                display ? ' -rotate-90' : ''
+                hide ? ' -rotate-90' : ''
               }`}
             />
             <div className=" text-lg ml-4 select-none ">Advanced settings</div>
@@ -35,7 +35,7 @@ const Advanced = () => {
 
         <div
           className={` transition-all mb-4  ${
-            !display
+            !hide
               ? '  '
               : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
           }`}

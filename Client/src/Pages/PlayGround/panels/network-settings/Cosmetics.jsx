@@ -10,14 +10,14 @@ import arrow from './assets/arrowdown.png';
 const Cosmetics = () => {
   const { cosmetics } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [display, setDisplay] = useState(true);
+  const [hide, setHide] = useState(true);
 
   return (
     <div className=" select-none">
       <div className=" select-none  flex justify-center md:justify-start">
         <button
           onClick={() => {
-            setDisplay((e) => !e);
+            setHide((e) => !e);
           }}
           className="flex mt-4"
         >
@@ -25,7 +25,7 @@ const Cosmetics = () => {
             src={arrow}
             alt=""
             className={`mt-1 w-5 h-5 transition-transform select-none ${
-              display ? ' -rotate-90' : ''
+              hide ? ' -rotate-90' : ''
             }`}
           />
           <div className=" text-lg ml-4 select-none">Network cosmetics</div>
@@ -33,7 +33,7 @@ const Cosmetics = () => {
       </div>
       <div
         className={` transition-all mb-4 mt-4 ${
-          !display
+          !hide
             ? ' '
             : 'pointer-events-none -translate-y-10 opacity-0 z-0 absolute w-full'
         }`}

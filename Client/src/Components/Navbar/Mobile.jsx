@@ -71,7 +71,7 @@ const Mobile = ({ userSet, user, loaded }) => {
           </svg>
         </button>
         <div
-          className={` bg-black pt-10 z-[0] pl-6 pb-12 absolute h-screen left-0 w-full  transition-all duration-400 ease-in ${
+          className={` bg-black pt-10 z-[0] pl-6 pb-12 absolute h-screen left-0 w-full  transition-all duration-400  ease-linear  ${
             open ? '' : 'left-[100%]'
           }`}
         >
