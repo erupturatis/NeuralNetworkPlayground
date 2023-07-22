@@ -26,7 +26,7 @@ export class Operations {
       initializeRecording({
         network: this.network,
         inputs: this.inputsProcessed,
-        outputs: this.outputProcessed,
+        outputs: this.outputProcessed
       })
     );
   }
@@ -39,6 +39,7 @@ export class Operations {
   processData() {
     let inputKeys = [];
     let outputKeys = [];
+    console.log(this.inputs[0], this.outputs[0]);
     for (let key in this.inputs[0]) {
       inputKeys.push(key);
     }
@@ -74,6 +75,7 @@ export class Operations {
     }
     this.inputsProcessed = [inputData, inputKeys];
     this.outputProcessed = [outputData, outputKeys];
+    console.log(this.inputsProcessed, this.outputProcessed);
   }
 
   networkPreprocessing() {
@@ -86,7 +88,7 @@ export class Operations {
       tf.layers.dense({
         units: this.network.layers[1].numNeurons,
         inputShape: [this.network.layers[0].numNeurons],
-        activation,
+        activation
       })
     );
     // hidden layers
@@ -94,7 +96,7 @@ export class Operations {
       this.model.add(
         tf.layers.dense({
           units: this.network.layers[layerIdx].numNeurons,
-          activation,
+          activation
         })
       );
     }
@@ -102,7 +104,7 @@ export class Operations {
     this.model.add(
       tf.layers.dense({
         units: this.network.layers[length - 1].numNeurons,
-        activation,
+        activation
       })
     );
     //syncing weights
@@ -122,7 +124,7 @@ export class Operations {
 
       this.model.layers[layerIdx].setWeights([
         replaceTensorWeights,
-        replaceBiasesWeights,
+        replaceBiasesWeights
       ]);
     }
 
@@ -137,7 +139,7 @@ export class Operations {
       optimizer: tf.train.adam(learningRate),
       loss,
 
-      metrics: ['accuracy'],
+      metrics: ['accuracy']
     });
   }
 
@@ -162,16 +164,17 @@ export class Operations {
       store.dispatch(changeRun());
       return err;
     }
+    console.log(inputsNum, this.inputsProcessed[1].length);
 
     if (inputsNum !== this.inputsProcessed[1].length) {
       store.dispatch(changeRun());
 
-      return "input neurons don't match input data";
+      return 'input neurons don\'t match input data';
     }
     if (outputsNum !== this.outputProcessed[1].length) {
       store.dispatch(changeRun());
 
-      return "output neurons don't match output data";
+      return 'output neurons don\'t match output data';
     }
 
     // network preprocessing
@@ -203,8 +206,8 @@ export class Operations {
           // setFill(parseInt(epoch / epochs));
           // setEpoch(epoch);
           await tf.nextFrame();
-        },
-      },
+        }
+      }
     });
     store.dispatch(setEpoch(epochs));
     store.dispatch(setFill(this.network.epochs));

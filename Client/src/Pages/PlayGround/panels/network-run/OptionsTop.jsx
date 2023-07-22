@@ -67,9 +67,10 @@ const OptionsTop = () => {
           dispatch(
             setInputsLabel(document.getElementById('inputData').files[0].name)
           );
-        },
+        }
       });
-    } catch {}
+    } catch {
+    }
   };
 
   let processOutputData = () => {
@@ -83,9 +84,10 @@ const OptionsTop = () => {
           dispatch(
             setOutputsLabel(document.getElementById('outputData').files[0].name)
           );
-        },
+        }
       });
-    } catch {}
+    } catch {
+    }
   };
 
   let runNetwork = async () => {
@@ -94,130 +96,126 @@ const OptionsTop = () => {
     // console.log(network);
     operation.setParams(network, data.input, data.output);
     let response = await operation.runNetwork();
-    if (response !== false) {
-      response = JSON.stringify(response);
-      setError(response);
-    }
   };
 
   return (
-    <div className=" w-full">
-      <div className="">
-        <div className=" flex justify-center ">
+    <div className=' w-full'>
+      <div className=''>
+        <div className=' flex justify-center '>
           <div>
             <input
-              type="file"
-              id="inputData"
-              accept=".csv, .txt"
+              type='file'
+              id='inputData'
+              accept='.csv, .txt'
               onChange={() => {
                 processInputData();
               }}
-              className="hidden"
+              className='hidden'
             />
-            <div className="flex">
+            <div className='flex'>
               <button
-                className="w-40 h-8 bg-[#2677d4] rounded-lg select-none"
+                className='w-40 h-8 bg-[#2677d4] rounded-lg select-none'
                 onClick={() => {
                   document.getElementById('inputData').click();
                 }}
               >
                 Choose input file
               </button>
-              <div className="flex justify-center items-center mx-4  select-none">
+              <div className='flex justify-center items-center mx-4  select-none'>
                 {data.inputLabel}
               </div>
             </div>
           </div>
           <div>
             <input
-              type="file"
-              id="outputData"
-              accept=".csv, .txt"
+              type='file'
+              id='outputData'
+              accept='.csv, .txt'
               onChange={() => {
                 processOutputData();
               }}
-              className="hidden"
+              className='hidden'
             />
-            <div className="flex">
+            <div className='flex'>
               <button
-                className=" w-40 h-8 bg-[#2677d4] rounded-lg  select-none"
+                className=' w-40 h-8 bg-[#2677d4] rounded-lg  select-none'
                 onClick={() => {
                   document.getElementById('outputData').click();
                 }}
               >
                 Choose output file
               </button>
-              <div className="flex justify-center items-center mx-4  select-none">
+              <div className='flex justify-center items-center mx-4  select-none'>
                 {data.outputLabel}
               </div>
             </div>
           </div>
         </div>
-        <div className="w-full  flex justify-center  mt-6 ">
-          <div className=" w-52 mr-16">
-            <div className=" h-10  text-lg font-normal flex justify-center items-center">
-              <div className="flex ">
+        <div className='w-full  flex justify-center  mt-6 '>
+          <div className=' w-52 mr-16'>
+            <div className=' h-10  text-lg font-normal flex justify-center items-center'>
+              <div className='flex '>
                 <button
                   onClick={() => {
                     runNetwork();
                   }}
-                  className="text-xl font-light opacity-50 hover:opacity-100  select-none"
+                  className='text-xl font-light opacity-50 hover:opacity-100  select-none'
                 >
                   {recording.saved ? 'Rerun network' : 'Run network'}
                 </button>
                 <img
                   src={!isRunning ? run : pause}
-                  alt=""
-                  className="w-7 h-7 ml-3  select-none"
+                  alt=''
+                  className='w-7 h-7 ml-3  select-none'
                 />
               </div>
             </div>
-            <div className="w-full flex justify-center ">
+            <div className='w-full flex justify-center '>
               <button
                 onClick={() => {
                   dispatch(randomizeWeights());
                 }}
-                className="bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100  select-none"
+                className='bg-[#3C3C3C] mt-4 p-2 rounded-md opacity-50 hover:opacity-100  select-none'
               >
                 Randomize weights
               </button>
             </div>
           </div>
-          <div className="w-96 relative">
+          <div className='w-96 relative'>
             <div
-              className="w-full h-6  border-2  rounded-md mt-2 z-10"
+              className='w-full h-6  border-2  rounded-md mt-2 z-10'
               style={{
-                background: `linear-gradient(90deg, rgba(42,133,237,1) 0%, rgba(42,133,237,1) ${fill}%, rgba(74,95,170,0) ${fill}%, rgba(27,41,69,0) 100%)`,
+                background: `linear-gradient(90deg, rgba(42,133,237,1) 0%, rgba(42,133,237,1) ${fill}%, rgba(74,95,170,0) ${fill}%, rgba(27,41,69,0) 100%)`
               }}
             ></div>
             <div>
               {error && (
-                <div className="text-red-900 text-lg text-center mt-4 ">
+                <div className='text-red-900 text-lg text-center mt-4 '>
                   {error}
                 </div>
               )}
               {!isRunning && recording.saved ? (
                 <>
-                  <div className="relative pt-1 w-full ">
+                  <div className='relative pt-1 w-full '>
                     <input
-                      id="range"
-                      type="range"
-                      min="0"
+                      id='range'
+                      type='range'
+                      min='0'
                       max={recording.snapshots.length - 1}
                       value={selectedSnapshot}
-                      className="w-full mt-4 h-3 bg-transparent rounded-lg appearance-none cursor-pointer border-2"
+                      className='w-full mt-4 h-3 bg-transparent rounded-lg appearance-none cursor-pointer border-2'
                       onChange={(e) => {
                         setSelectedSnapshot(e.target.value);
                       }}
                     />
                   </div>
-                  <div className="w-full flex justify-center font-light opacity-30">
+                  <div className='w-full flex justify-center font-light opacity-30'>
                     select any epoch
                   </div>
-                  <div className="flex justify-center text-lg ">
+                  <div className='flex justify-center text-lg '>
                     Epoch {selectedSnapshot * network.recordFreq}
                   </div>
-                  <div className="flex justify-center text-md ">
+                  <div className='flex justify-center text-md '>
                     Loss {recording.snapshots[selectedSnapshot].loss.toFixed(6)}
                   </div>
                 </>

@@ -1,42 +1,80 @@
 import React from 'react';
+import { useRef } from 'react';
 import { useState } from 'react';
 import arrow from './assets/arrowdown.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setInputsLabel, setInputs } from '../../../../store/data';
 import { setOutputsLabel, setOutputs } from '../../../../store/data';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
 
 import download from './assets/download.png';
 import upload from './assets/upload.png';
+import { useArchitecture } from '../../operations/useArhitecture.jsx';
+import { operation } from '../../utils/operation.jsx';
 
 
-const Dataset = ({datasetName, uploadFiles, params}) => {
+const Dataset = ({ datasetName, uploadFiles, params, startProtocol }) => {
   return (
-    <div className="flex w-full  mt-6 justify-center md:justify-start">
-      <div className="w-40 flex items-center justify-center font-medium select-none">
+    <div className='flex w-full  mt-6 justify-center md:justify-start'>
+      <div className='w-40 flex items-center justify-center font-medium select-none'>
         <div>
           The {datasetName} dataset
-          <div className=" font-light text-center">{params.inputs} inputs {params.outputs} output</div>
+          <div className=' font-light text-center'>{params.inputs} inputs {params.outputs} output</div>
         </div>
       </div>
 
       <button
         onClick={() => {
-          uploadFiles(datasetName);
+          uploadFiles();
+          startProtocol();
         }}
-        className=" w-30 h-10 flex justify-center  items-center"
+        className=' w-30 h-10 flex justify-center  items-center'
       >
-        <img src={'running.png'} alt="" className="w-8 h-8 mr-2" />
+        <img src={'running.png'} alt='' className='w-8 h-8 mr-2' />
       </button>
     </div>
   );
 };
 
 
-
 const Datasets = () => {
   const [display, setDisplay] = useState(false);
   const dispatch = useDispatch();
+
+  const {
+    network,
+    layers,
+    layerSizes,
+    setLayers,
+    setMultipleLayerSizes,
+    setLayerSizeFactory,
+    data
+  } = useArchitecture();
+
+  const dataRef = useRef(data);
+  dataRef.current = data;
+  const networkRef = useRef(network);
+  networkRef.current = network;
+
+  function getData() {
+    return dataRef.current;
+  }
+
+  function getNetwork() {
+    return networkRef.current;
+  }
+
+  const runNetwork = async () => {
+    //running the network
+    operation.change();
+    const data = getData();
+    const network = getNetwork();
+    operation.setParams(network, data.input, data.output);
+    let response = await operation.runNetwork();
+  };
+
+  const [hide, setHide] = useState(true);
+
 
   const setInputsFunc = (result) => {
     dispatch(setInputs(result));
@@ -48,7 +86,7 @@ const Datasets = () => {
   };
   const FILES = {
     XOR: ['/Files/XORinputs.txt', '/Files/XORoutputs.txt'],
-    IRIS: ['/Files/IRISInputs.csv', '/Files/IRISOutputs.csv'],
+    IRIS: ['/Files/IRISInputs.csv', '/Files/IRISOutputs.csv']
   };
 
   let uploadFiles = async (name) => {
@@ -61,15 +99,15 @@ const Datasets = () => {
 
     let inputResult = {
       meta: {
-        fields: '',
+        fields: ''
       },
-      data: [],
+      data: []
     };
     let outputResult = {
       meta: {
-        fields: '',
+        fields: ''
       },
-      data: [],
+      data: []
     };
 
     // reading the premade files
@@ -115,6 +153,7 @@ const Datasets = () => {
 
     setInputsFunc(inputResult);
     setOutputsFunc(outputResult);
+    console.log('inputs ran');
   };
   return (
     <div>
@@ -123,16 +162,16 @@ const Datasets = () => {
           onClick={() => {
             setDisplay((e) => !e);
           }}
-          className="flex mt-4"
+          className='flex mt-4'
         >
           <img
             src={arrow}
-            alt=""
+            alt=''
             className={`mt-1 w-5 h-5 transition-transform select-none ${
               display ? ' -rotate-90' : ''
             }`}
           />
-          <div className=" text-lg ml-4 select-none ">Quickstart</div>
+          <div className=' text-lg ml-4 select-none '>Quickstart</div>
         </button>
       </div>
 
@@ -144,8 +183,39 @@ const Datasets = () => {
         }`}
       >
 
-        <Dataset datasetName={'XOR'} uploadFiles={uploadFiles} params={{inputs: 2, outputs: 1}}/>
-        <Dataset datasetName={'IRIS'} uploadFiles={uploadFiles} params={{inputs: 4, outputs: 3}}/>
+        <Dataset datasetName={'XOR'} uploadFiles={() => {
+          uploadFiles('XOR').then(() => {
+            setTimeout(() => {
+              runNetwork();
+            }, 0);
+          });
+        }} params={{ inputs: 2, outputs: 1 }}
+                 startProtocol={() => {
+
+                   setMultipleLayerSizes({
+                     index: 0,
+                     value: 2
+                   }, {
+                     index: layerSizes.length - 1,
+                     value: 1
+                   });
+                 }} />
+
+
+        <Dataset datasetName={'IRIS'} uploadFiles={() => {
+          uploadFiles('IRIS').then(() => {
+            runNetwork();
+          });
+        }} params={{ inputs: 4, outputs: 3 }}
+                 startProtocol={() => {
+                   setMultipleLayerSizes({
+                     index: 0,
+                     value: 4
+                   }, {
+                     index: layerSizes.length - 1,
+                     value: 3
+                   });
+                 }} />
       </div>
     </div>
   );

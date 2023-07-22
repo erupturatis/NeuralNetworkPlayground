@@ -4,7 +4,7 @@ import './button.css';
 const Button = ({ name, pageLink, location }) => {
   return (
     <div
-      className={`font-nav font-semibold text-navtextFaded px-4 py-1 m-2 select-none
+      className={`font-nav font-medium text-navtextFaded px-4 py-1 m-2 select-none
         flex justify-center align-bottom hover:text-white transitionsSmooth
       ${
         name === location.slice(1) ? 'text-white  rounded-full spawnBorder' : ''

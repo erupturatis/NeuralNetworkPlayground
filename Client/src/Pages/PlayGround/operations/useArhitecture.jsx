@@ -5,12 +5,12 @@ import {
   addNeuron,
   removeLayer,
   removeNeuron,
-  addLayer,
+  addLayer
 } from '../../../store/network.js';
 
 export function useArchitecture() {
   const dispatch = useDispatch();
-  const { network } = useSelector((state) => state);
+  const { network, data } = useSelector((state) => state);
   const [layers, setLayers] = useState(network.length);
   const [layerSizes, setLayerSizes] = useState(
     network.layers.map((element) => element.numNeurons)
@@ -20,16 +20,26 @@ export function useArchitecture() {
     value = parseInt(value);
     const newSizes = [...layerSizes];
     newSizes.splice(index, 1, value);
+    console.log(layerSizes, newSizes);
     setLayerSizes(newSizes);
   };
 
   const setMultipleLayerSizes = (...args) => {
-    const newSizes = [...layerSizes];
+    // Deep copy of the layerSizes array to avoid modifying the original array
+    const newSizes = JSON.parse(JSON.stringify(layerSizes));
 
     args.forEach((element) => {
       const { index, value } = element;
-      newSizes.splice(index, 1, value);
+      // Check if the index is within the valid range of the newSizes array
+      if (index >= 0 && index < newSizes.length) {
+        newSizes[index] = value;
+      } else {
+        throw new Error(
+          `Index ${index} is out of bounds for the layerSizes array`
+        );
+      }
     });
+    console.log(layerSizes, newSizes);
     setLayerSizes(newSizes);
   };
 
@@ -92,5 +102,6 @@ export function useArchitecture() {
     setLayers,
     setMultipleLayerSizes,
     setLayerSizeFactory,
+    data
   };
 }
