@@ -1,14 +1,12 @@
-import React from 'react';
-import { useState, useEffect, useLayoutEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Cosmetics from './Cosmetics';
 import Arhitecture from './Arhitecture';
 import Advanced from './Advanced';
 import Datasets from './Datasets';
 import './left.css';
 
-const OptionsLeft = () => {
+const OptionsLeft = ({ toggleOptions }) => {
   const { network, cosmetics, data } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [layers, setLayers] = useState(network.length);
@@ -20,11 +18,11 @@ const OptionsLeft = () => {
   return (
     <div
       style={{
-        'scrollbar-gutter': 'stable',
+        'scrollbar-gutter': 'stable'
       }}
       className=' p-3 h-5/6 overflow-y-auto overflow-x-hidden w-full scroll pr-4 select-none '
     >
-      <Datasets />
+      <Datasets toggleOptions={toggleOptions} />
       <Arhitecture />
       <Cosmetics />
       <Advanced />

@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
-import { setInputs, setOutputs } from '../../../../store/data';
-import { replaceState, randomizeWeights } from '../../../../store/network';
-import { setInputsLabel, setOutputsLabel } from '../../../../store/data';
+import { setInputs, setInputsLabel, setOutputs, setOutputsLabel } from '../../../../store/data';
+import { randomizeWeights, replaceState } from '../../../../store/network';
 import { operation } from '../../utils/operation';
 import pause from './assets/pause.png';
 import run from './assets/running.png';
@@ -101,7 +99,7 @@ const OptionsTop = () => {
   return (
     <div className=' w-full'>
       <div className=''>
-        <div className=' flex justify-center '>
+        <div className='justify-center hidden lg:flex'>
           <div>
             <input
               type='file'
@@ -152,7 +150,7 @@ const OptionsTop = () => {
           </div>
         </div>
         <div className='w-full  flex justify-center  mt-6 '>
-          <div className=' w-52 mr-16'>
+          <div className=' w-52 mr-16 hidden lg:block '>
             <div className=' h-10  text-lg font-normal flex justify-center items-center'>
               <div className='flex '>
                 <button
@@ -183,11 +181,11 @@ const OptionsTop = () => {
           </div>
           <div className='w-96 relative'>
             <div
-              className='w-full h-6  border-2  rounded-md mt-2 z-10'
+              className='fixed bottom-10 left-[50%] translate-x-[-50%] lg:left-0 lg:px-0 lg:translate-x-0  lg:static w-5/6 lg:w-full h-6 border-2 rounded-md mt-2 z-10'
               style={{
                 background: `linear-gradient(90deg, rgba(42,133,237,1) 0%, rgba(42,133,237,1) ${fill}%, rgba(74,95,170,0) ${fill}%, rgba(27,41,69,0) 100%)`
               }}
-            ></div>
+            />
             <div>
               {error && (
                 <div className='text-red-900 text-lg text-center mt-4 '>
@@ -196,26 +194,27 @@ const OptionsTop = () => {
               )}
               {!isRunning && recording.saved ? (
                 <>
-                  <div className='relative pt-1 w-full '>
+                  <div className='fixed left-0 px-4 bottom-4 lg:px-0 lg:relative pt-1 w-full '>
                     <input
                       id='range'
                       type='range'
                       min='0'
                       max={recording.snapshots.length - 1}
                       value={selectedSnapshot}
-                      className='w-full mt-4 h-3 bg-transparent rounded-lg appearance-none cursor-pointer border-2'
+                      className='w-full mt-4 h-3 pointer-events-auto bg-transparent rounded-lg appearance-none cursor-pointer border-2'
                       onChange={(e) => {
                         setSelectedSnapshot(e.target.value);
                       }}
                     />
                   </div>
-                  <div className='w-full flex justify-center font-light opacity-30'>
+                  <div className='hidden w-full lg:flex justify-center font-light opacity-30'>
                     select any epoch
                   </div>
-                  <div className='flex justify-center text-lg '>
+                  <div
+                    className='fixed bottom-16 left-[50%] translate-x-[-50%] lg:static lg:left-0 lg:translate-x-0 flex justify-center text-lg '>
                     Epoch {selectedSnapshot * network.recordFreq}
                   </div>
-                  <div className='flex justify-center text-md '>
+                  <div className='hidden  lg:flex justify-center text-md '>
                     Loss {recording.snapshots[selectedSnapshot].loss.toFixed(6)}
                   </div>
                 </>

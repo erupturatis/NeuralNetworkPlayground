@@ -1,14 +1,8 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import arrow from './assets/arrowdown.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInputsLabel, setInputs } from '../../../../store/data';
-import { setOutputsLabel, setOutputs } from '../../../../store/data';
+import { useDispatch } from 'react-redux';
+import { setInputs, setInputsLabel, setOutputs, setOutputsLabel } from '../../../../store/data';
 import { mapInputs, mapOutputs } from '../../utils/generatorUtils';
-
-import download from './assets/download.png';
-import upload from './assets/upload.png';
 import { useArchitecture } from '../../operations/useArhitecture.jsx';
 import { operation } from '../../utils/operation.jsx';
 
@@ -18,8 +12,7 @@ const Dataset = ({ datasetName, uploadFiles, params, startProtocol }) => {
     <div className='flex w-full  mt-6 justify-center md:justify-start'>
       <div className='w-40 flex items-center justify-center font-medium select-none'>
         <div>
-          The {datasetName} dataset
-          <div className=' font-light text-center'>{params.inputs} inputs {params.outputs} output</div>
+          Run {datasetName} dataset
         </div>
       </div>
 
@@ -37,7 +30,7 @@ const Dataset = ({ datasetName, uploadFiles, params, startProtocol }) => {
 };
 
 
-const Datasets = () => {
+const Datasets = ({ toggleOptions }) => {
   const [display, setDisplay] = useState(false);
   const dispatch = useDispatch();
 
@@ -183,15 +176,16 @@ const Datasets = () => {
         }`}
       >
 
+
         <Dataset datasetName={'XOR'} uploadFiles={() => {
+          toggleOptions();
           uploadFiles('XOR').then(() => {
             setTimeout(() => {
               runNetwork();
-            }, 0);
+            }, 100);
           });
         }} params={{ inputs: 2, outputs: 1 }}
                  startProtocol={() => {
-
                    setMultipleLayerSizes({
                      index: 0,
                      value: 2
@@ -203,6 +197,7 @@ const Datasets = () => {
 
 
         <Dataset datasetName={'IRIS'} uploadFiles={() => {
+          toggleOptions();
           uploadFiles('IRIS').then(() => {
             runNetwork();
           });
